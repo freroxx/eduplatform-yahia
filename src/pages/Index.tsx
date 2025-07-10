@@ -4,10 +4,12 @@ import { Card, CardContent, CardDescription, CardHeader, CardTitle } from "@/com
 import { Badge } from "@/components/ui/badge";
 import { BookOpen, GraduationCap, Users, Award, Play, FileText, Video, Calendar, Clock, Target, Sparkles } from "lucide-react";
 import { Link } from "react-router-dom";
+import UserOnboarding from "@/components/UserOnboarding";
 
 const Index = () => {
   return (
     <div className="min-h-screen bg-gradient-to-br from-blue-50 via-indigo-50 to-purple-50">
+      <UserOnboarding />
       <header className="bg-white/80 backdrop-blur-md border-b border-gray-200/50 sticky top-0 z-50">
         <div className="container mx-auto px-4 py-4 flex justify-between items-center">
           <div className="flex items-center space-x-2">
@@ -150,18 +152,23 @@ const Index = () => {
             </Card>
           </Link>
           
-          <Card className="bg-gradient-to-br from-green-500 to-teal-600 text-white border-0 shadow-lg opacity-50 cursor-not-allowed">
-            <CardContent className="p-6 text-center">
-              <div className="bg-white/20 w-12 h-12 rounded-full flex items-center justify-center mx-auto mb-4">
-                <Award className="h-6 w-6" />
-              </div>
-              <h3 className="text-xl font-bold mb-2">Physique-Chimie</h3>
-              <p className="text-green-100 mb-3">Bientôt disponible</p>
-              <Badge variant="secondary" className="bg-white/20 text-white border-white/30">
-                Prochainement
-              </Badge>
-            </CardContent>
-          </Card>
+          <Link to="/lessons">
+            <Card className="bg-gradient-to-br from-green-500 to-teal-600 text-white border-0 shadow-lg hover:shadow-xl transition-all duration-300 hover:scale-105 cursor-pointer group">
+              <CardContent className="p-6 text-center">
+                <div className="bg-white/20 w-12 h-12 rounded-full flex items-center justify-center mx-auto mb-4 group-hover:bg-white/30 transition-colors">
+                  <Award className="h-6 w-6" />
+                </div>
+                <h3 className="text-xl font-bold mb-2">Physique-Chimie</h3>
+                <p className="text-green-100 mb-3">Programme complet en 23 chapitres</p>
+                <div className="flex justify-center space-x-2">
+                  <Badge variant="secondary" className="bg-white/20 text-white border-white/30">
+                    <Calendar className="h-3 w-3 mr-1" />
+                    2 semestres
+                  </Badge>
+                </div>
+              </CardContent>
+            </Card>
+          </Link>
           
           <Card className="bg-gradient-to-br from-orange-500 to-red-600 text-white border-0 shadow-lg opacity-50 cursor-not-allowed">
             <CardContent className="p-6 text-center">

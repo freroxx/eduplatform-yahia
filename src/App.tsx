@@ -10,6 +10,7 @@ import Lesson1Course from "./pages/Lesson1Course";
 import Lesson1Exercises from "./pages/Lesson1Exercises";
 import Lesson1Videos from "./pages/Lesson1Videos";
 import Physics1Course from "./pages/Physics1Course";
+import SVT1Course from "./pages/SVT1Course";
 import NotFound from "./pages/NotFound";
 
 const queryClient = new QueryClient();
@@ -93,6 +94,44 @@ const App = () => (
           <Route path="/lesson/102/course" element={<NotFound />} />
           <Route path="/lesson/102/exercises" element={<NotFound />} />
           <Route path="/lesson/102/videos" element={<NotFound />} />
+          
+          {/* SVT lessons routes */}
+          <Route path="/lesson/201/course" element={<SVT1Course />} />
+          <Route path="/lesson/201/exercises" element={<Lesson1Exercises />} />
+          <Route path="/lesson/201/videos" element={<Lesson1Videos />} />
+          
+          <Route path="/lesson/202/course" element={<NotFound />} />
+          <Route path="/lesson/202/exercises" element={<NotFound />} />
+          <Route path="/lesson/202/videos" element={<NotFound />} />
+          
+          <Route path="/lesson/203/course" element={<NotFound />} />
+          <Route path="/lesson/203/exercises" element={<NotFound />} />
+          <Route path="/lesson/203/videos" element={<NotFound />} />
+          
+          <Route path="/lesson/204/course" element={<NotFound />} />
+          <Route path="/lesson/204/exercises" element={<NotFound />} />
+          <Route path="/lesson/204/videos" element={<NotFound />} />
+          
+          <Route path="/lesson/205/course" element={<NotFound />} />
+          <Route path="/lesson/205/exercises" element={<NotFound />} />
+          
+          <Route path="/lesson/206/course" element={<NotFound />} />
+          <Route path="/lesson/206/exercises" element={<NotFound />} />
+          
+          <Route path="/lesson/207/course" element={<NotFound />} />
+          <Route path="/lesson/207/exercises" element={<NotFound />} />
+          
+          <Route path="/lesson/208/course" element={<NotFound />} />
+          <Route path="/lesson/208/exercises" element={<NotFound />} />
+          
+          <Route path="/lesson/209/course" element={<NotFound />} />
+          <Route path="/lesson/209/exercises" element={<NotFound />} />
+          
+          <Route path="/lesson/210/course" element={<NotFound />} />
+          <Route path="/lesson/210/exercises" element={<NotFound />} />
+          
+          <Route path="/lesson/211/course" element={<NotFound />} />
+          <Route path="/lesson/211/exercises" element={<NotFound />} />
           
           {/* ADD ALL CUSTOM ROUTES ABOVE THE CATCH-ALL "*" ROUTE */}
           <Route path="*" element={<NotFound />} />

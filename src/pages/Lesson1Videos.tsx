@@ -154,16 +154,16 @@ const Lesson1Videos = () => {
                           </DialogTitle>
                         </DialogHeader>
                         <div className="flex-1 p-4">
-                          <div className="relative w-full h-full">
+                          <div className="relative w-full" style={{aspectRatio: '16/9'}}>
                             <iframe
                               width="100%"
                               height="100%"
-                              src={`https://www.youtube.com/embed/${currentVideoId}?autoplay=1`}
+                              src={`https://www.youtube.com/embed/${currentVideoId}?autoplay=1&hd=1&quality=hd1080`}
                               title="YouTube video player"
                               frameBorder="0"
                               allow="accelerometer; autoplay; clipboard-write; encrypted-media; gyroscope; picture-in-picture"
                               allowFullScreen
-                              className="rounded-lg"
+                              className="rounded-lg absolute inset-0"
                             />
                           </div>
                         </div>

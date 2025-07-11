@@ -11,13 +11,14 @@ const Lessons = () => {
   const [isFullscreen, setIsFullscreen] = useState(false);
   const [isDarkMode, setIsDarkMode] = useState(() => {
     const saved = localStorage.getItem('theme');
-    return saved === 'dark' || (saved === 'auto' && window.matchMedia('(prefers-color-scheme: dark)').matches);
+    if (saved === 'dark') return true;
+    if (saved === 'light') return false;
+    return window.matchMedia('(prefers-color-scheme: dark)').matches;
   });
   const [userName] = useState(() => localStorage.getItem('userName') || 'Étudiant');
   
   useEffect(() => {
     document.documentElement.classList.toggle('dark', isDarkMode);
-    localStorage.setItem('theme', isDarkMode ? 'dark' : 'light');
   }, [isDarkMode]);
 
   const toggleFullscreen = () => {
@@ -44,6 +45,13 @@ const Lessons = () => {
       description: 'Mécanique, électricité et chimie',
       color: 'emerald',
       chapters: 23 
+    },
+    { 
+      id: 'svt', 
+      name: 'SVT', 
+      description: 'Sciences de la Vie et de la Terre',
+      color: 'green',
+      chapters: 11 
     }
   ];
   
@@ -364,11 +372,107 @@ const Lessons = () => {
     }
   ];
 
+  const svtLessons = [
+    {
+      id: 201,
+      title: "Les techniques adaptatives à l'étude écologique sur le terrain",
+      description: "Méthodes d'observation et d'étude des écosystèmes naturels",
+      duration: "55 min",
+      difficulty: "Moyen",
+      hasVideos: true
+    },
+    {
+      id: 202,
+      title: "Les facteurs édaphiques et leurs relations avec les êtres vivants",
+      description: "Influence du sol sur la distribution des organismes",
+      duration: "50 min",
+      difficulty: "Moyen",
+      hasVideos: true
+    },
+    {
+      id: 203,
+      title: "Les facteurs climatiques et leurs relations avec les êtres vivants",
+      description: "Impact du climat sur les écosystèmes",
+      duration: "60 min",
+      difficulty: "Moyen",
+      hasVideos: true
+    },
+    {
+      id: 204,
+      title: "Flux de la matière et de l'énergie dans l'écosystème",
+      description: "Chaînes alimentaires et cycles biogéochimiques",
+      duration: "65 min",
+      difficulty: "Difficile",
+      hasVideos: true
+    },
+    {
+      id: 205,
+      title: "Les équilibres naturels",
+      description: "Mécanismes de régulation des populations",
+      duration: "45 min",
+      difficulty: "Moyen",
+      hasVideos: false
+    }
+  ];
+
+  const svtSecondSemester = [
+    {
+      id: 206,
+      title: "La reproduction sexuée chez les plantes à fleurs",
+      description: "Mécanismes de reproduction et fécondation",
+      duration: "50 min",
+      difficulty: "Moyen",
+      hasVideos: false
+    },
+    {
+      id: 207,
+      title: "La reproduction sexuée chez les plantes sans fleurs",
+      description: "Cycle de reproduction des fougères et mousses",
+      duration: "45 min",
+      difficulty: "Moyen",
+      hasVideos: false
+    },
+    {
+      id: 208,
+      title: "Les cycles de développement des plantes",
+      description: "Alternance des générations et métagenèse",
+      duration: "55 min",
+      difficulty: "Difficile",
+      hasVideos: false
+    },
+    {
+      id: 209,
+      title: "La reproduction asexuée chez les plantes",
+      description: "Multiplication végétative et clonage naturel",
+      duration: "40 min",
+      difficulty: "Facile",
+      hasVideos: false
+    },
+    {
+      id: 210,
+      title: "La modification génétique des plantes",
+      description: "Biotechnologies et amélioration des espèces",
+      duration: "60 min",
+      difficulty: "Difficile",
+      hasVideos: false
+    },
+    {
+      id: 211,
+      title: "La classification des plantes",
+      description: "Systématique et phylogénie végétale",
+      duration: "50 min",
+      difficulty: "Moyen",
+      hasVideos: false
+    }
+  ];
+
   const getCurrentLessons = () => {
     if (selectedSubject.id === 'math') {
       return { semester1: semester1Lessons, semester2: semester2Lessons };
-    } else {
+    } else if (selectedSubject.id === 'physics') {
       return { semester1: physicsLessons, semester2: physicsSecondSemester };
+    } else {
+      return { semester1: svtLessons, semester2: svtSecondSemester };
     }
   };
 
@@ -387,8 +491,8 @@ const Lessons = () => {
         <div className="flex items-start justify-between">
           <div className="flex-1">
             <div className="flex items-center space-x-3 mb-3">
-              <span className={`rounded-full w-10 h-10 flex items-center justify-center text-sm font-bold text-white ${selectedSubject.id === 'math' ? 'bg-indigo-600' : 'bg-emerald-600'}`}>
-                {lesson.id > 100 ? lesson.id - 100 : index + 1}
+              <span className={`rounded-full w-10 h-10 flex items-center justify-center text-sm font-bold text-white ${selectedSubject.id === 'math' ? 'bg-indigo-600' : selectedSubject.id === 'physics' ? 'bg-emerald-600' : 'bg-green-600'}`}>
+                {lesson.id > 200 ? lesson.id - 200 : lesson.id > 100 ? lesson.id - 100 : index + 1}
               </span>
               <Badge className={`${getDifficultyColor(lesson.difficulty)} font-medium border`}>
                 <Target className="h-3 w-3 mr-1" />
@@ -417,7 +521,7 @@ const Lessons = () => {
       <CardContent>
         <div className="flex flex-wrap gap-3">
           <Link to={`/lesson/${lesson.id}/course`}>
-            <Button variant="default" size="sm" className={`shadow-md hover:shadow-lg transition-all duration-200 ${selectedSubject.id === 'math' ? 'bg-indigo-600 hover:bg-indigo-700' : 'bg-emerald-600 hover:bg-emerald-700'}`}>
+            <Button variant="default" size="sm" className={`shadow-md hover:shadow-lg transition-all duration-200 ${selectedSubject.id === 'math' ? 'bg-indigo-600 hover:bg-indigo-700' : selectedSubject.id === 'physics' ? 'bg-emerald-600 hover:bg-emerald-700' : 'bg-green-600 hover:bg-green-700'}`}>
               <BookOpen className="h-4 w-4 mr-2" />
               Cours
             </Button>
@@ -461,14 +565,15 @@ const Lessons = () => {
               </p>
             </div>
             <div className="flex items-center space-x-3">
-              <Button
-                variant="outline"
-                size="sm"
-                onClick={() => setIsDarkMode(!isDarkMode)}
-                className={`${isDarkMode ? 'border-gray-600 text-gray-300 hover:bg-gray-700' : 'border-gray-300'}`}
-              >
-                {isDarkMode ? <Sun className="h-4 w-4" /> : <Moon className="h-4 w-4" />}
-              </Button>
+              <Link to="/">
+                <Button
+                  variant="outline"
+                  size="sm"
+                  className={`${isDarkMode ? 'border-gray-600 text-gray-300 hover:bg-gray-700' : 'border-gray-300'}`}
+                >
+                  Paramètres
+                </Button>
+              </Link>
               <Button
                 variant="outline"
                 size="sm"

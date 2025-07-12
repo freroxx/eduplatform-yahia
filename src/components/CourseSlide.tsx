@@ -9,7 +9,7 @@ import { Link } from "react-router-dom";
 interface Slide {
   title: string;
   content: string;
-  type: "intro" | "definition" | "example" | "exercise" | "summary";
+  type: "intro" | "definition" | "example" | "exercise" | "summary" | "introduction" | "content" | "conclusion";
 }
 
 interface CourseSlideProps {
@@ -30,33 +30,42 @@ const CourseSlide = ({ lessonTitle, slides }: CourseSlideProps) => {
 
   const getSlideColor = (type: string) => {
     switch (type) {
-      case "intro": return "from-blue-500 to-indigo-600";
+      case "intro":
+      case "introduction": return "from-blue-500 to-indigo-600";
       case "definition": return "from-green-500 to-teal-600";
       case "example": return "from-orange-500 to-red-600";
       case "exercise": return "from-purple-500 to-pink-600";
-      case "summary": return "from-gray-600 to-gray-800";
+      case "summary":
+      case "conclusion": return "from-gray-600 to-gray-800";
+      case "content": return "from-indigo-500 to-purple-600";
       default: return "from-indigo-500 to-purple-600";
     }
   };
 
   const getSlideIcon = (type: string) => {
     switch (type) {
-      case "intro": return <BookOpen className="h-6 w-6" />;
+      case "intro":
+      case "introduction": return <BookOpen className="h-6 w-6" />;
       case "definition": return <Target className="h-6 w-6" />;
       case "example": return <Lightbulb className="h-6 w-6" />;
       case "exercise": return <FileText className="h-6 w-6" />;
-      case "summary": return <BarChart3 className="h-6 w-6" />;
+      case "summary":
+      case "conclusion": return <BarChart3 className="h-6 w-6" />;
+      case "content": return <BookOpen className="h-6 w-6" />;
       default: return <BookOpen className="h-6 w-6" />;
     }
   };
 
   const getSlideTypeName = (type: string) => {
     switch (type) {
-      case "intro": return "Introduction";
+      case "intro":
+      case "introduction": return "Introduction";
       case "definition": return "Définition";
       case "example": return "Exemple";
       case "exercise": return "Exercice";
-      case "summary": return "Résumé";
+      case "summary":
+      case "conclusion": return "Résumé";
+      case "content": return "Contenu";
       default: return "Contenu";
     }
   };

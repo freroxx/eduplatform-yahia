@@ -8,6 +8,7 @@ import { Link } from "react-router-dom";
 import { useState } from "react";
 
 const Lesson1Videos = () => {
+  const { settings } = useSettings();
   const [loadingVideo, setLoadingVideo] = useState<number | null>(null);
   const [isDialogOpen, setIsDialogOpen] = useState(false);
   const [currentVideoId, setCurrentVideoId] = useState<string>("");

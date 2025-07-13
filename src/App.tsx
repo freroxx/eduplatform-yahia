@@ -11,6 +11,8 @@ import Lesson1Exercises from "./pages/Lesson1Exercises";
 import Lesson1Videos from "./pages/Lesson1Videos";
 import Physics1Course from "./pages/Physics1Course";
 import SVT1Course from "./pages/SVT1Course";
+import FrenchCourse from "./pages/FrenchCourse";
+import Settings from "./pages/Settings";
 import NotFound from "./pages/NotFound";
 
 const queryClient = new QueryClient();
@@ -132,7 +134,15 @@ const App = () => (
           
           <Route path="/lesson/211/course" element={<NotFound />} />
           <Route path="/lesson/211/exercises" element={<NotFound />} />
-          
+
+          {/* French course routes */}
+          <Route path="/lesson/301/course" element={<FrenchCourse />} />
+          <Route path="/lesson/301/exercises" element={<Lesson1Exercises />} />
+          <Route path="/lesson/301/videos" element={<Lesson1Videos />} />
+
+          {/* Settings route */}
+          <Route path="/settings" element={<Settings />} />
+
           {/* ADD ALL CUSTOM ROUTES ABOVE THE CATCH-ALL "*" ROUTE */}
           <Route path="*" element={<NotFound />} />
         </Routes>

@@ -6,6 +6,7 @@ import { Dialog, DialogContent, DialogHeader, DialogTitle, DialogTrigger } from 
 import { ArrowLeft, Play, ExternalLink, Clock, Users, X } from "lucide-react";
 import { Link } from "react-router-dom";
 import { useState } from "react";
+import { useSettings } from "@/hooks/useSettings";
 
 const Lesson1Videos = () => {
   const { settings } = useSettings();

@@ -2,7 +2,7 @@ import { Button } from "@/components/ui/button";
 import { Card, CardContent, CardDescription, CardHeader, CardTitle } from "@/components/ui/card";
 import { Badge } from "@/components/ui/badge";
 import { Tabs, TabsContent, TabsList, TabsTrigger } from "@/components/ui/tabs";
-import { BookOpen, FileText, Video, ArrowLeft, Calendar, Clock, Target, Maximize2 } from "lucide-react";
+import { BookOpen, FileText, Video, ArrowLeft, Calendar, Clock, Target, Maximize2, Search, Bot } from "lucide-react";
 import { Link } from "react-router-dom";
 import { motion } from "framer-motion";
 import { useState } from "react";
@@ -13,6 +13,8 @@ import SearchBar from "@/components/SearchBar";
 const SVTLessons = () => {
   const { settings } = useSettings();
   const [isFullscreen, setIsFullscreen] = useState(false);
+  const [isSearchOpen, setIsSearchOpen] = useState(false);
+  const [isAIAssistantOpen, setIsAIAssistantOpen] = useState(false);
 
   const toggleFullscreen = () => {
     if (!document.fullscreenElement) {
@@ -217,7 +219,12 @@ const SVTLessons = () => {
               </p>
             </div>
             <div className="flex items-center space-x-3">
-              <SearchBar />
+              <Button variant="outline" size="sm" onClick={() => setIsSearchOpen(true)} className="hover:bg-accent/50">
+                <Search className="h-4 w-4" />
+              </Button>
+              <Button variant="outline" size="sm" onClick={() => setIsAIAssistantOpen(true)} className="hover:bg-accent/50">
+                <Bot className="h-4 w-4" />
+              </Button>
               <Link to="/settings">
                 <Button variant="outline" size="sm" className="hover:bg-accent/50">
                   Paramètres
@@ -316,7 +323,8 @@ const SVTLessons = () => {
         </div>
       </div>
 
-      <AIAssistant />
+      <SearchBar isOpen={isSearchOpen} onClose={() => setIsSearchOpen(false)} />
+      <AIAssistant isOpen={isAIAssistantOpen} onClose={() => setIsAIAssistantOpen(false)} />
     </motion.div>
   );
 };

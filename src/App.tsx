@@ -27,12 +27,21 @@ import PhysicsVideos from "./pages/physics/PhysicsVideos";
 
 // SVT lessons
 import SVTLessons from "./pages/svt/SVTLessons";
+import SVTCourse from "./pages/svt/SVTCourse";
+import SVTExercises from "./pages/svt/SVTExercises";
+import SVTVideos from "./pages/svt/SVTVideos";
 
 // Arabic lessons
 import ArabicLessons from "./pages/arabic/ArabicLessons";
 import ArabicCourse from "./pages/arabic/ArabicCourse";
 import ArabicExercises from "./pages/arabic/ArabicExercises";
 import ArabicVideos from "./pages/arabic/ArabicVideos";
+
+// Histoire-Geo lessons
+import HistoireGeoLessons from "./pages/histoire-geo/HistoireGeoLessons";
+import HistoireGeoCourse from "./pages/histoire-geo/HistoireGeoCourse";
+import HistoireGeoExercises from "./pages/histoire-geo/HistoireGeoExercises";
+import HistoireGeoVideos from "./pages/histoire-geo/HistoireGeoVideos";
 
 const queryClient = new QueryClient();
 
@@ -67,15 +76,21 @@ function App() {
             
             {/* SVT routes */}
             <Route path="/lessons/svt" element={<SVTLessons />} />
-            <Route path="/svt/lesson/:id/course" element={<Lesson1Course />} />
-            <Route path="/svt/lesson/:id/exercises" element={<Lesson1Exercises />} />
-            <Route path="/svt/lesson/:id/videos" element={<Lesson1Videos />} />
+            <Route path="/svt/lesson/:id/course" element={<SVTCourse />} />
+            <Route path="/svt/lesson/:id/exercises" element={<SVTExercises />} />
+            <Route path="/svt/lesson/:id/videos" element={<SVTVideos />} />
             
             {/* Arabic routes */}
             <Route path="/lessons/arabic" element={<ArabicLessons />} />
             <Route path="/arabic/lesson/:id/course" element={<ArabicCourse />} />
             <Route path="/arabic/lesson/:id/exercises" element={<ArabicExercises />} />
             <Route path="/arabic/lesson/:id/videos" element={<ArabicVideos />} />
+            
+            {/* Histoire-Geo routes */}
+            <Route path="/lessons/histoire-geo" element={<HistoireGeoLessons />} />
+            <Route path="/histoire-geo/lesson/:id/course" element={<HistoireGeoCourse />} />
+            <Route path="/histoire-geo/lesson/:id/exercises" element={<HistoireGeoExercises />} />
+            <Route path="/histoire-geo/lesson/:id/videos" element={<HistoireGeoVideos />} />
             
             {/* Legacy routes for backwards compatibility */}
             <Route path="/lessons" element={<Lessons />} />

@@ -1,4 +1,3 @@
-
 import { Button } from "@/components/ui/button";
 import { Card, CardContent, CardDescription, CardHeader, CardTitle } from "@/components/ui/card";
 import { Badge } from "@/components/ui/badge";
@@ -8,8 +7,8 @@ import { Link, useLocation } from "react-router-dom";
 import { motion } from "framer-motion";
 import { useState, useEffect } from "react";
 import { useSettings } from "@/hooks/useSettings";
-import { AIAssistant } from "@/components/AIAssistant";
-import { SearchBar } from "@/components/SearchBar";
+import AIAssistant from "@/components/AIAssistant";
+import SearchBar from "@/components/SearchBar";
 
 const Lessons = () => {
   const { settings } = useSettings();

@@ -155,7 +155,14 @@ const Lessons = () => {
         transition={{ delay: 0.6 }}
         className="container mx-auto px-4 mb-8"
       >
-        <QuickStats subject="math" />
+        <QuickStats 
+          totalLessons={6}
+          completedLessons={2}
+          totalStudyTime="4h 30min"
+          currentStreak={5}
+          averageScore={78}
+          weeklyGoal={5}
+        />
       </motion.section>
 
       {/* Progress Tracker */}
@@ -165,7 +172,14 @@ const Lessons = () => {
         transition={{ delay: 0.8 }}
         className="container mx-auto px-4 mb-8"
       >
-        <ProgressTracker subject="math" />
+        <ProgressTracker 
+          subject="Mathématiques"
+          totalLessons={6}
+          completedLessons={2}
+          totalPoints={1000}
+          earnedPoints={340}
+          studyTime="4h 30min"
+        />
       </motion.section>
 
       {/* Chapters Grid */}

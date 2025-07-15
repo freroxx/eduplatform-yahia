@@ -177,7 +177,14 @@ const SVTLessons = () => {
         transition={{ delay: 0.6 }}
         className="container mx-auto px-4 mb-8"
       >
-        <QuickStats subject="svt" />
+        <QuickStats 
+          totalLessons={8}
+          completedLessons={3}
+          totalStudyTime="6h 15min"
+          currentStreak={7}
+          averageScore={85}
+          weeklyGoal={6}
+        />
       </motion.section>
 
       {/* Progress Tracker */}
@@ -187,7 +194,14 @@ const SVTLessons = () => {
         transition={{ delay: 0.8 }}
         className="container mx-auto px-4 mb-8"
       >
-        <ProgressTracker subject="svt" />
+        <ProgressTracker 
+          subject="Sciences de la Vie et de la Terre"
+          totalLessons={8}
+          completedLessons={3}
+          totalPoints={1200}
+          earnedPoints={450}
+          studyTime="6h 15min"
+        />
       </motion.section>
 
       {/* Chapters Grid */}

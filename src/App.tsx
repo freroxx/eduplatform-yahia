@@ -6,149 +6,96 @@ import { QueryClient, QueryClientProvider } from "@tanstack/react-query";
 import { BrowserRouter, Routes, Route } from "react-router-dom";
 import Index from "./pages/Index";
 import Lessons from "./pages/Lessons";
-import Lesson1Course from "./pages/Lesson1Course";
-import Lesson1Exercises from "./pages/Lesson1Exercises";
-import Lesson1Videos from "./pages/Lesson1Videos";
-import Physics1Course from "./pages/Physics1Course";
-import SVT1Course from "./pages/SVT1Course";
-import FrenchCourse from "./pages/FrenchCourse";
 import Settings from "./pages/Settings";
-import NotFound from "./pages/NotFound";
+
+// Math lessons
+import Lesson1Course from "./pages/math/Lesson1Course";
+import Lesson1Exercises from "./pages/math/Lesson1Exercises";
+import Lesson1Videos from "./pages/math/Lesson1Videos";
+import Lesson2Course from "./pages/math/Lesson2Course";
+import Lesson2Exercises from "./pages/math/Lesson2Exercises";
+import Lesson2Videos from "./pages/math/Lesson2Videos";
+
+// French lessons
+import FrenchLessons from "./pages/french/FrenchLessons";
+import FrenchLesson1Course from "./pages/french/FrenchLesson1Course";
+import FrenchLesson1Exercises from "./pages/french/FrenchLesson1Exercises";
+import FrenchLesson1Videos from "./pages/french/FrenchLesson1Videos";
+import FrenchLesson2Course from "./pages/french/FrenchLesson2Course";
+import FrenchLesson2Exercises from "./pages/french/FrenchLesson2Exercises";
+import FrenchLesson2Videos from "./pages/french/FrenchLesson2Videos";
+
+// Physics lessons
+import PhysicsLessons from "./pages/physics/PhysicsLessons";
+import PhysicsLesson1Course from "./pages/physics/PhysicsLesson1Course";
+import PhysicsLesson1Exercises from "./pages/physics/PhysicsLesson1Exercises";
+import PhysicsLesson1Videos from "./pages/physics/PhysicsLesson1Videos";
+
+// SVT lessons
+import SVTLessons from "./pages/svt/SVTLessons";
+import SVTLesson1Course from "./pages/svt/SVTLesson1Course";
+import SVTLesson1Exercises from "./pages/svt/SVTLesson1Exercises";
+import SVTLesson1Videos from "./pages/svt/SVTLesson1Videos";
+
+// Arabic lessons
+import ArabicLessons from "./pages/arabic/ArabicLessons";
+import ArabicLesson1Course from "./pages/arabic/ArabicLesson1Course";
+import ArabicLesson1Exercises from "./pages/arabic/ArabicLesson1Exercises";
+import ArabicLesson1Videos from "./pages/arabic/ArabicLesson1Videos";
 
 const queryClient = new QueryClient();
 
-const App = () => (
-  <QueryClientProvider client={queryClient}>
-    <TooltipProvider>
-      <Toaster />
-      <Sonner />
-      <BrowserRouter>
-        <Routes>
-          <Route path="/" element={<Index />} />
-          <Route path="/lessons" element={<Lessons />} />
-          
-          {/* Semester 1 Lessons */}
-          <Route path="/lesson/1/course" element={<Lesson1Course />} />
-          <Route path="/lesson/1/exercises" element={<Lesson1Exercises />} />
-          <Route path="/lesson/1/videos" element={<Lesson1Videos />} />
-          
-          <Route path="/lesson/2/course" element={<Lesson1Course />} />
-          <Route path="/lesson/2/exercises" element={<Lesson1Exercises />} />
-          <Route path="/lesson/2/videos" element={<Lesson1Videos />} />
-          
-          <Route path="/lesson/3/course" element={<Lesson1Course />} />
-          <Route path="/lesson/3/exercises" element={<Lesson1Exercises />} />
-          <Route path="/lesson/3/videos" element={<Lesson1Videos />} />
-          
-          <Route path="/lesson/4/course" element={<Lesson1Course />} />
-          <Route path="/lesson/4/exercises" element={<Lesson1Exercises />} />
-          <Route path="/lesson/4/videos" element={<Lesson1Videos />} />
-          
-          <Route path="/lesson/5/course" element={<Lesson1Course />} />
-          <Route path="/lesson/5/exercises" element={<Lesson1Exercises />} />
-          <Route path="/lesson/5/videos" element={<Lesson1Videos />} />
-          
-          <Route path="/lesson/6/course" element={<Lesson1Course />} />
-          <Route path="/lesson/6/exercises" element={<Lesson1Exercises />} />
-          <Route path="/lesson/6/videos" element={<Lesson1Videos />} />
-          
-          <Route path="/lesson/7/course" element={<Lesson1Course />} />
-          <Route path="/lesson/7/exercises" element={<Lesson1Exercises />} />
-          <Route path="/lesson/7/videos" element={<Lesson1Videos />} />
-          
-          <Route path="/lesson/8/course" element={<Lesson1Course />} />
-          <Route path="/lesson/8/exercises" element={<Lesson1Exercises />} />
-          <Route path="/lesson/8/videos" element={<Lesson1Videos />} />
-          
-          <Route path="/lesson/9/course" element={<Lesson1Course />} />
-          <Route path="/lesson/9/exercises" element={<Lesson1Exercises />} />
-          <Route path="/lesson/9/videos" element={<Lesson1Videos />} />
-          
-          {/* Semester 2 Lessons */}
-          <Route path="/lesson/10/course" element={<Lesson1Course />} />
-          <Route path="/lesson/10/exercises" element={<Lesson1Exercises />} />
-          
-          <Route path="/lesson/11/course" element={<Lesson1Course />} />
-          <Route path="/lesson/11/exercises" element={<Lesson1Exercises />} />
-          <Route path="/lesson/11/videos" element={<Lesson1Videos />} />
-          
-          <Route path="/lesson/12/course" element={<Lesson1Course />} />
-          <Route path="/lesson/12/exercises" element={<Lesson1Exercises />} />
-          <Route path="/lesson/12/videos" element={<Lesson1Videos />} />
-          
-          <Route path="/lesson/13/course" element={<Lesson1Course />} />
-          <Route path="/lesson/13/exercises" element={<Lesson1Exercises />} />
-          <Route path="/lesson/13/videos" element={<Lesson1Videos />} />
-          
-          <Route path="/lesson/14/course" element={<Lesson1Course />} />
-          <Route path="/lesson/14/exercises" element={<Lesson1Exercises />} />
-          
-          <Route path="/lesson/15/course" element={<Lesson1Course />} />
-          <Route path="/lesson/15/exercises" element={<Lesson1Exercises />} />
-          <Route path="/lesson/15/videos" element={<Lesson1Videos />} />
-          
-          {/* Physics lessons routes */}
-          <Route path="/lesson/101/course" element={<Physics1Course />} />
-          <Route path="/lesson/101/exercises" element={<NotFound />} />
-          <Route path="/lesson/101/videos" element={<NotFound />} />
-          
-          {/* Add more physics routes as needed */}
-          <Route path="/lesson/102/course" element={<NotFound />} />
-          <Route path="/lesson/102/exercises" element={<NotFound />} />
-          <Route path="/lesson/102/videos" element={<NotFound />} />
-          
-          {/* SVT lessons routes */}
-          <Route path="/lesson/201/course" element={<SVT1Course />} />
-          <Route path="/lesson/201/exercises" element={<Lesson1Exercises />} />
-          <Route path="/lesson/201/videos" element={<Lesson1Videos />} />
-          
-          <Route path="/lesson/202/course" element={<NotFound />} />
-          <Route path="/lesson/202/exercises" element={<NotFound />} />
-          <Route path="/lesson/202/videos" element={<NotFound />} />
-          
-          <Route path="/lesson/203/course" element={<NotFound />} />
-          <Route path="/lesson/203/exercises" element={<NotFound />} />
-          <Route path="/lesson/203/videos" element={<NotFound />} />
-          
-          <Route path="/lesson/204/course" element={<NotFound />} />
-          <Route path="/lesson/204/exercises" element={<NotFound />} />
-          <Route path="/lesson/204/videos" element={<NotFound />} />
-          
-          <Route path="/lesson/205/course" element={<NotFound />} />
-          <Route path="/lesson/205/exercises" element={<NotFound />} />
-          
-          <Route path="/lesson/206/course" element={<NotFound />} />
-          <Route path="/lesson/206/exercises" element={<NotFound />} />
-          
-          <Route path="/lesson/207/course" element={<NotFound />} />
-          <Route path="/lesson/207/exercises" element={<NotFound />} />
-          
-          <Route path="/lesson/208/course" element={<NotFound />} />
-          <Route path="/lesson/208/exercises" element={<NotFound />} />
-          
-          <Route path="/lesson/209/course" element={<NotFound />} />
-          <Route path="/lesson/209/exercises" element={<NotFound />} />
-          
-          <Route path="/lesson/210/course" element={<NotFound />} />
-          <Route path="/lesson/210/exercises" element={<NotFound />} />
-          
-          <Route path="/lesson/211/course" element={<NotFound />} />
-          <Route path="/lesson/211/exercises" element={<NotFound />} />
-
-          {/* French course routes */}
-          <Route path="/lesson/301/course" element={<FrenchCourse />} />
-          <Route path="/lesson/301/exercises" element={<Lesson1Exercises />} />
-          <Route path="/lesson/301/videos" element={<Lesson1Videos />} />
-
-          {/* Settings route */}
-          <Route path="/settings" element={<Settings />} />
-
-          {/* ADD ALL CUSTOM ROUTES ABOVE THE CATCH-ALL "*" ROUTE */}
-          <Route path="*" element={<NotFound />} />
-        </Routes>
-      </BrowserRouter>
-    </TooltipProvider>
-  </QueryClientProvider>
-);
+function App() {
+  return (
+    <QueryClientProvider client={queryClient}>
+      <TooltipProvider>
+        <Toaster />
+        <Sonner />
+        <BrowserRouter>
+          <Routes>
+            <Route path="/" element={<Index />} />
+            <Route path="/settings" element={<Settings />} />
+            
+            {/* Math routes */}
+            <Route path="/lessons/math" element={<Lessons subject="math" />} />
+            <Route path="/math/lesson/:id/course" element={<Lesson1Course />} />
+            <Route path="/math/lesson/:id/exercises" element={<Lesson1Exercises />} />
+            <Route path="/math/lesson/:id/videos" element={<Lesson1Videos />} />
+            
+            {/* French routes */}
+            <Route path="/lessons/french" element={<FrenchLessons />} />
+            <Route path="/french/lesson/:id/course" element={<FrenchLesson1Course />} />
+            <Route path="/french/lesson/:id/exercises" element={<FrenchLesson1Exercises />} />
+            <Route path="/french/lesson/:id/videos" element={<FrenchLesson1Videos />} />
+            
+            {/* Physics routes */}
+            <Route path="/lessons/physics" element={<PhysicsLessons />} />
+            <Route path="/physics/lesson/:id/course" element={<PhysicsLesson1Course />} />
+            <Route path="/physics/lesson/:id/exercises" element={<PhysicsLesson1Exercises />} />
+            <Route path="/physics/lesson/:id/videos" element={<PhysicsLesson1Videos />} />
+            
+            {/* SVT routes */}
+            <Route path="/lessons/svt" element={<SVTLessons />} />
+            <Route path="/svt/lesson/:id/course" element={<SVTLesson1Course />} />
+            <Route path="/svt/lesson/:id/exercises" element={<SVTLesson1Exercises />} />
+            <Route path="/svt/lesson/:id/videos" element={<SVTLesson1Videos />} />
+            
+            {/* Arabic routes */}
+            <Route path="/lessons/arabic" element={<ArabicLessons />} />
+            <Route path="/arabic/lesson/:id/course" element={<ArabicLesson1Course />} />
+            <Route path="/arabic/lesson/:id/exercises" element={<ArabicLesson1Exercises />} />
+            <Route path="/arabic/lesson/:id/videos" element={<ArabicLesson1Videos />} />
+            
+            {/* Legacy routes for backwards compatibility */}
+            <Route path="/lessons" element={<Lessons subject="math" />} />
+            <Route path="/lesson/:id/course" element={<Lesson1Course />} />
+            <Route path="/lesson/:id/exercises" element={<Lesson1Exercises />} />
+            <Route path="/lesson/:id/videos" element={<Lesson1Videos />} />
+          </Routes>
+        </BrowserRouter>
+      </TooltipProvider>
+    </QueryClientProvider>
+  );
+}
 
 export default App;

@@ -1,7 +1,8 @@
+
 import { Button } from "@/components/ui/button";
 import { Card, CardContent, CardDescription, CardHeader, CardTitle } from "@/components/ui/card";
 import { Badge } from "@/components/ui/badge";
-import { BookOpen, GraduationCap, Users, Award, Play, FileText, Video, Calendar, Clock, Target, Sparkles, BarChart3, PenTool } from "lucide-react";
+import { BookOpen, GraduationCap, Users, Award, Play, FileText, Video, Calendar, Clock, Target, Sparkles, BarChart3, PenTool, Atom, Microscope, Globe } from "lucide-react";
 import { Link } from "react-router-dom";
 import { motion } from "framer-motion";
 import UserOnboarding from "@/components/UserOnboarding";
@@ -18,23 +19,23 @@ const Index = () => {
       icon: BookOpen,
       color: "indigo",
       lessons: 15,
-      link: "/lessons"
+      link: "/lessons/math"
     },
     { 
       title: "Physique Chimie", 
       description: "Découvrez les lois de la physique et les secrets de la chimie avec des expériences virtuelles et des animations interactives.",
-      icon: BarChart3,
-      color: "physics",
+      icon: Atom,
+      color: "emerald",
       lessons: 23,
-      link: "/lessons"
+      link: "/lessons/physics"
     },
     { 
       title: "SVT", 
       description: "Explorez les sciences de la vie et de la terre avec des études de cas réels et des observations écologiques détaillées.",
-      icon: Target,
+      icon: Microscope,
       color: "green",
       lessons: 11,
-      link: "/lessons"
+      link: "/lessons/svt"
     },
     { 
       title: "Français", 
@@ -42,16 +43,25 @@ const Index = () => {
       icon: PenTool,
       color: "red",
       lessons: 4,
-      link: "/lessons"
+      link: "/lessons/french"
+    },
+    { 
+      title: "العربية", 
+      description: "تعلم اللغة العربية مع دروس شاملة في القواعد، النصوص، والتعبير والإنشاء لمستوى الجذع المشترك.",
+      icon: Globe,
+      color: "amber",
+      lessons: 12,
+      link: "/lessons/arabic"
     }
   ];
 
   const getColorClasses = (color: string) => {
     switch (color) {
       case "indigo": return "bg-gradient-to-br from-indigo-500 to-indigo-600 text-white dark:from-indigo-600 dark:to-indigo-700";
-      case "physics": return "bg-gradient-to-br from-emerald-500 to-emerald-600 text-white dark:from-emerald-600 dark:to-emerald-700";
+      case "emerald": return "bg-gradient-to-br from-emerald-500 to-emerald-600 text-white dark:from-emerald-600 dark:to-emerald-700";
       case "green": return "bg-gradient-to-br from-green-500 to-green-600 text-white dark:from-green-600 dark:to-green-700";
       case "red": return "bg-gradient-to-br from-red-500 to-red-600 text-white dark:from-red-600 dark:to-red-700";
+      case "amber": return "bg-gradient-to-br from-amber-500 to-amber-600 text-white dark:from-amber-600 dark:to-amber-700";
       default: return "bg-gradient-to-br from-blue-500 to-blue-600 text-white dark:from-blue-600 dark:to-blue-700";
     }
   };
@@ -95,7 +105,7 @@ const Index = () => {
             transition={{ delay: 0.4 }}
             className="text-xl text-muted-foreground mb-8 max-w-2xl mx-auto"
           >
-            Découvrez une plateforme d'apprentissage interactive conçue spécialement pour le Tronc Commun Sciences. 
+            Découvrez EduPlatform - une plateforme d'apprentissage interactive conçue spécialement pour le Tronc Commun Sciences. 
             Explorez vos matières avec des cours interactifs, des exercices pratiques et des vidéos explicatives.
           </motion.p>
 
@@ -139,7 +149,7 @@ const Index = () => {
             Choisissez votre matière
           </motion.h2>
           
-          <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-4 gap-6">
+          <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 xl:grid-cols-5 gap-6">
             {subjects.map((subject, index) => (
               <motion.div
                 key={subject.title}
@@ -255,10 +265,10 @@ const Index = () => {
           <div className="bg-card/50 backdrop-blur-sm rounded-2xl p-8 shadow-lg border">
             <div className="grid grid-cols-2 md:grid-cols-4 gap-6 text-center">
               {[
-                { icon: BookOpen, label: "Chapitres", value: "53+" },
-                { icon: FileText, label: "Exercices", value: "200+" },
-                { icon: Video, label: "Vidéos", value: "100+" },
-                { icon: Clock, label: "Heures", value: "40+" }
+                { icon: BookOpen, label: "Chapitres", value: "65+" },
+                { icon: FileText, label: "Exercices", value: "300+" },
+                { icon: Video, label: "Vidéos", value: "150+" },
+                { icon: Clock, label: "Heures", value: "60+" }
               ].map((stat, index) => (
                 <motion.div
                   key={stat.label}
@@ -288,16 +298,16 @@ const Index = () => {
               Prêt à commencer votre apprentissage ?
             </h2>
             <p className="text-muted-foreground mb-6 max-w-2xl mx-auto">
-              Rejoignez des milliers d'étudiants qui utilisent notre plateforme pour réussir leurs études.
+              Rejoignez des milliers d'étudiants qui utilisent EduPlatform pour réussir leurs études.
             </p>
             <div className="flex flex-col sm:flex-row gap-4 justify-center">
-              <Link to="/lessons">
+              <Link to="/lessons/math">
                 <Button size="lg" className="w-full sm:w-auto">
                   <BookOpen className="h-4 w-4 mr-2" />
                   Voir tous les cours
                 </Button>
               </Link>
-              <Link to="/lesson/1/course">
+              <Link to="/math/lesson/1/course">
                 <Button variant="outline" size="lg" className="w-full sm:w-auto">
                   <Play className="h-4 w-4 mr-2" />
                   Commencer maintenant
@@ -313,10 +323,10 @@ const Index = () => {
         <div className="container mx-auto px-4 text-center">
           <div className="flex items-center justify-center space-x-2 mb-4">
             <GraduationCap className="h-6 w-6 text-primary" />
-            <span className="text-xl font-bold text-foreground">StudyPlatform</span>
+            <span className="text-xl font-bold text-foreground">EduPlatform</span>
           </div>
           <p className="text-muted-foreground">
-            © 2024 StudyPlatform - Plateforme d'apprentissage pour le Tronc Commun Sciences
+            © 2025 EduPlatform - Made by Yahia Ikni
           </p>
         </div>
       </footer>

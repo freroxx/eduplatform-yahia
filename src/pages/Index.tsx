@@ -2,15 +2,19 @@
 import { Button } from "@/components/ui/button";
 import { Card, CardContent, CardDescription, CardHeader, CardTitle } from "@/components/ui/card";
 import { Badge } from "@/components/ui/badge";
-import { BookOpen, GraduationCap, Users, Award, Play, FileText, Video, Calendar, Clock, Target, Sparkles, BarChart3, PenTool, Atom, Microscope, Globe } from "lucide-react";
+import { BookOpen, GraduationCap, Users, Award, Play, FileText, Video, Calendar, Clock, Target, Sparkles, BarChart3, PenTool, Atom, Microscope, Globe, Landmark, Changelog } from "lucide-react";
 import { Link } from "react-router-dom";
 import { motion } from "framer-motion";
 import UserOnboarding from "@/components/UserOnboarding";
 import GlobalHeader from "@/components/GlobalHeader";
+import ChangelogDialog from "@/components/ChangelogDialog";
+import WelcomeBanner from "@/components/WelcomeBanner";
 import { useSettings } from "@/hooks/useSettings";
+import { useState } from "react";
 
 const Index = () => {
   const { settings } = useSettings();
+  const [showChangelog, setShowChangelog] = useState(false);
 
   const subjects = [
     { 
@@ -52,6 +56,14 @@ const Index = () => {
       color: "amber",
       lessons: 12,
       link: "/lessons/arabic"
+    },
+    { 
+      title: "التاريخ والجغرافيا", 
+      description: "استكشف التاريخ والجغرافيا مع دروس شاملة تغطي التحولات التاريخية والظواهر الجغرافية للجذع المشترك العلمي.",
+      icon: Landmark,
+      color: "orange",
+      lessons: 26,
+      link: "/lessons/histoire-geo"
     }
   ];
 
@@ -62,6 +74,7 @@ const Index = () => {
       case "green": return "bg-gradient-to-br from-green-500 to-green-600 text-white dark:from-green-600 dark:to-green-700";
       case "red": return "bg-gradient-to-br from-red-500 to-red-600 text-white dark:from-red-600 dark:to-red-700";
       case "amber": return "bg-gradient-to-br from-amber-500 to-amber-600 text-white dark:from-amber-600 dark:to-amber-700";
+      case "orange": return "bg-gradient-to-br from-orange-500 to-orange-600 text-white dark:from-orange-600 dark:to-orange-700";
       default: return "bg-gradient-to-br from-blue-500 to-blue-600 text-white dark:from-blue-600 dark:to-blue-700";
     }
   };
@@ -73,6 +86,9 @@ const Index = () => {
   return (
     <div className="min-h-screen animated-bg">
       <GlobalHeader />
+
+      {/* Welcome Banner for v4.0 */}
+      <WelcomeBanner onShowChangelog={() => setShowChangelog(true)} />
 
       {/* Welcome Section */}
       <motion.section 
@@ -105,7 +121,7 @@ const Index = () => {
             transition={{ delay: 0.4 }}
             className="text-xl text-muted-foreground mb-8 max-w-2xl mx-auto"
           >
-            Découvrez EduPlatform - une plateforme d'apprentissage interactive conçue spécialement pour le Tronc Commun Sciences. 
+            Découvrez EduPlatform v4.0 - une plateforme d'apprentissage révolutionnaire conçue spécialement pour le Tronc Commun Sciences. 
             Explorez vos matières avec des cours interactifs, des exercices pratiques et des vidéos explicatives.
           </motion.p>
 
@@ -126,6 +142,10 @@ const Index = () => {
             <Badge variant="secondary" className="text-sm px-4 py-2">
               <Target className="h-4 w-4 mr-2" />
               Exercices Pratiques
+            </Badge>
+            <Badge variant="secondary" className="text-sm px-4 py-2 bg-gradient-to-r from-purple-500 to-pink-500 text-white">
+              <Sparkles className="h-4 w-4 mr-2" />
+              Version 4.0
             </Badge>
           </motion.div>
         </div>
@@ -149,7 +169,7 @@ const Index = () => {
             Choisissez votre matière
           </motion.h2>
           
-          <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 xl:grid-cols-5 gap-6">
+          <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-6">
             {subjects.map((subject, index) => (
               <motion.div
                 key={subject.title}
@@ -203,7 +223,7 @@ const Index = () => {
             transition={{ delay: 1.3 }}
             className="text-3xl font-bold text-center text-foreground mb-10"
           >
-            Fonctionnalités avancées
+            Fonctionnalités avancées v4.0
           </motion.h2>
           
           <div className="grid grid-cols-1 md:grid-cols-3 gap-6">
@@ -265,10 +285,10 @@ const Index = () => {
           <div className="bg-card/50 backdrop-blur-sm rounded-2xl p-8 shadow-lg border">
             <div className="grid grid-cols-2 md:grid-cols-4 gap-6 text-center">
               {[
-                { icon: BookOpen, label: "Chapitres", value: "65+" },
-                { icon: FileText, label: "Exercices", value: "300+" },
-                { icon: Video, label: "Vidéos", value: "150+" },
-                { icon: Clock, label: "Heures", value: "60+" }
+                { icon: BookOpen, label: "Chapitres", value: "91+" },
+                { icon: FileText, label: "Exercices", value: "450+" },
+                { icon: Video, label: "Vidéos", value: "200+" },
+                { icon: Clock, label: "Heures", value: "80+" }
               ].map((stat, index) => (
                 <motion.div
                   key={stat.label}
@@ -298,7 +318,7 @@ const Index = () => {
               Prêt à commencer votre apprentissage ?
             </h2>
             <p className="text-muted-foreground mb-6 max-w-2xl mx-auto">
-              Rejoignez des milliers d'étudiants qui utilisent EduPlatform pour réussir leurs études.
+              Rejoignez des milliers d'étudiants qui utilisent EduPlatform v4.0 pour réussir leurs études.
             </p>
             <div className="flex flex-col sm:flex-row gap-4 justify-center">
               <Link to="/lessons/math">
@@ -323,13 +343,15 @@ const Index = () => {
         <div className="container mx-auto px-4 text-center">
           <div className="flex items-center justify-center space-x-2 mb-4">
             <GraduationCap className="h-6 w-6 text-primary" />
-            <span className="text-xl font-bold text-foreground">EduPlatform</span>
+            <span className="text-xl font-bold text-foreground">EduPlatform v4.0</span>
           </div>
           <p className="text-muted-foreground">
             © 2025 EduPlatform - Made by Yahia Ikni
           </p>
         </div>
       </footer>
+
+      <ChangelogDialog isOpen={showChangelog} onClose={() => setShowChangelog(false)} />
     </div>
   );
 };

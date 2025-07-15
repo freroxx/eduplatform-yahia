@@ -1,4 +1,3 @@
-
 import { useState, useEffect } from "react";
 import { motion, AnimatePresence } from "framer-motion";
 import { Dialog, DialogContent, DialogHeader, DialogTitle } from "@/components/ui/dialog";
@@ -10,9 +9,11 @@ import { Checkbox } from "@/components/ui/checkbox";
 import { Select, SelectContent, SelectItem, SelectTrigger, SelectValue } from "@/components/ui/select";
 import { Sun, Moon, Monitor, BookOpen, Target, Sparkles, User, GraduationCap, UserCheck, Calendar, BookMarked } from "lucide-react";
 import { useSettings } from "@/hooks/useSettings";
+import { useNavigate } from "react-router-dom";
 
 const UserOnboarding = () => {
   const { settings, completeOnboarding } = useSettings();
+  const navigate = useNavigate();
   const [isOpen, setIsOpen] = useState(false);
   const [step, setStep] = useState(1);
   const [name, setName] = useState("");
@@ -23,7 +24,7 @@ const UserOnboarding = () => {
   const [subjects, setSubjects] = useState<string[]>([]);
 
   const availableSubjects = [
-    "Mathématiques", "Physique Chimie", "SVT", "Français", "العربية", "Anglais", "Histoire-Géographie"
+    "Mathématiques", "Physique Chimie", "SVT", "Français", "العربية", "التاريخ والجغرافيا", "Anglais"
   ];
 
   const gradeOptions = [
@@ -50,6 +51,8 @@ const UserOnboarding = () => {
   const handleComplete = () => {
     completeOnboarding(name, theme, userType, age, grade, subjects);
     setIsOpen(false);
+    // Redirect to home page after onboarding
+    navigate('/', { replace: true });
   };
 
   const handleSubjectToggle = (subject: string) => {
@@ -103,7 +106,7 @@ const UserOnboarding = () => {
                     <BookOpen className="h-6 w-6" />
                   </motion.div>
                   <DialogTitle className="text-2xl font-bold">
-                    Bienvenue sur EduPlatform !
+                    Bienvenue sur EduPlatform v4.0 !
                   </DialogTitle>
                 </div>
                 <p className="text-indigo-100 text-sm">

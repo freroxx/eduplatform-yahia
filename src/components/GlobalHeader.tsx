@@ -1,16 +1,19 @@
+
 import React, { useState } from 'react';
 import { Button } from "@/components/ui/button";
-import { Bot, Search, Settings, Sun, Moon, Monitor, User } from "lucide-react";
+import { Bot, Search, Settings, Sun, Moon, Monitor, User, Music } from "lucide-react";
 import { motion } from "framer-motion";
 import { useSettings } from "@/hooks/useSettings";
 import { Link } from "react-router-dom";
 import AIAssistant from "./AIAssistant";
 import SearchBar from "./SearchBar";
+import EduMusic from "./EduMusic";
 
 const GlobalHeader: React.FC = () => {
   const { settings, updateTheme } = useSettings();
   const [showAI, setShowAI] = useState(false);
   const [showSearch, setShowSearch] = useState(false);
+  const [showMusic, setShowMusic] = useState(false);
 
   const getThemeIcon = () => {
     switch (settings.theme) {
@@ -42,7 +45,7 @@ const GlobalHeader: React.FC = () => {
                 whileTap={{ scale: 0.95 }}
                 className="font-bold text-xl text-primary"
               >
-                📚 StudyPlatform
+                📚 EduPlatform v4.0
               </motion.div>
             </Link>
 
@@ -55,6 +58,22 @@ const GlobalHeader: React.FC = () => {
                   className="h-9 w-9 p-0"
                 >
                   <Search className="h-4 w-4" />
+                </Button>
+              </motion.div>
+
+              <motion.div whileHover={{ scale: 1.05 }} whileTap={{ scale: 0.95 }}>
+                <Button
+                  variant="ghost"
+                  size="sm"
+                  onClick={() => setShowMusic(true)}
+                  className="h-9 w-9 p-0 relative"
+                >
+                  <Music className="h-4 w-4" />
+                  <motion.div
+                    className="absolute -top-1 -right-1 h-3 w-3 bg-purple-500 rounded-full"
+                    animate={{ scale: [1, 1.2, 1] }}
+                    transition={{ duration: 2, repeat: Infinity }}
+                  />
                 </Button>
               </motion.div>
 
@@ -110,6 +129,7 @@ const GlobalHeader: React.FC = () => {
 
       <AIAssistant isOpen={showAI} onClose={() => setShowAI(false)} />
       <SearchBar isOpen={showSearch} onClose={() => setShowSearch(false)} />
+      <EduMusic isOpen={showMusic} onClose={() => setShowMusic(false)} />
     </>
   );
 };

@@ -4,20 +4,16 @@ import { Card, CardContent, CardDescription, CardHeader, CardTitle } from "@/com
 import { Badge } from "@/components/ui/badge";
 import { Tabs, TabsContent, TabsList, TabsTrigger } from "@/components/ui/tabs";
 import { BookOpen, FileText, Video, ArrowLeft, Calendar, Clock, Target, Maximize2 } from "lucide-react";
-import { Link, useLocation } from "react-router-dom";
+import { Link } from "react-router-dom";
 import { motion } from "framer-motion";
-import { useState, useEffect } from "react";
+import { useState } from "react";
 import { useSettings } from "@/hooks/useSettings";
 import { AIAssistant } from "@/components/AIAssistant";
 import { SearchBar } from "@/components/SearchBar";
 
-const Lessons = () => {
+const SVTLessons = () => {
   const { settings } = useSettings();
-  const location = useLocation();
   const [isFullscreen, setIsFullscreen] = useState(false);
-  
-  // Determine current subject from URL
-  const currentSubject = location.pathname.includes('/math') ? 'math' : 'svt';
 
   const toggleFullscreen = () => {
     if (!document.fullscreenElement) {
@@ -29,135 +25,7 @@ const Lessons = () => {
     }
   };
 
-  // Math lessons data
-  const mathSemester1Lessons = [
-    {
-      id: 1,
-      title: "Les ensembles de nombres N, Z, Q, D et R",
-      description: "Introduction aux différents ensembles de nombres et leurs propriétés",
-      duration: "45 min",
-      difficulty: "Facile",
-      hasVideos: true
-    },
-    {
-      id: 2,
-      title: "Arithmétique dans IN",
-      description: "Division euclidienne, PGCD, PPCM et nombres premiers",
-      duration: "50 min",
-      difficulty: "Moyen",
-      hasVideos: true
-    },
-    {
-      id: 3,
-      title: "Calcul vectoriel dans le plan",
-      description: "Vecteurs, opérations vectorielles et applications géométriques",
-      duration: "60 min",
-      difficulty: "Moyen",
-      hasVideos: true
-    },
-    {
-      id: 4,
-      title: "La projection dans le plan",
-      description: "Projections orthogonales et leurs applications",
-      duration: "40 min",
-      difficulty: "Moyen",
-      hasVideos: true
-    },
-    {
-      id: 5,
-      title: "L'ordre dans IR",
-      description: "Inégalités, intervalles et valeur absolue",
-      duration: "35 min",
-      difficulty: "Facile",
-      hasVideos: true
-    },
-    {
-      id: 6,
-      title: "La droite dans le plan",
-      description: "Équations de droites et positions relatives",
-      duration: "45 min",
-      difficulty: "Moyen",
-      hasVideos: true
-    },
-    {
-      id: 7,
-      title: "Les polynômes",
-      description: "Définition, opérations et factorisation des polynômes",
-      duration: "55 min",
-      difficulty: "Difficile",
-      hasVideos: true
-    },
-    {
-      id: 8,
-      title: "Équations, inéquations et systèmes",
-      description: "Résolution d'équations et systèmes d'équations",
-      duration: "50 min",
-      difficulty: "Moyen",
-      hasVideos: true
-    },
-    {
-      id: 9,
-      title: "Trigonométrie 1 (Règles du calcul trigonométrique)",
-      description: "Fonctions trigonométriques et identités remarquables",
-      duration: "65 min",
-      difficulty: "Difficile",
-      hasVideos: true
-    }
-  ];
-
-  const mathSemester2Lessons = [
-    {
-      id: 10,
-      title: "Trigonométrie 2 (Équations et inéquations trigonométriques)",
-      description: "Résolution d'équations et inéquations trigonométriques",
-      duration: "55 min",
-      difficulty: "Difficile",
-      hasVideos: true
-    },
-    {
-      id: 11,
-      title: "Généralités sur les fonctions",
-      description: "Définition, domaine, image et représentation graphique des fonctions",
-      duration: "50 min",
-      difficulty: "Moyen",
-      hasVideos: true
-    },
-    {
-      id: 12,
-      title: "Transformations du plan",
-      description: "Symétries, rotations, translations et homothéties",
-      duration: "60 min",
-      difficulty: "Moyen",
-      hasVideos: true
-    },
-    {
-      id: 13,
-      title: "Le produit scalaire",
-      description: "Définition, propriétés et applications du produit scalaire",
-      duration: "45 min",
-      difficulty: "Difficile",
-      hasVideos: true
-    },
-    {
-      id: 14,
-      title: "Géométrie dans l'espace",
-      description: "Droites, plans et positions relatives dans l'espace",
-      duration: "55 min",
-      difficulty: "Difficile",
-      hasVideos: true
-    },
-    {
-      id: 15,
-      title: "Statistiques",
-      description: "Paramètres de position et de dispersion",
-      duration: "40 min",
-      difficulty: "Moyen",
-      hasVideos: true
-    }
-  ];
-
-  // SVT lessons data
-  const svtSemester1Lessons = [
+  const semester1Lessons = [
     {
       id: 201,
       title: "Les techniques adaptatives à l'étude écologique sur le terrain",
@@ -200,7 +68,7 @@ const Lessons = () => {
     }
   ];
 
-  const svtSemester2Lessons = [
+  const semester2Lessons = [
     {
       id: 206,
       title: "La reproduction sexuée chez les plantes à fleurs",
@@ -251,32 +119,6 @@ const Lessons = () => {
     }
   ];
 
-  const getCurrentLessons = () => {
-    if (currentSubject === 'math') {
-      return { 
-        semester1: mathSemester1Lessons, 
-        semester2: mathSemester2Lessons,
-        subject: 'Mathématiques',
-        description: 'Algèbre, géométrie et analyse',
-        color: 'indigo',
-        chapters: 15,
-        duration: '12h30'
-      };
-    } else {
-      return { 
-        semester1: svtSemester1Lessons, 
-        semester2: svtSemester2Lessons,
-        subject: 'SVT',
-        description: 'Sciences de la Vie et de la Terre',
-        color: 'green',
-        chapters: 11,
-        duration: '10h15'
-      };
-    }
-  };
-
-  const currentData = getCurrentLessons();
-
   const getDifficultyColor = (difficulty: string) => {
     switch (difficulty) {
       case "Facile": return "bg-green-100 text-green-800 border-green-200 dark:bg-green-900/20 dark:text-green-400 dark:border-green-800";
@@ -298,10 +140,8 @@ const Lessons = () => {
           <div className="flex items-start justify-between">
             <div className="flex-1">
               <div className="flex items-center space-x-3 mb-3">
-                <span className={`rounded-full w-10 h-10 flex items-center justify-center text-sm font-bold text-white ${
-                  currentSubject === 'math' ? 'bg-indigo-600' : 'bg-green-600'
-                }`}>
-                  {currentSubject === 'math' ? lesson.id : lesson.id - 200}
+                <span className="rounded-full w-10 h-10 flex items-center justify-center text-sm font-bold text-white bg-green-600">
+                  {lesson.id - 200}
                 </span>
                 <Badge className={`${getDifficultyColor(lesson.difficulty)} font-medium border`}>
                   <Target className="h-3 w-3 mr-1" />
@@ -329,22 +169,20 @@ const Lessons = () => {
         </CardHeader>
         <CardContent>
           <div className="flex flex-wrap gap-3">
-            <Link to={`/${currentSubject}/lesson/${lesson.id}/course`}>
-              <Button variant="default" size="sm" className={`shadow-md hover:shadow-lg transition-all duration-200 ${
-                currentSubject === 'math' ? 'bg-indigo-600 hover:bg-indigo-700' : 'bg-green-600 hover:bg-green-700'
-              }`}>
+            <Link to={`/svt/lesson/${lesson.id}/course`}>
+              <Button variant="default" size="sm" className="shadow-md hover:shadow-lg transition-all duration-200 bg-green-600 hover:bg-green-700">
                 <BookOpen className="h-4 w-4 mr-2" />
                 Cours
               </Button>
             </Link>
-            <Link to={`/${currentSubject}/lesson/${lesson.id}/exercises`}>
+            <Link to={`/svt/lesson/${lesson.id}/exercises`}>
               <Button variant="outline" size="sm" className="transition-all duration-200 border-purple-600 text-purple-600 hover:bg-purple-50 hover:border-purple-700 dark:border-purple-400 dark:text-purple-400 dark:hover:bg-purple-900/20">
                 <FileText className="h-4 w-4 mr-2" />
                 Exercices
               </Button>
             </Link>
             {lesson.hasVideos && (
-              <Link to={`/${currentSubject}/lesson/${lesson.id}/videos`}>
+              <Link to={`/svt/lesson/${lesson.id}/videos`}>
                 <Button variant="outline" size="sm" className="transition-all duration-200 border-red-600 text-red-600 hover:bg-red-50 hover:border-red-700 dark:border-red-400 dark:text-red-400 dark:hover:bg-red-900/20">
                   <Video className="h-4 w-4 mr-2" />
                   Vidéos YouTube
@@ -376,7 +214,7 @@ const Lessons = () => {
                 Bonjour {settings.name || 'Étudiant'} 👋
               </h1>
               <p className="text-sm text-muted-foreground">
-                {currentData.subject} - Tronc Commun Sciences
+                SVT - Sciences de la Vie et de la Terre
               </p>
             </div>
             <div className="flex items-center space-x-3">
@@ -390,7 +228,7 @@ const Lessons = () => {
                 <Maximize2 className="h-4 w-4" />
               </Button>
               <div className="text-sm font-medium text-primary">
-                {currentData.chapters} chapitres
+                11 chapitres
               </div>
             </div>
           </div>
@@ -405,10 +243,10 @@ const Lessons = () => {
           className="text-center mb-12"
         >
           <h2 className="text-4xl font-bold mb-4 text-foreground">
-            Programme Complet
+            Programme Complet SVT
           </h2>
           <p className="text-xl mb-6 text-muted-foreground">
-            {currentData.description}
+            Sciences de la Vie et de la Terre - Tronc Commun Sciences
           </p>
           
           <div className="flex justify-center space-x-8 text-sm text-muted-foreground">
@@ -418,11 +256,11 @@ const Lessons = () => {
             </div>
             <div className="flex items-center">
               <BookOpen className="h-4 w-4 mr-2" />
-              <span>{currentData.chapters} Chapitres</span>
+              <span>11 Chapitres</span>
             </div>
             <div className="flex items-center">
               <Clock className="h-4 w-4 mr-2" />
-              <span>{currentData.duration} de contenu</span>
+              <span>10h15 de contenu</span>
             </div>
           </div>
         </motion.div>
@@ -437,7 +275,7 @@ const Lessons = () => {
                 <Calendar className="h-4 w-4" />
                 <span>1er Semestre</span>
                 <Badge variant="secondary" className="ml-2">
-                  {currentData.semester1.length} chapitres
+                  5 chapitres
                 </Badge>
               </TabsTrigger>
               <TabsTrigger 
@@ -447,7 +285,7 @@ const Lessons = () => {
                 <Calendar className="h-4 w-4" />
                 <span>2ème Semestre</span>
                 <Badge variant="secondary" className="ml-2">
-                  {currentData.semester2.length} chapitres
+                  6 chapitres
                 </Badge>
               </TabsTrigger>
             </TabsList>
@@ -458,10 +296,10 @@ const Lessons = () => {
                   Premier Semestre
                 </h3>
                 <p className="text-muted-foreground">
-                  Fondements et concepts de base
+                  Écologie et environnement
                 </p>
               </div>
-              {currentData.semester1.map((lesson, index) => renderLessonCard(lesson, index))}
+              {semester1Lessons.map((lesson, index) => renderLessonCard(lesson, index))}
             </TabsContent>
             
             <TabsContent value="semester2" className="space-y-6">
@@ -470,10 +308,10 @@ const Lessons = () => {
                   Deuxième Semestre
                 </h3>
                 <p className="text-muted-foreground">
-                  Approfondissement et applications
+                  Reproduction et classification des plantes
                 </p>
               </div>
-              {currentData.semester2.map((lesson, index) => renderLessonCard(lesson, index))}
+              {semester2Lessons.map((lesson, index) => renderLessonCard(lesson, index))}
             </TabsContent>
           </Tabs>
         </div>
@@ -484,4 +322,4 @@ const Lessons = () => {
   );
 };
 
-export default Lessons;
+export default SVTLessons;

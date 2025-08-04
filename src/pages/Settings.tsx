@@ -10,34 +10,23 @@ import { Select, SelectContent, SelectItem, SelectTrigger, SelectValue } from "@
 import { Checkbox } from "@/components/ui/checkbox";
 import { useToast } from "@/hooks/use-toast";
 import { useSettings } from "@/hooks/useSettings";
-import { ArrowLeft, User, Palette, Save, Sun, Moon, Monitor, Trash2, GraduationCap, UserCheck, Calendar, BookMarked } from "lucide-react";
+import { ArrowLeft, User, Palette, Save, Sun, Moon, Monitor, Trash2, GraduationCap, UserCheck, Globe, BookMarked } from "lucide-react";
 import { Link } from "react-router-dom";
 
 const Settings = () => {
-  const { settings, updateName, updateTheme, updateUserType, updateAge, updateGrade, updateSubjects } = useSettings();
+  const { settings, updateName, updateTheme, updateUserType, updateCountry, updateSubjects } = useSettings();
   const { toast } = useToast();
   const [tempName, setTempName] = useState(settings.name);
-  const [tempAge, setTempAge] = useState(settings.age);
-  const [tempGrade, setTempGrade] = useState(settings.grade);
+  const [tempCountry, setTempCountry] = useState(settings.country);
   const [tempSubjects, setTempSubjects] = useState(settings.subjects);
+
+  const countries = [
+    'Maroc', 'Algérie', 'Tunisie', 'France', 'Canada', 'Belgique', 'Suisse',
+    'Sénégal', 'Côte d\'Ivoire', 'Mali', 'Burkina Faso', 'Niger', 'Mauritanie'
+  ];
 
   const availableSubjects = [
     "Mathématiques", "Physique Chimie", "SVT", "Français", "العربية", "Anglais", "Histoire-Géographie"
-  ];
-
-  const gradeOptions = [
-    "Tronc Commun Sciences",
-    "Tronc Commun Lettres",
-    "1ère Bac Sciences Mathématiques",
-    "1ère Bac Sciences Expérimentales",
-    "1ère Bac Sciences et Technologies Électriques",
-    "1ère Bac Sciences Économiques",
-    "1ère Bac Lettres",
-    "2ème Bac Sciences Mathématiques",
-    "2ème Bac Sciences Expérimentales",
-    "2ème Bac Sciences et Technologies Électriques",
-    "2ème Bac Sciences Économiques",
-    "2ème Bac Lettres"
   ];
 
   const handleSaveName = () => {
@@ -57,28 +46,11 @@ const Settings = () => {
     });
   };
 
-  const handleSaveAge = () => {
-    if (tempAge < 10 || tempAge > 100) {
-      toast({
-        title: "Erreur",
-        description: "L'âge doit être entre 10 et 100 ans",
-        variant: "destructive"
-      });
-      return;
-    }
-    
-    updateAge(tempAge);
+  const handleSaveCountry = () => {
+    updateCountry(tempCountry);
     toast({
-      title: "Âge mis à jour",
-      description: "Votre âge a été modifié avec succès",
-    });
-  };
-
-  const handleSaveGrade = () => {
-    updateGrade(tempGrade);
-    toast({
-      title: "Niveau mis à jour",
-      description: "Votre niveau d'études a été modifié avec succès",
+      title: "Pays mis à jour",
+      description: "Votre pays a été modifié avec succès",
     });
   };
 
@@ -195,49 +167,28 @@ const Settings = () => {
                     </div>
                   </div>
 
-                  {/* Age */}
+                  {/* Country */}
                   <div className="space-y-2">
-                    <Label htmlFor="age">Âge</Label>
+                    <Label htmlFor="country">
+                      <Globe className="h-4 w-4 inline mr-2" />
+                      Pays
+                    </Label>
                     <div className="flex gap-2">
-                      <Input
-                        id="age"
-                        type="number"
-                        min="10"
-                        max="100"
-                        value={tempAge}
-                        onChange={(e) => setTempAge(parseInt(e.target.value) || 16)}
-                        className="flex-1"
-                      />
-                      <Button 
-                        onClick={handleSaveAge}
-                        disabled={tempAge === settings.age}
-                        className="btn-hover-effect"
-                      >
-                        <Save className="h-4 w-4 mr-2" />
-                        Sauvegarder
-                      </Button>
-                    </div>
-                  </div>
-
-                  {/* Grade */}
-                  <div className="space-y-2">
-                    <Label htmlFor="grade">Niveau d'études</Label>
-                    <div className="flex gap-2">
-                      <Select value={tempGrade} onValueChange={setTempGrade}>
+                      <Select value={tempCountry} onValueChange={setTempCountry}>
                         <SelectTrigger className="flex-1">
                           <SelectValue />
                         </SelectTrigger>
                         <SelectContent>
-                          {gradeOptions.map((grade) => (
-                            <SelectItem key={grade} value={grade}>
-                              {grade}
+                          {countries.map((country) => (
+                            <SelectItem key={country} value={country}>
+                              {country}
                             </SelectItem>
                           ))}
                         </SelectContent>
                       </Select>
                       <Button 
-                        onClick={handleSaveGrade}
-                        disabled={tempGrade === settings.grade}
+                        onClick={handleSaveCountry}
+                        disabled={tempCountry === settings.country}
                         className="btn-hover-effect"
                       >
                         <Save className="h-4 w-4 mr-2" />
@@ -251,10 +202,7 @@ const Settings = () => {
                       {settings.name || 'Non défini'}
                     </Badge>
                     <Badge variant="outline">
-                      {settings.age} ans
-                    </Badge>
-                    <Badge variant="outline">
-                      {settings.grade}
+                      {settings.country}
                     </Badge>
                     <Badge variant="outline">
                       {settings.userType === 'student' ? 'Étudiant(e)' : 'Enseignant(e)'}

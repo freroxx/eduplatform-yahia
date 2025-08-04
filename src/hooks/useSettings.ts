@@ -6,8 +6,7 @@ interface UserSettings {
   theme: 'light' | 'dark' | 'auto';
   hasOnboarded: boolean;
   userType: 'student' | 'teacher';
-  age: number;
-  grade: string;
+  country: string;
   subjects: string[];
 }
 
@@ -18,8 +17,7 @@ export const useSettings = () => {
       theme: (localStorage.getItem('theme') as 'light' | 'dark' | 'auto') || 'auto',
       hasOnboarded: localStorage.getItem('hasOnboarded') === 'true',
       userType: (localStorage.getItem('userType') as 'student' | 'teacher') || 'student',
-      age: parseInt(localStorage.getItem('userAge') || '16'),
-      grade: localStorage.getItem('userGrade') || 'Tronc Commun Sciences',
+      country: localStorage.getItem('userCountry') || 'Maroc',
       subjects: JSON.parse(localStorage.getItem('userSubjects') || '[]')
     };
   });
@@ -29,8 +27,7 @@ export const useSettings = () => {
     localStorage.setItem('theme', settings.theme);
     localStorage.setItem('hasOnboarded', settings.hasOnboarded.toString());
     localStorage.setItem('userType', settings.userType);
-    localStorage.setItem('userAge', settings.age.toString());
-    localStorage.setItem('userGrade', settings.grade);
+    localStorage.setItem('userCountry', settings.country);
     localStorage.setItem('userSubjects', JSON.stringify(settings.subjects));
     
     // Apply theme
@@ -56,12 +53,8 @@ export const useSettings = () => {
     setSettings(prev => ({ ...prev, userType }));
   };
 
-  const updateAge = (age: number) => {
-    setSettings(prev => ({ ...prev, age }));
-  };
-
-  const updateGrade = (grade: string) => {
-    setSettings(prev => ({ ...prev, grade }));
+  const updateCountry = (country: string) => {
+    setSettings(prev => ({ ...prev, country }));
   };
 
   const updateSubjects = (subjects: string[]) => {
@@ -72,8 +65,7 @@ export const useSettings = () => {
     name: string, 
     theme: 'light' | 'dark' | 'auto',
     userType: 'student' | 'teacher',
-    age: number,
-    grade: string,
+    country: string,
     subjects: string[]
   ) => {
     setSettings({
@@ -81,8 +73,7 @@ export const useSettings = () => {
       theme,
       hasOnboarded: true,
       userType,
-      age,
-      grade,
+      country,
       subjects
     });
   };
@@ -92,8 +83,7 @@ export const useSettings = () => {
     updateName,
     updateTheme,
     updateUserType,
-    updateAge,
-    updateGrade,
+    updateCountry,
     updateSubjects,
     completeOnboarding
   };

@@ -14,21 +14,31 @@ const EduMusic = ({ isOpen, onClose }: EduMusicProps) => {
   const [isLoaded, setIsLoaded] = useState(false);
 
   useEffect(() => {
-    if (isOpen && !isLoaded) {
-      // Load Elfsight script when dialog opens
+    // Load Elfsight script once globally
+    const existingScript = document.querySelector('script[src="https://static.elfsight.com/platform/platform.js"]');
+    if (!existingScript) {
       const script = document.createElement('script');
       script.src = 'https://static.elfsight.com/platform/platform.js';
       script.async = true;
-      script.onload = () => setIsLoaded(true);
-      document.head.appendChild(script);
-
-      return () => {
-        // Cleanup script if needed
-        const existingScript = document.querySelector('script[src="https://static.elfsight.com/platform/platform.js"]');
-        if (existingScript) {
-          document.head.removeChild(existingScript);
+      script.onload = () => {
+        setIsLoaded(true);
+        // Initialize Elfsight after script loads
+        if (window.elfsight) {
+          window.elfsight.init();
         }
       };
+      document.head.appendChild(script);
+    } else {
+      setIsLoaded(true);
+    }
+  }, []);
+
+  useEffect(() => {
+    // Reinitialize when dialog opens
+    if (isOpen && isLoaded && window.elfsight) {
+      setTimeout(() => {
+        window.elfsight.init();
+      }, 100);
     }
   }, [isOpen, isLoaded]);
 
@@ -57,21 +67,10 @@ const EduMusic = ({ isOpen, onClose }: EduMusicProps) => {
 
           {/* Elfsight Audio Player */}
           <div className="min-h-[200px] flex items-center justify-center bg-muted/30 rounded-lg">
-            {isLoaded ? (
-              <div 
-                className="elfsight-app-72e97088-b9d4-47cc-a936-b0b13749e99b" 
-                data-elfsight-app-lazy
-              />
-            ) : (
-              <div className="text-center">
-                <motion.div
-                  animate={{ rotate: 360 }}
-                  transition={{ duration: 1, repeat: Infinity, ease: "linear" }}
-                  className="w-8 h-8 border-2 border-primary border-t-transparent rounded-full mx-auto mb-2"
-                />
-                <p className="text-sm text-muted-foreground">Chargement du lecteur...</p>
-              </div>
-            )}
+            <div 
+              className="elfsight-app-72e97088-b9d4-47cc-a936-b0b13749e99b w-full" 
+              data-elfsight-app-lazy
+            />
           </div>
 
           <div className="text-xs text-center text-muted-foreground">
@@ -82,5 +81,14 @@ const EduMusic = ({ isOpen, onClose }: EduMusicProps) => {
     </Dialog>
   );
 };
+
+// Add global type for elfsight
+declare global {
+  interface Window {
+    elfsight?: {
+      init: () => void;
+    };
+  }
+}
 
 export default EduMusic;

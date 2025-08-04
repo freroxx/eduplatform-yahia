@@ -1,145 +1,131 @@
 
-import { Dialog, DialogContent, DialogHeader, DialogTitle } from "@/components/ui/dialog";
+import { useState } from "react";
+import { Dialog, DialogContent, DialogHeader, DialogTitle, DialogTrigger } from "@/components/ui/dialog";
+import { Button } from "@/components/ui/button";
 import { Badge } from "@/components/ui/badge";
-import { Sparkles, Music, Globe, BookOpen, Zap, Palette, Users } from "lucide-react";
-import { motion } from "framer-motion";
+import { ScrollArea } from "@/components/ui/scroll-area";
+import { FileText, Sparkles, Bug, Plus, Zap } from "lucide-react";
 
-interface ChangelogDialogProps {
-  isOpen: boolean;
-  onClose: () => void;
-}
+const ChangelogDialog = () => {
+  const [isOpen, setIsOpen] = useState(false);
 
-const ChangelogDialog = ({ isOpen, onClose }: ChangelogDialogProps) => {
-  const changes = [
+  const versions = [
     {
-      version: "4.0.0",
-      date: "Janvier 2025",
+      version: "4.5",
+      date: "2024-08-04",
+      type: "major",
       changes: [
-        {
-          icon: Globe,
-          title: "Nouveau sujet : التاريخ والجغرافيا",
-          description: "Ajout complet du sujet Histoire-Géographie en arabe avec 26 leçons détaillées",
-          type: "feature"
-        },
-        {
-          icon: Music,
-          title: "EduMusic Player",
-          description: "Lecteur audio intégré pour accompagner vos sessions d'étude",
-          type: "feature"
-        },
-        {
-          icon: BookOpen,
-          title: "Cours et exercices complets",
-          description: "Chaque leçon dispose maintenant de son cours unique et d'exercices dédiés",
-          type: "improvement"
-        },
-        {
-          icon: Zap,
-          title: "Performance optimisée",
-          description: "Interface plus fluide avec de meilleures animations et transitions",
-          type: "improvement"
-        },
-        {
-          icon: Palette,
-          title: "Design amélioré",
-          description: "Nouveau système de couleurs et effets visuels modernisés",
-          type: "improvement"
-        },
-        {
-          icon: Users,
-          title: "Onboarding enrichi",
-          description: "Processus d'accueil personnalisé avec profil étudiant/enseignant",
-          type: "feature"
-        }
+        { type: "removed", text: "Removed 'niveau d'étude' and 'age' from onboarding and settings" },
+        { type: "added", text: "Added country selection in onboarding (also changeable in settings)" },
+        { type: "added", text: "Added missing cours & exercices everywhere" },
+        { type: "fixed", text: "Fixed maths lessons structure with proper semester organization" },
+        { type: "fixed", text: "Fixed histoire géo lessons with complete Arabic content" },
+        { type: "fixed", text: "Fixed Arabic lessons with proper course structure" },
+        { type: "fixed", text: "Fixed Elfsight Audio Player embed to work everywhere" },
+        { type: "improved", text: "Improved overall design, typography, and modern UI" },
+        { type: "improved", text: "Enhanced animated background and performance optimizations" },
+        { type: "improved", text: "Better responsive design for mobile and desktop" }
+      ]
+    },
+    {
+      version: "4.0",
+      date: "2024-08-03",
+      type: "major",
+      changes: [
+        { type: "added", text: "Introduced EduMusic audio player with Elfsight integration" },
+        { type: "added", text: "New welcome banner with changelog feature" },
+        { type: "added", text: "Enhanced onboarding with user type selection" },
+        { type: "improved", text: "Merged History-Geography into unified subject" },
+        { type: "improved", text: "Updated branding to EduPlatform" },
+        { type: "improved", text: "Enhanced visual design with 10x better animations" },
+        { type: "improved", text: "Better glass morphism effects and color system" },
+        { type: "improved", text: "Enhanced statistics and navigation" }
       ]
     }
   ];
 
-  const getTypeColor = (type: string) => {
+  const getTypeIcon = (type: string) => {
     switch (type) {
-      case "feature": return "bg-green-100 text-green-800 dark:bg-green-900 dark:text-green-300";
-      case "improvement": return "bg-blue-100 text-blue-800 dark:bg-blue-900 dark:text-blue-300";
-      case "fix": return "bg-orange-100 text-orange-800 dark:bg-orange-900 dark:text-orange-300";
-      default: return "bg-gray-100 text-gray-800 dark:bg-gray-900 dark:text-gray-300";
+      case "added": return <Plus className="h-3 w-3 text-green-600" />;
+      case "fixed": return <Bug className="h-3 w-3 text-blue-600" />;
+      case "improved": return <Zap className="h-3 w-3 text-purple-600" />;
+      case "removed": return <FileText className="h-3 w-3 text-red-600" />;
+      default: return <Sparkles className="h-3 w-3" />;
     }
   };
 
-  const getTypeLabel = (type: string) => {
+  const getTypeColor = (type: string) => {
     switch (type) {
-      case "feature": return "Nouveau";
-      case "improvement": return "Amélioré";
-      case "fix": return "Corrigé";
-      default: return "Autre";
+      case "added": return "bg-green-100 text-green-800 border-green-200";
+      case "fixed": return "bg-blue-100 text-blue-800 border-blue-200";
+      case "improved": return "bg-purple-100 text-purple-800 border-purple-200";
+      case "removed": return "bg-red-100 text-red-800 border-red-200";
+      default: return "bg-gray-100 text-gray-800 border-gray-200";
     }
   };
 
   return (
-    <Dialog open={isOpen} onOpenChange={onClose}>
-      <DialogContent className="max-w-2xl max-h-[80vh] overflow-y-auto">
+    <Dialog open={isOpen} onOpenChange={setIsOpen}>
+      <DialogTrigger asChild>
+        <Button
+          variant="outline"
+          size="sm"
+          className="flex items-center gap-2 hover:bg-primary/5 transition-colors"
+        >
+          <FileText className="h-4 w-4" />
+          Changelog
+        </Button>
+      </DialogTrigger>
+      <DialogContent className="max-w-2xl max-h-[80vh]">
         <DialogHeader>
-          <DialogTitle className="flex items-center space-x-2 text-2xl">
-            <motion.div
-              animate={{ rotate: [0, 360] }}
-              transition={{ duration: 2, repeat: Infinity, ease: "linear" }}
-            >
-              <Sparkles className="h-6 w-6 text-purple-600" />
-            </motion.div>
-            <span>Nouveautés EduPlatform</span>
+          <DialogTitle className="flex items-center gap-2 text-xl">
+            <Sparkles className="h-6 w-6 text-primary" />
+            Notes de version
           </DialogTitle>
         </DialogHeader>
-
-        <div className="space-y-6">
-          {changes.map((release) => (
-            <motion.div
-              key={release.version}
-              initial={{ opacity: 0, y: 20 }}
-              animate={{ opacity: 1, y: 0 }}
-              className="space-y-4"
-            >
-              <div className="flex items-center justify-between border-b pb-2">
-                <h3 className="text-xl font-bold text-foreground">
-                  Version {release.version}
-                </h3>
-                <Badge variant="outline" className="text-muted-foreground">
-                  {release.date}
-                </Badge>
-              </div>
-
-              <div className="space-y-3">
-                {release.changes.map((change, index) => (
-                  <motion.div
-                    key={index}
-                    initial={{ opacity: 0, x: -20 }}
-                    animate={{ opacity: 1, x: 0 }}
-                    transition={{ delay: index * 0.1 }}
-                    className="flex items-start space-x-3 p-3 rounded-lg bg-muted/30 hover:bg-muted/50 transition-colors"
-                  >
-                    <div className="flex-shrink-0 mt-0.5">
-                      <change.icon className="h-5 w-5 text-primary" />
-                    </div>
-                    <div className="flex-1">
-                      <div className="flex items-center space-x-2 mb-1">
-                        <h4 className="font-semibold text-foreground">
-                          {change.title}
-                        </h4>
-                        <Badge className={`text-xs ${getTypeColor(change.type)}`}>
-                          {getTypeLabel(change.type)}
-                        </Badge>
+        
+        <ScrollArea className="h-[60vh] pr-4">
+          <div className="space-y-6">
+            {versions.map((version, vIndex) => (
+              <div key={vIndex} className="border-l-2 border-primary/20 pl-6 relative">
+                <div className="absolute -left-2 top-0 w-4 h-4 bg-primary rounded-full" />
+                
+                <div className="flex items-center gap-3 mb-3">
+                  <h3 className="text-lg font-bold">Version {version.version}</h3>
+                  <Badge variant={version.type === "major" ? "default" : "secondary"}>
+                    {version.type === "major" ? "Majeure" : "Mineure"}
+                  </Badge>
+                  <span className="text-sm text-muted-foreground">{version.date}</span>
+                </div>
+                
+                <div className="space-y-2">
+                  {version.changes.map((change, cIndex) => (
+                    <div key={cIndex} className="flex items-start gap-3 p-3 rounded-lg bg-muted/30">
+                      <div className="mt-0.5">
+                        {getTypeIcon(change.type)}
                       </div>
-                      <p className="text-sm text-muted-foreground">
-                        {change.description}
-                      </p>
+                      <div className="flex-1">
+                        <div className="flex items-center gap-2 mb-1">
+                          <Badge className={`text-xs px-2 py-0.5 ${getTypeColor(change.type)}`}>
+                            {change.type === "added" && "Ajouté"}
+                            {change.type === "fixed" && "Corrigé"}
+                            {change.type === "improved" && "Amélioré"}
+                            {change.type === "removed" && "Supprimé"}
+                          </Badge>
+                        </div>
+                        <p className="text-sm leading-relaxed">{change.text}</p>
+                      </div>
                     </div>
-                  </motion.div>
-                ))}
+                  ))}
+                </div>
               </div>
-            </motion.div>
-          ))}
-        </div>
-
-        <div className="mt-6 p-4 bg-gradient-to-r from-purple-50 to-pink-50 dark:from-purple-900/20 dark:to-pink-900/20 rounded-lg border">
-          <p className="text-sm text-center text-muted-foreground">
-            Merci d'utiliser EduPlatform ! Votre feedback nous aide à améliorer la plateforme.
+            ))}
+          </div>
+        </ScrollArea>
+        
+        <div className="border-t pt-4 mt-4">
+          <p className="text-sm text-muted-foreground text-center">
+            🚀 Merci d'utiliser EduPlatform ! Restez à l'écoute pour plus d'améliorations.
           </p>
         </div>
       </DialogContent>

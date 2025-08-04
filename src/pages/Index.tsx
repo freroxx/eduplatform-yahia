@@ -1,3 +1,4 @@
+
 import { useState, useEffect } from 'react';
 import { Link } from 'react-router-dom';
 import { motion, AnimatePresence } from 'framer-motion';
@@ -13,10 +14,12 @@ import ChangelogDialog from '@/components/ChangelogDialog';
 import WelcomeTutorial from '@/components/WelcomeTutorial';
 import Footer from '@/components/Footer';
 import { useSettings } from '@/hooks/useSettings';
+import { useExerciseProgress } from '@/hooks/useExerciseProgress';
 import { BookOpen, Video, FileText, Users, HelpCircle, Sparkles } from 'lucide-react';
 
 const Index = () => {
   const { settings } = useSettings();
+  const { totalPoints, completedExercises } = useExerciseProgress();
   const [showChangelog, setShowChangelog] = useState(false);
   const [showTutorial, setShowTutorial] = useState(false);
 
@@ -59,12 +62,24 @@ const Index = () => {
     return <UserOnboarding />;
   }
 
+  // Calculate user stats
+  const totalLessons = subjects.reduce((sum, subject) => sum + subject.lessons, 0);
+  const completedLessons = completedExercises.length;
+  const totalStudyTime = `${Math.floor(totalPoints / 10)}h ${(totalPoints * 6) % 60}m`;
+  const currentStreak = Math.min(7, Math.floor(totalPoints / 50));
+  const averageScore = Math.min(100, 70 + Math.floor(totalPoints / 20));
+  const weeklyGoal = 10;
+
+  // Get primary subject for progress tracker
+  const primarySubject = settings.subjects.length > 0 ? settings.subjects[0] : 'Mathématiques';
+  const subjectLessons = subjects.find(s => s.name.toLowerCase().includes(primarySubject.toLowerCase()))?.lessons || 24;
+
   return (
     <div className="min-h-screen flex flex-col animated-bg">
       <GlobalHeader />
       
       <main className="flex-1 container mx-auto px-4 py-6">
-        <WelcomeBanner />
+        <WelcomeBanner onShowChangelog={() => setShowChangelog(true)} />
         
         <div className="grid lg:grid-cols-4 gap-6">
           <div className="lg:col-span-3 space-y-6">
@@ -129,8 +144,22 @@ const Index = () => {
           </div>
 
           <div className="space-y-6">
-            <QuickStats />
-            <ProgressTracker />
+            <QuickStats 
+              totalLessons={totalLessons}
+              completedLessons={completedLessons}
+              totalStudyTime={totalStudyTime}
+              currentStreak={currentStreak}
+              averageScore={averageScore}
+              weeklyGoal={weeklyGoal}
+            />
+            <ProgressTracker 
+              subject={primarySubject}
+              totalLessons={subjectLessons}
+              completedLessons={Math.floor(completedLessons * 0.4)}
+              totalPoints={1000}
+              earnedPoints={totalPoints}
+              studyTime={totalStudyTime}
+            />
           </div>
         </div>
       </main>

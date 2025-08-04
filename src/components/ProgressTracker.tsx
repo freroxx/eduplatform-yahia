@@ -15,7 +15,7 @@ interface ProgressTrackerProps {
 }
 
 const ProgressTracker = ({ 
-  subject, 
+  subject = "Mathématiques", 
   totalLessons, 
   completedLessons, 
   totalPoints, 
@@ -31,22 +31,33 @@ const ProgressTracker = ({
     return () => clearTimeout(timer);
   }, [completedLessons, totalLessons]);
 
-  const getSubjectColor = (subject: string) => {
-    switch (subject.toLowerCase()) {
-      case 'math': return 'text-blue-600 border-blue-200 bg-blue-50';
-      case 'french': return 'text-red-600 border-red-200 bg-red-50';
-      case 'physics': return 'text-emerald-600 border-emerald-200 bg-emerald-50';
-      case 'arabic': return 'text-amber-600 border-amber-200 bg-amber-50';
-      case 'svt': return 'text-green-600 border-green-200 bg-green-50';
-      default: return 'text-gray-600 border-gray-200 bg-gray-50';
+  const getSubjectColor = (subjectName: string) => {
+    if (!subjectName || typeof subjectName !== 'string') {
+      return 'text-gray-600 border-gray-200 bg-gray-50';
     }
-  };
-
-  const getProgressColor = (progress: number) => {
-    if (progress >= 80) return 'bg-green-500';
-    if (progress >= 60) return 'bg-yellow-500';
-    if (progress >= 40) return 'bg-orange-500';
-    return 'bg-red-500';
+    
+    switch (subjectName.toLowerCase()) {
+      case 'mathématiques':
+      case 'math': 
+        return 'text-blue-600 border-blue-200 bg-blue-50';
+      case 'français':
+      case 'french': 
+        return 'text-red-600 border-red-200 bg-red-50';
+      case 'physique':
+      case 'physics': 
+        return 'text-emerald-600 border-emerald-200 bg-emerald-50';
+      case 'arabe':
+      case 'arabic': 
+        return 'text-amber-600 border-amber-200 bg-amber-50';
+      case 'svt': 
+        return 'text-green-600 border-green-200 bg-green-50';
+      case 'histoire':
+      case 'géographie':
+      case 'histoire-géographie':
+        return 'text-purple-600 border-purple-200 bg-purple-50';
+      default: 
+        return 'text-gray-600 border-gray-200 bg-gray-50';
+    }
   };
 
   return (

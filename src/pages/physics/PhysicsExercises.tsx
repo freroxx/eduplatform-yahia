@@ -7,6 +7,7 @@ import { Link, useParams } from "react-router-dom";
 import { useState } from "react";
 import { motion } from "framer-motion";
 import { useToast } from "@/hooks/use-toast";
+import { physicsExercises } from "@/data/courseData";
 
 const PhysicsExercises = () => {
   const { id } = useParams();
@@ -14,79 +15,7 @@ const PhysicsExercises = () => {
   const [completedExercises, setCompletedExercises] = useState<number[]>([]);
   const [openSolutions, setOpenSolutions] = useState<number[]>([]);
 
-  const exerciseData: { [key: string]: any } = {
-    "101": {
-      title: "Exercices - Gravitation universelle",
-      exercises: [
-        {
-          id: 1,
-          title: "Calcul de force gravitationnelle",
-          difficulty: "Moyen",
-          duration: "15 min",
-          points: 20,
-          question: "Calculez la force gravitationnelle entre la Terre (M = 5,97 × 10²⁴ kg) et la Lune (m = 7,35 × 10²² kg), sachant que la distance Terre-Lune est de 384 400 km.\n\nDonnée : G = 6,67 × 10⁻¹¹ N⋅m²/kg²",
-          solution: "Solution détaillée :\n\n1) Conversion de la distance :\nd = 384 400 km = 3,844 × 10⁸ m\n\n2) Application de la formule :\nF = G × (M × m) / d²\nF = 6,67 × 10⁻¹¹ × (5,97 × 10²⁴ × 7,35 × 10²²) / (3,844 × 10⁸)²\n\n3) Calcul :\nF = 6,67 × 10⁻¹¹ × 4,39 × 10⁴⁷ / 1,48 × 10¹⁷\nF = 1,98 × 10²⁰ N\n\nLa force gravitationnelle Terre-Lune est de 1,98 × 10²⁰ N"
-        },
-        {
-          id: 2,
-          title: "Pesanteur sur la Lune",
-          difficulty: "Facile",
-          duration: "10 min",
-          points: 15,
-          question: "La pesanteur sur la Lune est 6 fois plus faible que sur Terre. Si votre poids sur Terre est de 600 N, quel sera votre poids sur la Lune ?",
-          solution: "Solution :\n\nDonnées :\n• Poids sur Terre : P_Terre = 600 N\n• Pesanteur lunaire = Pesanteur terrestre / 6\n\nCalcul :\nP_Lune = P_Terre / 6\nP_Lune = 600 / 6 = 100 N\n\nVotre poids sur la Lune sera de 100 N"
-        },
-        {
-          id: 3,
-          title: "Satellite géostationnaire",
-          difficulty: "Difficile",
-          duration: "25 min",
-          points: 30,
-          question: "Un satellite géostationnaire orbite à 35 786 km d'altitude au-dessus de l'équateur. Calculez sa vitesse orbitale.\n\nDonnées : R_Terre = 6 371 km, M_Terre = 5,97 × 10²⁴ kg",
-          solution: "Solution complète :\n\n1) Rayon orbital :\nr = R_Terre + altitude = 6 371 + 35 786 = 42 157 km = 4,22 × 10⁷ m\n\n2) Pour un mouvement circulaire uniforme :\nF_gravitationnelle = F_centripète\nGMm/r² = mv²/r\n\n3) Simplification :\nGM/r = v²\nv = √(GM/r)\n\n4) Application numérique :\nv = √(6,67 × 10⁻¹¹ × 5,97 × 10²⁴ / 4,22 × 10⁷)\nv = √(9,43 × 10⁶)\nv = 3 070 m/s ≈ 3,07 km/s\n\nLa vitesse orbitale est de 3,07 km/s"
-        }
-      ]
-    },
-    "114": {
-      title: "Exercices - Courant électrique",
-      exercises: [
-        {
-          id: 4,
-          title: "Calcul d'intensité",
-          difficulty: "Facile",
-          duration: "8 min",
-          points: 10,
-          question: "Quelle est l'intensité du courant si une charge de 120 C traverse une section de conducteur en 2 minutes ?",
-          solution: "Solution :\n\nDonnées :\n• Charge Q = 120 C\n• Temps t = 2 min = 120 s\n\nFormule : I = Q / t\n\nApplication :\nI = 120 / 120 = 1 A\n\nL'intensité du courant est de 1 A"
-        },
-        {
-          id: 5,
-          title: "Application de la loi d'Ohm",
-          difficulty: "Moyen",
-          duration: "12 min",
-          points: 18,
-          question: "Une résistance de 50 Ω est parcourue par un courant de 0,2 A. Quelle est la tension à ses bornes ?",
-          solution: "Solution :\n\nDonnées :\n• Résistance R = 50 Ω\n• Intensité I = 0,2 A\n\nLoi d'Ohm : U = R × I\n\nApplication :\nU = 50 × 0,2 = 10 V\n\nLa tension aux bornes de la résistance est de 10 V"
-        }
-      ]
-    },
-    "115": {
-      title: "Exercices - Mécanique",
-      exercises: [
-        {
-          id: 6,
-          title: "Application de F = ma",
-          difficulty: "Moyen",
-          duration: "15 min",
-          points: 20,
-          question: "Une voiture de masse 1200 kg accélère de 0 à 100 km/h en 10 s. Quelle est la force motrice supposée constante ?",
-          solution: "Solution :\n\n1) Conversion de vitesse :\nv = 100 km/h = 100/3,6 = 27,8 m/s\n\n2) Calcul de l'accélération :\na = Δv/Δt = (27,8 - 0)/10 = 2,78 m/s²\n\n3) Application de F = ma :\nF = 1200 × 2,78 = 3 336 N\n\nLa force motrice est de 3 336 N ≈ 3,34 kN"
-        }
-      ]
-    }
-  };
-
-  const currentExercises = exerciseData[id || "101"];
+  const currentExercises = physicsExercises[id || "101"];
 
   const toggleExercise = (exerciseId: number) => {
     const isCompleted = completedExercises.includes(exerciseId);
@@ -119,7 +48,7 @@ const PhysicsExercises = () => {
   };
 
   return (
-    <div className="min-h-screen animated-bg">
+    <div className="min-h-screen bg-gradient-to-br from-blue-50 via-indigo-50 to-purple-50 dark:from-gray-900 dark:via-gray-800 dark:to-gray-900">
       <header className="bg-background/80 backdrop-blur-md border-b border-border/50 p-4 sticky top-0 z-50">
         <div className="container mx-auto flex items-center justify-between">
           <Link to="/lessons/physics" className="flex items-center space-x-2 text-primary hover:text-primary/80 transition-all duration-200">
@@ -149,7 +78,7 @@ const PhysicsExercises = () => {
               animate={{ opacity: 1, y: 0 }}
               transition={{ delay: index * 0.1 }}
             >
-              <Card className="glass-effect hover-lift border-0 shadow-lg overflow-hidden">
+              <Card className="bg-card/80 backdrop-blur-sm border-0 shadow-lg hover:shadow-xl transition-all duration-300 hover:scale-[1.01] overflow-hidden">
                 <CardHeader>
                   <div className="flex items-start justify-between">
                     <div className="flex-1">

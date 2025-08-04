@@ -5,59 +5,15 @@ import { Badge } from "@/components/ui/badge";
 import { ArrowLeft, CheckCircle, Clock, Target, Star } from "lucide-react";
 import { Link, useParams } from "react-router-dom";
 import { useState } from "react";
+import { motion } from "framer-motion";
+import { arabicExercises } from "@/data/courseData";
 
 const ArabicExercises = () => {
   const { id } = useParams();
   const [completedExercises, setCompletedExercises] = useState<number[]>([]);
   const [openSolutions, setOpenSolutions] = useState<number[]>([]);
 
-  const exerciseData: { [key: string]: any } = {
-    "401": {
-      title: "تمارين - الإملاء",
-      exercises: [
-        {
-          id: 1,
-          title: "تمييز الهمزات",
-          difficulty: "سهل",
-          duration: "10 دقائق",
-          points: 15,
-          question: "حدد نوع الهمزة في الكلمات التالية:\n\nأحمد - ابن - إبراهيم - اسم - أسد - استعمال",
-          options: ["كلها همزة قطع", "كلها همزة وصل", "مختلطة", "لا توجد همزات"],
-          correctAnswer: "مختلطة",
-          explanation: "أحمد (قطع) - ابن (وصل) - إبراهيم (قطع) - اسم (وصل) - أسد (قطع) - استعمال (وصل)"
-        },
-        {
-          id: 2,
-          title: "التاء المربوطة والمفتوحة",
-          difficulty: "متوسط",
-          duration: "12 دقيقة",
-          points: 20,
-          question: "اختر الإملاء الصحيح:",
-          options: ["مدرست", "مدرسة", "مدرسه", "مدرسط"],
-          correctAnswer: "مدرسة",
-          explanation: "مدرسة تُلفظ 'مدرسه' عند الوقف، لذلك تُكتب بالتاء المربوطة (ة)"
-        }
-      ]
-    },
-    "407": {
-      title: "تمارين - أسماء الآلة والزمان والمكان",
-      exercises: [
-        {
-          id: 3,
-          title: "تحديد اسم الآلة",
-          difficulty: "متوسط",
-          duration: "15 دقيقة",
-          points: 20,
-          question: "أي من الكلمات التالية اسم آلة؟",
-          options: ["مَدرسة", "مِفتاح", "مَولِد", "مَكتبة"],
-          correctAnswer: "مِفتاح",
-          explanation: "مِفتاح على وزن مِفعال وهو اسم آلة يدل على الأداة التي يُفتح بها"
-        }
-      ]
-    }
-  };
-
-  const currentExercises = exerciseData[id || "401"];
+  const currentExercises = arabicExercises[id || "401"];
 
   const toggleExercise = (exerciseId: number) => {
     setCompletedExercises(prev => 
@@ -75,8 +31,17 @@ const ArabicExercises = () => {
     );
   };
 
+  const getDifficultyColor = (difficulty: string) => {
+    switch (difficulty) {
+      case "Facile": return "bg-green-100 text-green-800 border-green-200";
+      case "Moyen": return "bg-yellow-100 text-yellow-800 border-yellow-200";
+      case "Difficile": return "bg-red-100 text-red-800 border-red-200";
+      default: return "bg-gray-100 text-gray-800 border-gray-200";
+    }
+  };
+
   return (
-    <div className="min-h-screen bg-gradient-to-br from-background via-secondary/30 to-accent/20" dir="rtl">
+    <div className="min-h-screen bg-gradient-to-br from-orange-50 via-amber-50 to-yellow-50 dark:from-gray-900 dark:via-gray-800 dark:to-gray-900" dir="rtl">
       <header className="bg-background/80 backdrop-blur-md border-b border-border/50 p-4 sticky top-0 z-50">
         <div className="container mx-auto flex items-center justify-between">
           <div className="text-center">
@@ -92,73 +57,70 @@ const ArabicExercises = () => {
 
       <div className="container mx-auto px-4 py-8">
         <div className="max-w-4xl mx-auto space-y-6">
-          {currentExercises?.exercises.map((exercise: any) => (
-            <Card key={exercise.id} className="bg-card/80 backdrop-blur-sm border-0 shadow-lg">
-              <CardHeader>
-                <div className="flex items-start justify-between">
-                  <Button
-                    onClick={() => toggleExercise(exercise.id)}
-                    variant={completedExercises.includes(exercise.id) ? "default" : "outline"}
-                    size="sm"
-                    className={completedExercises.includes(exercise.id) ? 'bg-green-600 hover:bg-green-700' : ''}
-                  >
-                    <CheckCircle className="h-4 w-4 ml-2" />
-                    {completedExercises.includes(exercise.id) ? "مكتمل ✓" : "تم"}
-                  </Button>
-                  <div className="flex-1 text-right">
-                    <div className="flex items-center justify-end space-x-3 mb-3">
-                      <Badge variant="outline" className="text-orange-600 border-orange-300">
-                        <Star className="h-3 w-3 ml-1" />
-                        {exercise.points} نقطة
-                      </Badge>
-                      <Badge variant="outline">
-                        <Clock className="h-3 w-3 ml-1" />
-                        {exercise.duration}
-                      </Badge>
-                      <Badge className="bg-amber-100 text-amber-800 border-amber-200">
-                        <Target className="h-3 w-3 ml-1" />
-                        {exercise.difficulty}
-                      </Badge>
+          {currentExercises?.exercises.map((exercise: any, index: number) => (
+            <motion.div
+              key={exercise.id}
+              initial={{ opacity: 0, y: 20 }}
+              animate={{ opacity: 1, y: 0 }}
+              transition={{ delay: index * 0.1 }}
+            >
+              <Card className="bg-card/80 backdrop-blur-sm border-0 shadow-lg hover:shadow-xl transition-all duration-300">
+                <CardHeader>
+                  <div className="flex items-start justify-between">
+                    <Button
+                      onClick={() => toggleExercise(exercise.id)}
+                      variant={completedExercises.includes(exercise.id) ? "default" : "outline"}
+                      size="sm"
+                      className={completedExercises.includes(exercise.id) ? 'bg-green-600 hover:bg-green-700' : ''}
+                    >
+                      <CheckCircle className="h-4 w-4 ml-2" />
+                      {completedExercises.includes(exercise.id) ? "مكتمل ✓" : "تم"}
+                    </Button>
+                    <div className="flex-1 text-right">
+                      <div className="flex items-center justify-end space-x-3 mb-3">
+                        <Badge variant="outline" className="text-orange-600 border-orange-300">
+                          <Star className="h-3 w-3 ml-1" />
+                          {exercise.points} نقطة
+                        </Badge>
+                        <Badge variant="outline">
+                          <Clock className="h-3 w-3 ml-1" />
+                          {exercise.duration}
+                        </Badge>
+                        <Badge className={getDifficultyColor(exercise.difficulty)}>
+                          <Target className="h-3 w-3 ml-1" />
+                          {exercise.difficulty}
+                        </Badge>
+                      </div>
+                      <CardTitle className="text-xl font-bold text-foreground text-right">
+                        {exercise.title}
+                      </CardTitle>
                     </div>
-                    <CardTitle className="text-xl font-bold text-foreground text-right">
-                      {exercise.title}
-                    </CardTitle>
                   </div>
-                </div>
-              </CardHeader>
-              <CardContent>
-                <div className="space-y-4">
-                  <div className="bg-blue-50 p-4 rounded-lg border-r-4 border-blue-500">
-                    <p className="text-gray-700 whitespace-pre-line text-right">{exercise.question}</p>
+                </CardHeader>
+                <CardContent>
+                  <div className="space-y-4">
+                    <div className="bg-blue-50 dark:bg-blue-900/20 p-4 rounded-lg border-r-4 border-blue-500">
+                      <p className="text-gray-700 dark:text-gray-300 whitespace-pre-line text-right">{exercise.question}</p>
+                    </div>
+                    
+                    <Button
+                      onClick={() => toggleSolution(exercise.id)}
+                      variant="ghost"
+                      className="w-full"
+                    >
+                      {openSolutions.includes(exercise.id) ? 'إخفاء الحل' : 'عرض الحل'}
+                    </Button>
+                    
+                    {openSolutions.includes(exercise.id) && (
+                      <div className="bg-green-50 dark:bg-green-900/20 p-4 rounded-lg border-r-4 border-green-500">
+                        <p className="font-semibold text-green-800 dark:text-green-200 mb-2 text-right">الحل التفصيلي:</p>
+                        <p className="text-gray-700 dark:text-gray-300 whitespace-pre-line text-right">{exercise.solution}</p>
+                      </div>
+                    )}
                   </div>
-                  
-                  {exercise.options && (
-                    <div className="space-y-2">
-                      {exercise.options.map((option: string, index: number) => (
-                        <div key={index} className="p-2 border rounded hover:bg-accent/50 text-right">
-                          {option} ({String.fromCharCode(65 + index)})
-                        </div>
-                      ))}
-                    </div>
-                  )}
-                  
-                  <Button
-                    onClick={() => toggleSolution(exercise.id)}
-                    variant="ghost"
-                    className="w-full"
-                  >
-                    {openSolutions.includes(exercise.id) ? 'إخفاء الحل' : 'عرض الحل'}
-                  </Button>
-                  
-                  {openSolutions.includes(exercise.id) && (
-                    <div className="bg-green-50 p-4 rounded-lg border-r-4 border-green-500">
-                      <p className="font-semibold text-green-800 mb-2 text-right">الإجابة: {exercise.correctAnswer}</p>
-                      <p className="text-gray-700 text-right">{exercise.explanation}</p>
-                    </div>
-                  )}
-                </div>
-              </CardContent>
-            </Card>
+                </CardContent>
+              </Card>
+            </motion.div>
           ))}
         </div>
       </div>

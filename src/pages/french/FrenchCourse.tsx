@@ -16,7 +16,7 @@ const FrenchCourse = () => {
         },
         {
           title: "Les types de textes",
-          content: "Classification des textes selon leur fonction :\n\n📖 Texte narratif : raconte une histoire\n• Roman, nouvelle, conte, récit\n• Présence d'un narrateur\n• Succession d'événements\n\n📝 Texte descriptif : décrit, peint\n• Portrait, paysage, lieu\n• Adjectifs qualificatifs abondants\n• Verbes d'état\n\n🗣️ Texte argumentatif : convainc, persuade\n• Essai, critique, plaidoirie\n• Thèse, arguments, exemples\n• Connecteurs logiques",
+          content: "Classification des textes selon leur fonction :\n\n📖 Texte narratif : raconte une histoire\n• Roman, nouvelle, conte, récit\n• Présence d'un narrateur\n• Succession d'événements\n\n📝 Texte descriptif : décrit, peint\n• Portrait, paysage, lieu\n• Adjectifs qualificatifs abondants\n• Verbes d'état\n\n🗣️ Texte argumentatif : convainc, persuade\n• Essai, critique, plaidoirie\n• Thèse, arguments, exemples\n• Connecteurs logiques\n\n📚 Texte explicatif : informe, explique\n• Article encyclopédique, cours\n• Objectivité, clarté\n• Progression logique",
           type: "definition" as const
         },
         {
@@ -26,7 +26,7 @@ const FrenchCourse = () => {
         },
         {
           title: "Le traitement du temps",
-          content: "Temps de l'histoire vs temps du récit :\n\n⏰ Temps de l'histoire :\n• Durée réelle des événements\n• Ordre chronologique\n• Mesurable en heures, jours, années\n\n📚 Temps du récit :\n• Durée de la narration\n• Ordre de présentation\n• Mesurable en pages, chapitres\n\n🔄 Techniques temporelles :\n• Analepse (retour en arrière)\n• Prolepse (anticipation)\n• Ellipse (omission)\n• Pause (description)\n• Sommaire (résumé)",
+          content: "Temps de l'histoire vs temps du récit :\n\n⏰ Temps de l'histoire :\n• Durée réelle des événements\n• Ordre chronologique\n• Mesurable en heures, jours, années\n\n📚 Temps du récit :\n• Durée de la narration\n• Ordre de présentation\n• Mesurable en pages, chapitres\n\n🔄 Techniques temporelles :\n• Analepse (retour en arrière)\n• Prolepse (anticipation)\n• Ellipse (omission)\n• Pause (description)\n• Sommaire (résumé)\n\n🎭 Les points de vue :\n• Narrateur omniscient\n• Narrateur témoin\n• Narrateur personnage",
           type: "example" as const
         }
       ]
@@ -43,6 +43,21 @@ const FrenchCourse = () => {
           title: "La Ficelle - Analyse",
           content: "Résumé de 'La Ficelle' :\n\n🏪 Contexte : Marché de Goderville\n• Maître Hauchecorne ramasse une ficelle\n• Maître Malandain l'accuse d'avoir volé un portefeuille\n• Protestation d'innocence\n• Humiliation publique\n\n🎭 Thèmes principaux :\n• La rumeur et la médisance\n• L'injustice sociale\n• La dignité bafouée\n• L'obsession de la réputation\n\n📝 Techniques narratives :\n• Narrateur omniscient\n• Focalisation externe\n• Style indirect libre\n• Ironie tragique",
           type: "example" as const
+        },
+        {
+          title: "Aux champs - Étude",
+          content: "Analyse de 'Aux champs' :\n\n👨‍👩‍👧‍👦 L'histoire :\n• Deux familles paysannes voisines\n• Les d'Hubières proposent d'adopter Jean\n• Refus des Tuvache, acceptation des Vallin\n• Contraste des destins 20 ans plus tard\n\n💰 Thèmes développés :\n• Argent et corruption\n• Éducation et ascension sociale\n• Fierté et préjugés\n• Destin et choix de vie\n\n🔍 Procédés stylistiques :\n• Contraste et parallélisme\n• Discours rapporté\n• Fin ouverte et ironique",
+          type: "example" as const
+        }
+      ]
+    },
+    "303": {
+      title: "Module 3: La nouvelle fantastique - Théophile Gautier",
+      slides: [
+        {
+          title: "Le fantastique littéraire",
+          content: "Caractéristiques du genre fantastique :\n\n👻 Définition :\n• Intrusion du surnaturel dans le quotidien\n• Hésitation entre réel et irréel\n• Création d'une atmosphère inquiétante\n\n🌙 Éléments constitutifs :\n• Cadre réaliste initial\n• Événement inexplicable\n• Personnage témoin troublé\n• Ambiguïté maintenue\n\n📚 Théophile Gautier (1811-1872) :\n• Poète et nouvelliste\n• Maître du fantastique français\n• Œuvre : 'Le Chevalier double'",
+          type: "intro" as const
         }
       ]
     }

@@ -15,7 +15,7 @@ import WelcomeTutorial from '@/components/WelcomeTutorial';
 import Footer from '@/components/Footer';
 import { useSettings } from '@/hooks/useSettings';
 import { useExerciseProgress } from '@/hooks/useExerciseProgress';
-import { BookOpen, Video, FileText, Users, HelpCircle, Sparkles } from 'lucide-react';
+import { BookOpen, Video, FileText, Users, HelpCircle, Sparkles, Calculator, Globe, Atom, Languages, Microscope } from 'lucide-react';
 
 const Index = () => {
   const { settings } = useSettings();
@@ -26,28 +26,52 @@ const Index = () => {
   const subjects = [
     {
       name: 'Mathématiques',
-      path: '/math',
-      lessons: 24,
+      path: '/lessons',
+      lessons: 15,
       description: 'Explorez les concepts fondamentaux des mathématiques avec des leçons interactives et des exercices pratiques.',
-      icon: BookOpen,
+      icon: Calculator,
       color: 'bg-gradient-to-r from-blue-500 to-blue-600'
     },
     {
+      name: 'Physique',
+      path: '/lessons/physics',
+      lessons: 12,
+      description: 'Découvrez les lois de la physique à travers des expériences virtuelles et des cours détaillés.',
+      icon: Atom,
+      color: 'bg-gradient-to-r from-emerald-500 to-emerald-600'
+    },
+    {
       name: 'Arabe',
-      path: '/arabic',
+      path: '/lessons/arabic',
       lessons: 18,
       description: 'Améliorez vos compétences en arabe avec des modules linguistiques et culturels.',
+      icon: Languages,
+      color: 'bg-gradient-to-r from-amber-500 to-amber-600'
+    },
+    {
+      name: 'Français',
+      path: '/lessons/french',
+      lessons: 16,
+      description: 'Maîtrisez la langue française à travers la littérature et l\'expression écrite.',
       icon: FileText,
-      color: 'bg-gradient-to-r from-green-500 to-green-600'
+      color: 'bg-gradient-to-r from-red-500 to-red-600'
     },
     {
       name: 'Histoire-Géographie',
-      path: '/history',
-      lessons: 32,
+      path: '/lessons/histoire-geo',
+      lessons: 26,
       description: 'Découvrez l\'histoire et la géographie du monde à travers des récits captivants et des cartes interactives.',
-      icon: Users,
+      icon: Globe,
       color: 'bg-gradient-to-r from-orange-500 to-orange-600'
     },
+    {
+      name: 'Sciences de la Vie et de la Terre',
+      path: '/lessons/svt',
+      lessons: 20,
+      description: 'Explorez le vivant et la Terre à travers des cours interactifs de biologie et géologie.',
+      icon: Microscope,
+      color: 'bg-gradient-to-r from-green-500 to-green-600'
+    }
   ];
 
   useEffect(() => {
@@ -72,7 +96,7 @@ const Index = () => {
 
   // Get primary subject for progress tracker
   const primarySubject = settings.subjects.length > 0 ? settings.subjects[0] : 'Mathématiques';
-  const subjectLessons = subjects.find(s => s.name.toLowerCase().includes(primarySubject.toLowerCase()))?.lessons || 24;
+  const subjectLessons = subjects.find(s => s.name.toLowerCase().includes(primarySubject.toLowerCase()))?.lessons || 15;
 
   return (
     <div className="min-h-screen flex flex-col animated-bg">

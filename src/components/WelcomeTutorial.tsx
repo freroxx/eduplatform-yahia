@@ -1,10 +1,9 @@
-
 import { useState } from 'react';
 import { motion, AnimatePresence } from 'framer-motion';
-import { Dialog, DialogContent } from '@/components/ui/dialog';
+import { Dialog, DialogContent, DialogHeader, DialogTitle } from '@/components/ui/dialog';
 import { Button } from '@/components/ui/button';
 import { Card, CardContent } from '@/components/ui/card';
-import { BookOpen, FileText, Video, Target, ChevronLeft, ChevronRight, X } from 'lucide-react';
+import { BookOpen, FileText, Video, Target, ChevronLeft, ChevronRight } from 'lucide-react';
 
 interface WelcomeTutorialProps {
   isOpen: boolean;
@@ -117,18 +116,9 @@ const WelcomeTutorial = ({ isOpen, onClose }: WelcomeTutorialProps) => {
   const currentStepData = tutorialSteps[currentStep];
 
   return (
-    <Dialog open={isOpen} onOpenChange={(open) => !open && onClose()}>
-      <DialogContent className="max-w-lg">
-        <div className="relative">
-          <Button
-            variant="ghost"
-            size="icon"
-            onClick={onClose}
-            className="absolute -top-2 -right-2 z-10"
-          >
-            <X className="h-4 w-4" />
-          </Button>
-
+    <Dialog open={isOpen} onOpenChange={onClose}>
+      <DialogContent className="max-w-lg" hideCloseButton>
+        <DialogHeader>
           <div className="text-center mb-6">
             <div className="flex justify-center mb-4">
               <div className="bg-gradient-to-r from-indigo-500 to-purple-600 text-white p-3 rounded-full">
@@ -147,41 +137,41 @@ const WelcomeTutorial = ({ isOpen, onClose }: WelcomeTutorialProps) => {
               ))}
             </div>
 
-            <h3 className="text-xl font-bold mb-2">{currentStepData.title}</h3>
+            <DialogTitle className="text-xl font-bold">{currentStepData.title}</DialogTitle>
             <p className="text-muted-foreground text-sm">{currentStepData.description}</p>
           </div>
+        </DialogHeader>
 
-          <AnimatePresence mode="wait">
-            <motion.div
-              key={currentStep}
-              initial={{ opacity: 0, x: 20 }}
-              animate={{ opacity: 1, x: 0 }}
-              exit={{ opacity: 0, x: -20 }}
-              transition={{ duration: 0.3 }}
-            >
-              <Card className="mb-6">
-                <CardContent className="p-6">
-                  {currentStepData.content}
-                </CardContent>
-              </Card>
-            </motion.div>
-          </AnimatePresence>
+        <AnimatePresence mode="wait">
+          <motion.div
+            key={currentStep}
+            initial={{ opacity: 0, x: 20 }}
+            animate={{ opacity: 1, x: 0 }}
+            exit={{ opacity: 0, x: -20 }}
+            transition={{ duration: 0.3 }}
+          >
+            <Card className="mb-6">
+              <CardContent className="p-6">
+                {currentStepData.content}
+              </CardContent>
+            </Card>
+          </motion.div>
+        </AnimatePresence>
 
-          <div className="flex justify-between">
-            <Button
-              variant="outline"
-              onClick={handlePrevious}
-              disabled={currentStep === 0}
-            >
-              <ChevronLeft className="h-4 w-4 mr-2" />
-              Précédent
-            </Button>
-            
-            <Button onClick={handleNext}>
-              {currentStep === tutorialSteps.length - 1 ? 'Terminer' : 'Suivant'}
-              {currentStep < tutorialSteps.length - 1 && <ChevronRight className="h-4 w-4 ml-2" />}
-            </Button>
-          </div>
+        <div className="flex justify-between">
+          <Button
+            variant="outline"
+            onClick={handlePrevious}
+            disabled={currentStep === 0}
+          >
+            <ChevronLeft className="h-4 w-4 mr-2" />
+            Précédent
+          </Button>
+          
+          <Button onClick={handleNext}>
+            {currentStep === tutorialSteps.length - 1 ? 'Terminer' : 'Suivant'}
+            {currentStep < tutorialSteps.length - 1 && <ChevronRight className="h-4 w-4 ml-2" />}
+          </Button>
         </div>
       </DialogContent>
     </Dialog>

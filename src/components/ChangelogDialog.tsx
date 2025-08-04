@@ -69,15 +69,15 @@ const ChangelogDialog = ({ isOpen, onClose }: ChangelogDialogProps) => {
   };
 
   return (
-    <Dialog open={isOpen} onOpenChange={(open) => !open && onClose()}>
-      <DialogContent className="max-w-2xl max-h-[80vh] overflow-y-auto">
+    <Dialog open={isOpen} onOpenChange={onClose}>
+      <DialogContent className="max-w-2xl max-h-[80vh] overflow-y-auto" hideCloseButton>
         <DialogHeader>
           <div className="flex items-center space-x-3 mb-4">
             <div className="bg-gradient-to-r from-purple-600 to-pink-600 text-white p-3 rounded-full">
               <Star className="h-6 w-6" />
             </div>
             <div>
-              <DialogTitle className="text-2xl font-bold bg-gradient-to-r from-purple-600 to-pink-600 bg-clip-text text-transparent">
+              <DialogTitle className="text-2xl font-bold gradient-text">
                 Nouveautés v4.5
               </DialogTitle>
               <p className="text-muted-foreground">Découvrez les dernières améliorations</p>
@@ -101,7 +101,7 @@ const ChangelogDialog = ({ isOpen, onClose }: ChangelogDialogProps) => {
                 initial={{ opacity: 0, x: -20 }}
                 animate={{ opacity: 1, x: 0 }}
                 transition={{ delay: index * 0.1 }}
-                className="flex items-start space-x-4 p-4 rounded-lg border bg-card hover:shadow-md transition-shadow"
+                className="flex items-start space-x-4 p-4 rounded-lg border bg-card hover-lift"
               >
                 <div className={`p-2 rounded-full ${getTypeColor(change.type)} text-white flex-shrink-0`}>
                   <change.icon className="h-4 w-4" />
@@ -131,7 +131,7 @@ const ChangelogDialog = ({ isOpen, onClose }: ChangelogDialogProps) => {
           </div>
 
           <div className="flex justify-end pt-4 border-t">
-            <Button onClick={onClose} className="px-6">
+            <Button onClick={onClose} className="px-6 btn-modern hover-glow">
               Parfait, merci !
             </Button>
           </div>

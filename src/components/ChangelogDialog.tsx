@@ -1,8 +1,9 @@
 
-import { Dialog, DialogContent, DialogHeader, DialogTitle } from "@/components/ui/dialog";
-import { Badge } from "@/components/ui/badge";
-import { Button } from "@/components/ui/button";
-import { Sparkles, Plus, Trash2, MapPin, Globe, BookOpen, Palette } from "lucide-react";
+import { Dialog, DialogContent, DialogHeader, DialogTitle } from '@/components/ui/dialog';
+import { Badge } from '@/components/ui/badge';
+import { Button } from '@/components/ui/button';
+import { CheckCircle, Star, Zap, Globe, BookOpen, Palette } from 'lucide-react';
+import { motion } from 'framer-motion';
 
 interface ChangelogDialogProps {
   isOpen: boolean;
@@ -12,75 +13,128 @@ interface ChangelogDialogProps {
 const ChangelogDialog = ({ isOpen, onClose }: ChangelogDialogProps) => {
   const changes = [
     {
-      version: "v4.5",
-      date: "Janvier 2025",
-      changes: [
-        "Suppression du niveau d'étude de l'onboarding",
-        "Ajout de la sélection du pays",
-        "Ajout des cours et exercices manquants partout",
-        "Correction des leçons de maths, histoire-géo, arabe",
-        "Amélioration des boutons et intégrations",
-        "Design amélioré, arrière-plan, performances"
-      ],
-      type: "major"
+      icon: Globe,
+      title: 'Sélection de pays',
+      description: 'Choisissez votre pays pendant l\'inscription pour une expérience personnalisée',
+      type: 'new'
     },
     {
-      version: "v4.0",
-      date: "Décembre 2024",
-      changes: [
-        "Nouvelle interface utilisateur moderne",
-        "Assistant IA intégré",
-        "Lecteur audio EduMusic",
-        "Système de progression avancé",
-        "Thèmes sombre et clair",
-        "Navigation améliorée"
-      ],
-      type: "major"
+      icon: BookOpen,
+      title: 'Contenu enrichi',
+      description: 'Cours et exercices complets pour Mathématiques, Arabe et Histoire-Géographie',
+      type: 'improved'
+    },
+    {
+      icon: Zap,
+      title: 'Interface simplifiée',
+      description: 'Suppression des champs inutiles et amélioration de l\'expérience utilisateur',
+      type: 'improved'
+    },
+    {
+      icon: CheckCircle,
+      title: 'Corrections de bugs',
+      description: 'Résolution des problèmes d\'embeds et amélioration des performances',
+      type: 'fixed'
+    },
+    {
+      icon: Palette,
+      title: 'Design moderne',
+      description: 'Interface repensée avec de meilleures animations et une typographie améliorée',
+      type: 'improved'
+    },
+    {
+      icon: Star,
+      title: 'Tutoriel interactif',
+      description: 'Découverte guidée des fonctionnalités lors de votre première visite',
+      type: 'new'
     }
   ];
 
+  const getTypeColor = (type: string) => {
+    switch (type) {
+      case 'new': return 'bg-green-500';
+      case 'improved': return 'bg-blue-500';
+      case 'fixed': return 'bg-red-500';
+      default: return 'bg-gray-500';
+    }
+  };
+
+  const getTypeLabel = (type: string) => {
+    switch (type) {
+      case 'new': return 'Nouveau';
+      case 'improved': return 'Amélioré';
+      case 'fixed': return 'Corrigé';
+      default: return 'Autre';
+    }
+  };
+
   return (
-    <Dialog open={isOpen} onOpenChange={onClose}>
+    <Dialog open={isOpen} onOpenChange={(open) => !open && onClose()}>
       <DialogContent className="max-w-2xl max-h-[80vh] overflow-y-auto">
         <DialogHeader>
-          <DialogTitle className="flex items-center gap-2 text-2xl">
-            <Sparkles className="h-6 w-6 text-purple-500" />
-            Journal des modifications
-          </DialogTitle>
+          <div className="flex items-center space-x-3 mb-4">
+            <div className="bg-gradient-to-r from-purple-600 to-pink-600 text-white p-3 rounded-full">
+              <Star className="h-6 w-6" />
+            </div>
+            <div>
+              <DialogTitle className="text-2xl font-bold bg-gradient-to-r from-purple-600 to-pink-600 bg-clip-text text-transparent">
+                Nouveautés v4.5
+              </DialogTitle>
+              <p className="text-muted-foreground">Découvrez les dernières améliorations</p>
+            </div>
+          </div>
         </DialogHeader>
 
         <div className="space-y-6">
-          {changes.map((release) => (
-            <div key={release.version} className="border rounded-lg p-4">
-              <div className="flex items-center justify-between mb-3">
-                <div className="flex items-center gap-2">
-                  <h3 className="text-lg font-semibold">{release.version}</h3>
-                  <Badge 
-                    variant={release.type === 'major' ? 'default' : 'secondary'}
-                    className="text-xs"
-                  >
-                    {release.type === 'major' ? 'Version majeure' : 'Mise à jour'}
-                  </Badge>
-                </div>
-                <span className="text-sm text-muted-foreground">{release.date}</span>
-              </div>
-              
-              <ul className="space-y-2">
-                {release.changes.map((change, index) => (
-                  <li key={index} className="flex items-start gap-2 text-sm">
-                    <Plus className="h-3 w-3 text-green-500 mt-1 flex-shrink-0" />
-                    <span>{change}</span>
-                  </li>
-                ))}
-              </ul>
-            </div>
-          ))}
-        </div>
+          <div className="bg-gradient-to-r from-purple-50 to-pink-50 dark:from-purple-950/20 dark:to-pink-950/20 p-4 rounded-lg border">
+            <h3 className="font-semibold text-lg mb-2">🎉 Version 4.5 disponible !</h3>
+            <p className="text-muted-foreground">
+              Cette mise à jour apporte des améliorations significatives à votre expérience d'apprentissage
+              avec un contenu enrichi, une interface simplifiée et de nouvelles fonctionnalités.
+            </p>
+          </div>
 
-        <div className="flex justify-end pt-4 border-t">
-          <Button onClick={onClose}>
-            Fermer
-          </Button>
+          <div className="space-y-4">
+            {changes.map((change, index) => (
+              <motion.div
+                key={change.title}
+                initial={{ opacity: 0, x: -20 }}
+                animate={{ opacity: 1, x: 0 }}
+                transition={{ delay: index * 0.1 }}
+                className="flex items-start space-x-4 p-4 rounded-lg border bg-card hover:shadow-md transition-shadow"
+              >
+                <div className={`p-2 rounded-full ${getTypeColor(change.type)} text-white flex-shrink-0`}>
+                  <change.icon className="h-4 w-4" />
+                </div>
+                <div className="flex-1">
+                  <div className="flex items-center space-x-2 mb-2">
+                    <h4 className="font-semibold">{change.title}</h4>
+                    <Badge variant="outline" className={`text-xs ${getTypeColor(change.type)} text-white border-0`}>
+                      {getTypeLabel(change.type)}
+                    </Badge>
+                  </div>
+                  <p className="text-muted-foreground text-sm">{change.description}</p>
+                </div>
+              </motion.div>
+            ))}
+          </div>
+
+          <div className="bg-muted/50 p-4 rounded-lg">
+            <h4 className="font-semibold mb-2">📚 Contenu ajouté</h4>
+            <ul className="text-sm text-muted-foreground space-y-1">
+              <li>• 15 leçons complètes en Mathématiques (Semestre 1 & 2)</li>
+              <li>• 6 modules complets en Arabe avec exercices</li>
+              <li>• 26 leçons d'Histoire-Géographie restructurées</li>
+              <li>• Intégration musicale améliorée</li>
+              <li>• Interface responsive optimisée</li>
+            </ul>
+          </div>
+
+          <div className="flex justify-end pt-4 border-t">
+            <Button onClick={onClose} className="px-6">
+              Parfait, merci !
+            </Button>
+          </div>
         </div>
       </DialogContent>
     </Dialog>

@@ -1,19 +1,36 @@
 import { Button } from "@/components/ui/button";
 import { Card, CardContent, CardDescription, CardHeader, CardTitle } from "@/components/ui/card";
 import { Badge } from "@/components/ui/badge";
-import { BookOpen, GraduationCap, Users, Award, Play, FileText, Video, Calendar, Clock, Target, Sparkles, BarChart3, PenTool, Atom, Microscope, Globe, Landmark } from "lucide-react";
+import { BookOpen, GraduationCap, Users, Award, Play, FileText, Video, Calendar, Clock, Target, Sparkles, BarChart3, PenTool, Atom, Microscope, Globe, Landmark, HelpCircle } from "lucide-react";
 import { Link } from "react-router-dom";
 import { motion } from "framer-motion";
 import UserOnboarding from "@/components/UserOnboarding";
 import GlobalHeader from "@/components/GlobalHeader";
 import ChangelogDialog from "@/components/ChangelogDialog";
 import WelcomeBanner from "@/components/WelcomeBanner";
+import WelcomeTutorial from "@/components/WelcomeTutorial";
 import { useSettings } from "@/hooks/useSettings";
-import { useState } from "react";
+import { useState, useEffect } from "react";
 
 const Index = () => {
   const { settings } = useSettings();
   const [showChangelog, setShowChangelog] = useState(false);
+  const [showTutorial, setShowTutorial] = useState(false);
+
+  // Show tutorial for first-time users after onboarding
+  useEffect(() => {
+    if (settings.hasOnboarded && !localStorage.getItem('tutorialCompleted')) {
+      const timer = setTimeout(() => {
+        setShowTutorial(true);
+      }, 1000);
+      return () => clearTimeout(timer);
+    }
+  }, [settings.hasOnboarded]);
+
+  const handleTutorialClose = () => {
+    setShowTutorial(false);
+    localStorage.setItem('tutorialCompleted', 'true');
+  };
 
   const subjects = [
     { 
@@ -86,8 +103,19 @@ const Index = () => {
     <div className="min-h-screen animated-bg">
       <GlobalHeader />
 
-      {/* Welcome Banner for v4.0 */}
+      {/* Welcome Banner for v4.5 */}
       <WelcomeBanner onShowChangelog={() => setShowChangelog(true)} />
+
+      {/* Help Button */}
+      <div className="fixed bottom-6 right-6 z-40">
+        <Button
+          onClick={() => setShowTutorial(true)}
+          size="lg"
+          className="rounded-full w-14 h-14 shadow-lg hover:shadow-xl transition-shadow bg-gradient-to-r from-indigo-500 to-purple-600 hover:from-indigo-600 hover:to-purple-700"
+        >
+          <HelpCircle className="h-6 w-6" />
+        </Button>
+      </div>
 
       {/* Welcome Section */}
       <motion.section 
@@ -120,7 +148,7 @@ const Index = () => {
             transition={{ delay: 0.4 }}
             className="text-xl text-muted-foreground mb-8 max-w-2xl mx-auto"
           >
-            Découvrez EduPlatform v4.0 - une plateforme d'apprentissage révolutionnaire conçue spécialement pour le Tronc Commun Sciences. 
+            Découvrez EduPlatform v4.5 - une plateforme d'apprentissage révolutionnaire conçue spécialement pour le Tronc Commun Sciences. 
             Explorez vos matières avec des cours interactifs, des exercices pratiques et des vidéos explicatives.
           </motion.p>
 
@@ -144,7 +172,7 @@ const Index = () => {
             </Badge>
             <Badge variant="secondary" className="text-sm px-4 py-2 bg-gradient-to-r from-purple-500 to-pink-500 text-white">
               <Sparkles className="h-4 w-4 mr-2" />
-              Version 4.0
+              Version 4.5
             </Badge>
           </motion.div>
         </div>
@@ -222,7 +250,7 @@ const Index = () => {
             transition={{ delay: 1.3 }}
             className="text-3xl font-bold text-center text-foreground mb-10"
           >
-            Fonctionnalités avancées v4.0
+            Fonctionnalités avancées v4.5
           </motion.h2>
           
           <div className="grid grid-cols-1 md:grid-cols-3 gap-6">
@@ -317,7 +345,7 @@ const Index = () => {
               Prêt à commencer votre apprentissage ?
             </h2>
             <p className="text-muted-foreground mb-6 max-w-2xl mx-auto">
-              Rejoignez des milliers d'étudiants qui utilisent EduPlatform v4.0 pour réussir leurs études.
+              Rejoignez des milliers d'étudiants qui utilisent EduPlatform v4.5 pour réussir leurs études.
             </p>
             <div className="flex flex-col sm:flex-row gap-4 justify-center">
               <Link to="/lessons/math">
@@ -342,7 +370,7 @@ const Index = () => {
         <div className="container mx-auto px-4 text-center">
           <div className="flex items-center justify-center space-x-2 mb-4">
             <GraduationCap className="h-6 w-6 text-primary" />
-            <span className="text-xl font-bold text-foreground">EduPlatform v4.0</span>
+            <span className="text-xl font-bold text-foreground">EduPlatform v4.5</span>
           </div>
           <p className="text-muted-foreground">
             © 2025 EduPlatform - Made by Yahia Ikni
@@ -351,6 +379,7 @@ const Index = () => {
       </footer>
 
       <ChangelogDialog isOpen={showChangelog} onClose={() => setShowChangelog(false)} />
+      <WelcomeTutorial isOpen={showTutorial} onClose={handleTutorialClose} />
     </div>
   );
 };

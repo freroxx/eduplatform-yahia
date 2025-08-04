@@ -8,10 +8,12 @@ import { Card, CardContent, CardHeader, CardTitle } from '@/components/ui/card';
 import { Badge } from '@/components/ui/badge';
 import { Select, SelectContent, SelectItem, SelectTrigger, SelectValue } from '@/components/ui/select';
 import { useSettings } from '@/hooks/useSettings';
-import { BookOpen, GraduationCap, Sun, Moon, Monitor, ChevronLeft, ChevronRight, Globe } from 'lucide-react';
+import { useNavigate } from 'react-router-dom';
+import { BookOpen, GraduationCap, Sun, Moon, Monitor, ChevronLeft, ChevronRight, Globe, Video, FileText, Play, Target, Users, Award } from 'lucide-react';
 
 const UserOnboarding = () => {
   const { completeOnboarding } = useSettings();
+  const navigate = useNavigate();
   const [step, setStep] = useState(0);
   const [formData, setFormData] = useState({
     name: '',
@@ -34,7 +36,9 @@ const UserOnboarding = () => {
   const steps = [
     { title: 'Bienvenue', subtitle: 'Commençons par faire connaissance' },
     { title: 'Préférences', subtitle: 'Configurez votre expérience' },
-    { title: 'Matières', subtitle: 'Sélectionnez vos matières d\'intérêt' }
+    { title: 'Matières', subtitle: 'Sélectionnez vos matières d\'intérêt' },
+    { title: 'Fonctionnalités', subtitle: 'Découvrez ce que vous pouvez faire' },
+    { title: 'C\'est parti !', subtitle: 'Vous êtes prêt à commencer' }
   ];
 
   const handleNext = () => {
@@ -48,6 +52,8 @@ const UserOnboarding = () => {
         formData.country,
         formData.subjects
       );
+      // Navigate to home page after completing onboarding
+      navigate('/');
     }
   };
 
@@ -74,6 +80,9 @@ const UserOnboarding = () => {
         return formData.theme && formData.userType && formData.country;
       case 2:
         return formData.subjects.length > 0;
+      case 3:
+      case 4:
+        return true;
       default:
         return false;
     }
@@ -84,6 +93,33 @@ const UserOnboarding = () => {
     center: { opacity: 1, x: 0 },
     exit: { opacity: 0, x: -100 }
   };
+
+  const features = [
+    {
+      icon: BookOpen,
+      title: 'Cours Interactifs',
+      description: 'Des présentations modernes avec des explications claires et progressives',
+      color: 'bg-gradient-to-br from-indigo-500 to-indigo-600'
+    },
+    {
+      icon: FileText,
+      title: 'Exercices Pratiques',
+      description: 'Renforcez vos connaissances avec des exercices adaptés et un suivi de progression',
+      color: 'bg-gradient-to-br from-green-500 to-green-600'
+    },
+    {
+      icon: Video,
+      title: 'Vidéos Explicatives',
+      description: 'Complétez votre apprentissage avec des vidéos YouTube sélectionnées',
+      color: 'bg-gradient-to-br from-red-500 to-red-600'
+    },
+    {
+      icon: Target,
+      title: 'Suivi Personnalisé',
+      description: 'Suivez votre progression et identifiez vos points forts et axes d\'amélioration',
+      color: 'bg-gradient-to-br from-purple-500 to-purple-600'
+    }
+  ];
 
   return (
     <div className="fixed inset-0 bg-gradient-to-br from-indigo-50 via-white to-purple-50 dark:from-gray-900 dark:via-gray-800 dark:to-gray-900 flex items-center justify-center p-4 z-50">
@@ -239,7 +275,7 @@ const UserOnboarding = () => {
                             onClick={() => toggleSubject(subject)}
                             className={`h-12 justify-start ${
                               formData.subjects.includes(subject)
-                                ? 'bg-indigo-50 border-indigo-500 text-indigo-700'
+                                ? 'bg-indigo-50 border-indigo-500 text-indigo-700 dark:bg-indigo-950'
                                 : ''
                             }`}
                           >
@@ -253,6 +289,67 @@ const UserOnboarding = () => {
                       <p className="text-sm text-muted-foreground mt-2">
                         {formData.subjects.length} matière(s) sélectionnée(s)
                       </p>
+                    </div>
+                  </div>
+                )}
+
+                {step === 3 && (
+                  <div className="space-y-4">
+                    <div className="text-center mb-6">
+                      <h3 className="text-lg font-semibold mb-2">Découvrez EduPlatform v4.5</h3>
+                      <p className="text-muted-foreground">Voici ce que vous pouvez faire avec la plateforme</p>
+                    </div>
+                    <div className="grid grid-cols-2 gap-4">
+                      {features.map((feature, index) => (
+                        <motion.div
+                          key={feature.title}
+                          initial={{ opacity: 0, y: 20 }}
+                          animate={{ opacity: 1, y: 0 }}
+                          transition={{ delay: index * 0.1 }}
+                          className="p-4 rounded-lg border bg-card"
+                        >
+                          <div className={`w-10 h-10 rounded-lg ${feature.color} flex items-center justify-center mb-3`}>
+                            <feature.icon className="h-5 w-5 text-white" />
+                          </div>
+                          <h4 className="font-medium text-sm mb-1">{feature.title}</h4>
+                          <p className="text-xs text-muted-foreground">{feature.description}</p>
+                        </motion.div>
+                      ))}
+                    </div>
+                  </div>
+                )}
+
+                {step === 4 && (
+                  <div className="text-center space-y-6">
+                    <motion.div
+                      initial={{ scale: 0 }}
+                      animate={{ scale: 1 }}
+                      transition={{ type: "spring", duration: 0.5 }}
+                      className="w-20 h-20 mx-auto bg-gradient-to-r from-green-500 to-emerald-600 rounded-full flex items-center justify-center"
+                    >
+                      <Badge className="h-8 w-8 bg-white text-green-600 text-xl">✓</Badge>
+                    </motion.div>
+                    <div>
+                      <h3 className="text-2xl font-bold text-foreground mb-2">
+                        Félicitations, {formData.name} !
+                      </h3>
+                      <p className="text-muted-foreground mb-6">
+                        Votre profil est maintenant configuré. Vous êtes prêt(e) à commencer votre apprentissage sur EduPlatform v4.5.
+                      </p>
+                      <div className="flex flex-wrap justify-center gap-2 mb-4">
+                        <Badge variant="secondary">
+                          <Users className="h-3 w-3 mr-1" />
+                          {formData.userType === 'student' ? 'Étudiant(e)' : 'Enseignant(e)'}
+                        </Badge>
+                        <Badge variant="secondary">
+                          <Globe className="h-3 w-3 mr-1" />
+                          {formData.country}
+                        </Badge>
+                        <Badge variant="secondary">
+                          <Award className="h-3 w-3 mr-1" />
+                          {formData.subjects.length} matières
+                        </Badge>
+                      </div>
                     </div>
                   </div>
                 )}
@@ -277,8 +374,17 @@ const UserOnboarding = () => {
                 disabled={!canProceed()}
                 className="px-6"
               >
-                {step === steps.length - 1 ? 'Terminer' : 'Suivant'}
-                <ChevronRight className="h-4 w-4 ml-2" />
+                {step === steps.length - 1 ? (
+                  <>
+                    <Play className="h-4 w-4 mr-2" />
+                    Commencer
+                  </>
+                ) : (
+                  <>
+                    Suivant
+                    <ChevronRight className="h-4 w-4 ml-2" />
+                  </>
+                )}
               </Button>
             </div>
           </CardContent>

@@ -47,6 +47,7 @@ const Lesson1Course = () => {
     },
     "2": {
       title: "Fonctions de référence",
+      pdfUrl: "/lovable-uploads/25ac9238-31dc-4b40-8ee2-51728f1c7a9a.png",
       slides: [
         {
           title: "Fonction linéaire",
@@ -76,6 +77,7 @@ const Lesson1Course = () => {
     },
     "3": {
       title: "Équations et inéquations",
+      pdfUrl: "/lovable-uploads/25ac9238-31dc-4b40-8ee2-51728f1c7a9a.png",
       slides: [
         {
           title: "Équations du premier degré",
@@ -105,6 +107,7 @@ const Lesson1Course = () => {
     },
     "4": {
       title: "Statistiques descriptives",
+      pdfUrl: "/lovable-uploads/25ac9238-31dc-4b40-8ee2-51728f1c7a9a.png",
       slides: [
         {
           title: "Mesures de tendance centrale",
@@ -134,6 +137,7 @@ const Lesson1Course = () => {
     },
     "5": {
       title: "Géométrie dans l'espace",
+      pdfUrl: "/lovable-uploads/25ac9238-31dc-4b40-8ee2-51728f1c7a9a.png",
       slides: [
         {
           title: "Solides usuels",
@@ -163,6 +167,7 @@ const Lesson1Course = () => {
     },
     "6": {
       title: "Trigonométrie",
+      pdfUrl: "/lovable-uploads/25ac9238-31dc-4b40-8ee2-51728f1c7a9a.png",
       slides: [
         {
           title: "Relations trigonométriques",

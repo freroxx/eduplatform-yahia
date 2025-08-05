@@ -1,10 +1,8 @@
-
 import { useState, useEffect } from "react";
 import { motion } from "framer-motion";
-import CourseSlide from "@/components/CourseSlide";
+import EnhancedCourseSlide from "@/components/EnhancedCourseSlide";
 import LoadingSpinner from "@/components/LoadingSpinner";
 
-// Module 1: Fonctions linéaires et affines
 const MathCourse = () => {
   const [isLoading, setIsLoading] = useState(true);
   const [progress, setProgress] = useState(0);
@@ -211,9 +209,12 @@ const MathCourse = () => {
     }
   ];
 
+  // PDF URL for the geometry lesson
+  const geometryPDFUrl = "/lovable-uploads/25ac9238-31dc-4b40-8ee2-51728f1c7a9a.png"; // This would be converted to actual PDF
+
   if (isLoading) {
     return (
-      <div className="min-h-screen bg-gradient-to-br from-green-50 via-emerald-50 to-teal-50 dark:from-gray-900 dark:via-gray-800 dark:to-gray-900 flex items-center justify-center">
+      <div className="min-h-screen animated-bg flex items-center justify-center">
         <LoadingSpinner text="Chargement du cours de mathématiques..." progress={progress} type="progress" />
       </div>
     );
@@ -225,9 +226,10 @@ const MathCourse = () => {
       animate={{ opacity: 1 }}
       transition={{ duration: 0.5 }}
     >
-      <CourseSlide 
+      <EnhancedCourseSlide 
         lessonTitle="Module 1: Fonctions linéaires et affines" 
-        slides={slides} 
+        slides={slides}
+        pdfUrl={geometryPDFUrl}
       />
     </motion.div>
   );

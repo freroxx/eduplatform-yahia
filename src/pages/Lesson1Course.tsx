@@ -1,21 +1,23 @@
-
 import { useState } from "react";
-import { motion } from "framer-motion";
+import { motion, AnimatePresence } from "framer-motion";
 import { Button } from "@/components/ui/button";
 import { Card, CardContent, CardHeader, CardTitle } from "@/components/ui/card";
 import { Progress } from "@/components/ui/progress";
-import { ChevronLeft, ChevronRight, BookOpen, Calculator, Home } from "lucide-react";
-import { Link, useParams } from "react-router-dom";
+import { ChevronLeft, ChevronRight, BookOpen, Calculator, Home, FileText } from "lucide-react";
+import { Link, useParams, useNavigate } from "react-router-dom";
 import GlobalHeader from "@/components/GlobalHeader";
+import PDFViewer from "@/components/PDFViewer";
 
 const Lesson1Course = () => {
   const { id } = useParams();
+  const navigate = useNavigate();
   const [currentSlide, setCurrentSlide] = useState(0);
+  const [showPDF, setShowPDF] = useState(false);
 
-  // Different content based on lesson ID
   const lessonContent = {
     "1": {
       title: "Généralités sur les fonctions",
+      pdfUrl: "/lovable-uploads/25ac9238-31dc-4b40-8ee2-51728f1c7a9a.png",
       slides: [
         {
           title: "Qu'est-ce qu'une fonction ?",
@@ -194,14 +196,22 @@ const Lesson1Course = () => {
   const totalSlides = lesson.slides.length;
 
   const nextSlide = () => {
-    setCurrentSlide((prev) => (prev + 1) % totalSlides);
+    setCurrentSlide((prev) => Math.min(prev + 1, totalSlides - 1));
   };
 
   const prevSlide = () => {
-    setCurrentSlide((prev) => (prev - 1 + totalSlides) % totalSlides);
+    setCurrentSlide((prev) => Math.max(prev - 1, 0));
   };
 
   const progress = ((currentSlide + 1) / totalSlides) * 100;
+
+  const handleBackToLessons = () => {
+    navigate('/lessons/math');
+  };
+
+  const handleBackToHome = () => {
+    navigate('/');
+  };
 
   return (
     <div className="min-h-screen animated-bg">
@@ -211,26 +221,43 @@ const Lesson1Course = () => {
         <motion.div
           initial={{ opacity: 0, y: 20 }}
           animate={{ opacity: 1, y: 0 }}
+          transition={{ duration: 0.6 }}
           className="max-w-4xl mx-auto"
         >
           {/* Header */}
-          <div className="flex items-center justify-between mb-8">
-            <Link to="/lessons/math">
-              <Button variant="outline" size="sm">
-                <ChevronLeft className="h-4 w-4 mr-2" />
-                Retour aux leçons
-              </Button>
-            </Link>
-            <Link to="/">
-              <Button variant="outline" size="sm">
-                <Home className="h-4 w-4 mr-2" />
-                Accueil
-              </Button>
-            </Link>
-          </div>
+          <motion.div 
+            className="flex items-center justify-between mb-8"
+            initial={{ opacity: 0, x: -20 }}
+            animate={{ opacity: 1, x: 0 }}
+            transition={{ delay: 0.2 }}
+          >
+            <Button 
+              variant="outline" 
+              size="sm" 
+              onClick={handleBackToLessons}
+              className="hover:scale-105 transition-transform"
+            >
+              <ChevronLeft className="h-4 w-4 mr-2" />
+              Retour aux leçons
+            </Button>
+            <Button 
+              variant="outline" 
+              size="sm" 
+              onClick={handleBackToHome}
+              className="hover:scale-105 transition-transform"
+            >
+              <Home className="h-4 w-4 mr-2" />
+              Accueil
+            </Button>
+          </motion.div>
 
           {/* Course Title */}
-          <div className="text-center mb-8">
+          <motion.div 
+            className="text-center mb-8"
+            initial={{ opacity: 0, y: -20 }}
+            animate={{ opacity: 1, y: 0 }}
+            transition={{ delay: 0.3 }}
+          >
             <h1 className="text-3xl font-bold text-foreground mb-2 flex items-center justify-center gap-3">
               <Calculator className="h-8 w-8 text-indigo-600" />
               {lesson.title}
@@ -238,94 +265,157 @@ const Lesson1Course = () => {
             <p className="text-muted-foreground">
               Chapitre {id} - Cours interactif
             </p>
-          </div>
+          </motion.div>
 
           {/* Progress */}
-          <div className="mb-8">
+          <motion.div 
+            className="mb-8"
+            initial={{ opacity: 0, scale: 0.9 }}
+            animate={{ opacity: 1, scale: 1 }}
+            transition={{ delay: 0.4 }}
+          >
             <div className="flex justify-between items-center mb-2">
               <span className="text-sm text-muted-foreground">
                 Slide {currentSlide + 1} sur {totalSlides}
               </span>
-              <span className="text-sm text-muted-foreground">
-                {Math.round(progress)}% terminé
-              </span>
+              <div className="flex items-center gap-4">
+                <span className="text-sm text-muted-foreground">
+                  {Math.round(progress)}% terminé
+                </span>
+                {lesson.pdfUrl && (
+                  <Button
+                    variant="outline"
+                    size="sm"
+                    onClick={() => setShowPDF(!showPDF)}
+                    className="hover:scale-105 transition-transform"
+                  >
+                    <FileText className="h-4 w-4 mr-2" />
+                    PDF
+                  </Button>
+                )}
+              </div>
             </div>
             <Progress value={progress} className="w-full" />
-          </div>
+          </motion.div>
 
-          {/* Slide Content */}
-          <Card className="mb-8 bg-card/90 backdrop-blur-sm border-0 shadow-2xl">
-            <CardHeader>
-              <CardTitle className="text-2xl text-center text-card-foreground flex items-center justify-center gap-2">
-                <BookOpen className="h-6 w-6 text-indigo-600" />
-                {lesson.slides[currentSlide].title}
-              </CardTitle>
-            </CardHeader>
-            <CardContent className="space-y-6">
-              <div className="text-lg leading-relaxed text-card-foreground">
-                {lesson.slides[currentSlide].content}
-              </div>
-              
-              {lesson.slides[currentSlide].formula && (
-                <div className="bg-indigo-50 dark:bg-indigo-900/20 p-4 rounded-lg border border-indigo-200 dark:border-indigo-800">
-                  <h4 className="font-semibold text-indigo-800 dark:text-indigo-200 mb-2">
-                    Formule :
-                  </h4>
-                  <div className="font-mono text-lg text-indigo-700 dark:text-indigo-300">
-                    {lesson.slides[currentSlide].formula}
-                  </div>
+          {/* Content */}
+          {showPDF && lesson.pdfUrl ? (
+            <PDFViewer 
+              pdfUrl={lesson.pdfUrl} 
+              title={lesson.title}
+              onClose={() => setShowPDF(false)}
+            />
+          ) : (
+            <>
+              {/* Slide Content */}
+              <AnimatePresence mode="wait">
+                <motion.div
+                  key={currentSlide}
+                  initial={{ opacity: 0, x: 50, scale: 0.95 }}
+                  animate={{ opacity: 1, x: 0, scale: 1 }}
+                  exit={{ opacity: 0, x: -50, scale: 0.95 }}
+                  transition={{ duration: 0.5, ease: "easeInOut" }}
+                >
+                  <Card className="mb-8 bg-card/90 backdrop-blur-sm border-0 shadow-2xl hover:shadow-3xl transition-shadow duration-300">
+                    <CardHeader>
+                      <CardTitle className="text-2xl text-center text-card-foreground flex items-center justify-center gap-2">
+                        <BookOpen className="h-6 w-6 text-indigo-600" />
+                        {lesson.slides[currentSlide].title}
+                      </CardTitle>
+                    </CardHeader>
+                    <CardContent className="space-y-6">
+                      <motion.div 
+                        className="text-lg leading-relaxed text-card-foreground"
+                        initial={{ opacity: 0 }}
+                        animate={{ opacity: 1 }}
+                        transition={{ delay: 0.3 }}
+                      >
+                        {lesson.slides[currentSlide].content}
+                      </motion.div>
+                      
+                      {lesson.slides[currentSlide].formula && (
+                        <motion.div 
+                          className="bg-indigo-50 dark:bg-indigo-900/20 p-4 rounded-lg border border-indigo-200 dark:border-indigo-800"
+                          initial={{ opacity: 0, y: 20 }}
+                          animate={{ opacity: 1, y: 0 }}
+                          transition={{ delay: 0.4 }}
+                        >
+                          <h4 className="font-semibold text-indigo-800 dark:text-indigo-200 mb-2">
+                            Formule :
+                          </h4>
+                          <div className="font-mono text-lg text-indigo-700 dark:text-indigo-300">
+                            {lesson.slides[currentSlide].formula}
+                          </div>
+                        </motion.div>
+                      )}
+
+                      {lesson.slides[currentSlide].example && (
+                        <motion.div 
+                          className="bg-green-50 dark:bg-green-900/20 p-4 rounded-lg border border-green-200 dark:border-green-800"
+                          initial={{ opacity: 0, y: 20 }}
+                          animate={{ opacity: 1, y: 0 }}
+                          transition={{ delay: 0.5 }}
+                        >
+                          <h4 className="font-semibold text-green-800 dark:text-green-200 mb-2">
+                            Exemple :
+                          </h4>
+                          <div className="text-green-700 dark:text-green-300">
+                            {lesson.slides[currentSlide].example}
+                          </div>
+                        </motion.div>
+                      )}
+                    </CardContent>
+                  </Card>
+                </motion.div>
+              </AnimatePresence>
+
+              {/* Navigation */}
+              <motion.div 
+                className="flex justify-between items-center"
+                initial={{ opacity: 0, y: 20 }}
+                animate={{ opacity: 1, y: 0 }}
+                transition={{ delay: 0.6 }}
+              >
+                <Button
+                  onClick={prevSlide}
+                  disabled={currentSlide === 0}
+                  variant="outline"
+                  size="lg"
+                  className="hover:scale-105 transition-transform disabled:hover:scale-100"
+                >
+                  <ChevronLeft className="h-5 w-5 mr-2" />
+                  Précédent
+                </Button>
+
+                <div className="flex space-x-2">
+                  {lesson.slides.map((_, index) => (
+                    <motion.button
+                      key={index}
+                      onClick={() => setCurrentSlide(index)}
+                      className={`w-3 h-3 rounded-full transition-all duration-300 ${
+                        index === currentSlide
+                          ? "bg-indigo-600 scale-125"
+                          : "bg-gray-300 dark:bg-gray-600 hover:bg-gray-400 dark:hover:bg-gray-500"
+                      }`}
+                      whileHover={{ scale: 1.2 }}
+                      whileTap={{ scale: 0.9 }}
+                    />
+                  ))}
                 </div>
-              )}
 
-              {lesson.slides[currentSlide].example && (
-                <div className="bg-green-50 dark:bg-green-900/20 p-4 rounded-lg border border-green-200 dark:border-green-800">
-                  <h4 className="font-semibold text-green-800 dark:text-green-200 mb-2">
-                    Exemple :
-                  </h4>
-                  <div className="text-green-700 dark:text-green-300">
-                    {lesson.slides[currentSlide].example}
-                  </div>
-                </div>
-              )}
-            </CardContent>
-          </Card>
-
-          {/* Navigation */}
-          <div className="flex justify-between items-center">
-            <Button
-              onClick={prevSlide}
-              disabled={currentSlide === 0}
-              variant="outline"
-              size="lg"
-            >
-              <ChevronLeft className="h-5 w-5 mr-2" />
-              Précédent
-            </Button>
-
-            <div className="flex space-x-2">
-              {lesson.slides.map((_, index) => (
-                <button
-                  key={index}
-                  onClick={() => setCurrentSlide(index)}
-                  className={`w-3 h-3 rounded-full transition-colors ${
-                    index === currentSlide
-                      ? "bg-indigo-600"
-                      : "bg-gray-300 dark:bg-gray-600"
-                  }`}
-                />
-              ))}
-            </div>
-
-            <Button
-              onClick={nextSlide}
-              disabled={currentSlide === totalSlides - 1}
-              variant="outline"
-              size="lg"
-            >
-              Suivant
-              <ChevronRight className="h-5 w-5 ml-2" />
-            </Button>
-          </div>
+                <Button
+                  onClick={nextSlide}
+                  disabled={currentSlide === totalSlides - 1}
+                  variant="outline"
+                  size="lg"
+                  className="hover:scale-105 transition-transform disabled:hover:scale-100"
+                >
+                  Suivant
+                  <ChevronRight className="h-5 w-5 ml-2" />
+                </Button>
+              </motion.div>
+            </>
+          )}
         </motion.div>
       </div>
     </div>

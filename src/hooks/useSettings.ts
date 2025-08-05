@@ -1,4 +1,3 @@
-
 import { useState, useEffect } from 'react';
 
 interface UserSettings {
@@ -8,6 +7,14 @@ interface UserSettings {
   userType: 'student' | 'teacher';
   country: string;
   subjects: string[];
+  animatedBackgrounds: boolean;
+  fontSize: number;
+  animationSpeed: number;
+  soundEffects: boolean;
+  notifications: boolean;
+  autoSave: boolean;
+  concentrationMode: boolean;
+  studyReminders: boolean;
 }
 
 export const useSettings = () => {
@@ -18,7 +25,15 @@ export const useSettings = () => {
       hasOnboarded: localStorage.getItem('hasOnboarded') === 'true',
       userType: (localStorage.getItem('userType') as 'student' | 'teacher') || 'student',
       country: localStorage.getItem('userCountry') || 'Maroc',
-      subjects: JSON.parse(localStorage.getItem('userSubjects') || '[]')
+      subjects: JSON.parse(localStorage.getItem('userSubjects') || '[]'),
+      animatedBackgrounds: localStorage.getItem('animatedBackgrounds') !== 'false',
+      fontSize: parseInt(localStorage.getItem('fontSize') || '16'),
+      animationSpeed: parseInt(localStorage.getItem('animationSpeed') || '100'),
+      soundEffects: localStorage.getItem('soundEffects') !== 'false',
+      notifications: localStorage.getItem('notifications') !== 'false',
+      autoSave: localStorage.getItem('autoSave') !== 'false',
+      concentrationMode: localStorage.getItem('concentrationMode') === 'true',
+      studyReminders: localStorage.getItem('studyReminders') !== 'false'
     };
   });
 
@@ -29,6 +44,14 @@ export const useSettings = () => {
     localStorage.setItem('userType', settings.userType);
     localStorage.setItem('userCountry', settings.country);
     localStorage.setItem('userSubjects', JSON.stringify(settings.subjects));
+    localStorage.setItem('animatedBackgrounds', settings.animatedBackgrounds.toString());
+    localStorage.setItem('fontSize', settings.fontSize.toString());
+    localStorage.setItem('animationSpeed', settings.animationSpeed.toString());
+    localStorage.setItem('soundEffects', settings.soundEffects.toString());
+    localStorage.setItem('notifications', settings.notifications.toString());
+    localStorage.setItem('autoSave', settings.autoSave.toString());
+    localStorage.setItem('concentrationMode', settings.concentrationMode.toString());
+    localStorage.setItem('studyReminders', settings.studyReminders.toString());
     
     // Apply theme
     if (settings.theme === 'dark') {
@@ -39,6 +62,12 @@ export const useSettings = () => {
       const isDark = window.matchMedia('(prefers-color-scheme: dark)').matches;
       document.documentElement.classList.toggle('dark', isDark);
     }
+
+    // Apply font size
+    document.documentElement.style.fontSize = `${settings.fontSize}px`;
+
+    // Apply animated backgrounds
+    document.documentElement.classList.toggle('disable-animations', !settings.animatedBackgrounds);
   }, [settings]);
 
   const updateName = (name: string) => {
@@ -61,6 +90,38 @@ export const useSettings = () => {
     setSettings(prev => ({ ...prev, subjects }));
   };
 
+  const updateAnimatedBackgrounds = (animatedBackgrounds: boolean) => {
+    setSettings(prev => ({ ...prev, animatedBackgrounds }));
+  };
+
+  const updateFontSize = (fontSize: number) => {
+    setSettings(prev => ({ ...prev, fontSize }));
+  };
+
+  const updateAnimationSpeed = (animationSpeed: number) => {
+    setSettings(prev => ({ ...prev, animationSpeed }));
+  };
+
+  const updateSoundEffects = (soundEffects: boolean) => {
+    setSettings(prev => ({ ...prev, soundEffects }));
+  };
+
+  const updateNotifications = (notifications: boolean) => {
+    setSettings(prev => ({ ...prev, notifications }));
+  };
+
+  const updateAutoSave = (autoSave: boolean) => {
+    setSettings(prev => ({ ...prev, autoSave }));
+  };
+
+  const updateConcentrationMode = (concentrationMode: boolean) => {
+    setSettings(prev => ({ ...prev, concentrationMode }));
+  };
+
+  const updateStudyReminders = (studyReminders: boolean) => {
+    setSettings(prev => ({ ...prev, studyReminders }));
+  };
+
   const completeOnboarding = (
     name: string, 
     theme: 'light' | 'dark' | 'auto',
@@ -68,14 +129,15 @@ export const useSettings = () => {
     country: string,
     subjects: string[]
   ) => {
-    setSettings({
+    setSettings(prev => ({
+      ...prev,
       name,
       theme,
       hasOnboarded: true,
       userType,
       country,
       subjects
-    });
+    }));
   };
 
   return {
@@ -85,6 +147,14 @@ export const useSettings = () => {
     updateUserType,
     updateCountry,
     updateSubjects,
+    updateAnimatedBackgrounds,
+    updateFontSize,
+    updateAnimationSpeed,
+    updateSoundEffects,
+    updateNotifications,
+    updateAutoSave,
+    updateConcentrationMode,
+    updateStudyReminders,
     completeOnboarding
   };
 };

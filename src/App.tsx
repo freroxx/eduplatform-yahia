@@ -19,6 +19,12 @@ import FrenchCourse from "./pages/french/FrenchCourse";
 import FrenchExercises from "./pages/french/FrenchExercises";
 import FrenchVideos from "./pages/french/FrenchVideos";
 
+// English lessons
+import EnglishLessons from "./pages/english/EnglishLessons";
+import EnglishCourse from "./pages/EnglishCourse";
+import EnglishExercises from "./pages/EnglishExercises";
+import EnglishVideos from "./pages/english/EnglishVideos";
+
 // Physics lessons
 import PhysicsLessons from "./pages/physics/PhysicsLessons";
 import PhysicsCourse from "./pages/physics/PhysicsCourse";
@@ -61,6 +67,12 @@ function App() {
             <Route path="/math/lesson/:id/course" element={<Lesson1Course />} />
             <Route path="/math/lesson/:id/exercises" element={<Lesson1Exercises />} />
             <Route path="/math/lesson/:id/videos" element={<Lesson1Videos />} />
+            
+            {/* English routes */}
+            <Route path="/lessons/english" element={<EnglishLessons />} />
+            <Route path="/english/lesson/:id/course" element={<EnglishCourse />} />
+            <Route path="/english/lesson/:id/exercises" element={<EnglishExercises />} />
+            <Route path="/english/lesson/:id/videos" element={<EnglishVideos />} />
             
             {/* French routes */}
             <Route path="/lessons/french" element={<FrenchLessons />} />

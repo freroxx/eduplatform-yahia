@@ -128,6 +128,38 @@
   z-index: -1;
 }
 
+/* Particle Animation Background */
+.particle-bg {
+  position: fixed;
+  top: 0;
+  left: 0;
+  width: 100%;
+  height: 100%;
+  pointer-events: none;
+  z-index: -3;
+}
+
+.particle {
+  position: absolute;
+  width: 2px;
+  height: 2px;
+  background: hsl(var(--primary) / 0.3);
+  border-radius: 50%;
+  animation: float 20s infinite linear;
+}
+
+/* Wave Animation */
+.wave-bg {
+  position: fixed;
+  bottom: 0;
+  left: 0;
+  width: 100%;
+  height: 100px;
+  background: linear-gradient(to top, hsl(var(--primary) / 0.05), transparent);
+  z-index: -1;
+  animation: wave 15s ease-in-out infinite;
+}
+
 @keyframes gradientFlow {
   0%, 100% { background-position: 0% 50%; }
   25% { background-position: 100% 50%; }
@@ -157,6 +189,47 @@
 @keyframes diagonalFlow {
   0% { transform: translateX(-100%) translateY(-100%); }
   100% { transform: translateX(100%) translateY(100%); }
+}
+
+@keyframes float {
+  0% {
+    transform: translateY(100vh) rotate(0deg);
+    opacity: 0;
+  }
+  10% {
+    opacity: 1;
+  }
+  90% {
+    opacity: 1;
+  }
+  100% {
+    transform: translateY(-100vh) rotate(360deg);
+    opacity: 0;
+  }
+}
+
+@keyframes wave {
+  0%, 100% {
+    clip-path: polygon(0 100%, 100% 100%, 100% 80%, 0 60%);
+  }
+  50% {
+    clip-path: polygon(0 100%, 100% 100%, 100% 60%, 0 80%);
+  }
+}
+
+/* Disable animations setting */
+.disable-animations .animated-bg,
+.disable-animations .animated-bg::before,
+.disable-animations .animated-bg::after,
+.disable-animations .floating-animation,
+.disable-animations .gradient-text,
+.disable-animations .particle,
+.disable-animations .wave-bg {
+  animation: none !important;
+}
+
+.disable-animations .hover-lift:hover {
+  transform: none !important;
 }
 
 /* Enhanced Glass Morphism */
@@ -322,6 +395,29 @@
   100% { background-position: -200% 0; }
 }
 
+/* EduPlatform 5.0 Enhancements */
+.edu-glow {
+  box-shadow: 
+    0 0 20px hsl(var(--primary) / 0.2),
+    0 0 40px hsl(var(--primary) / 0.1),
+    0 8px 32px rgba(0, 0, 0, 0.12);
+}
+
+.edu-card {
+  background: linear-gradient(135deg, 
+    hsl(var(--card)) 0%, 
+    hsl(var(--card) / 0.95) 100%);
+  border: 1px solid hsl(var(--border) / 0.5);
+  transition: all 0.3s cubic-bezier(0.4, 0, 0.2, 1);
+}
+
+.edu-card:hover {
+  transform: translateY(-4px);
+  box-shadow: 
+    0 20px 40px rgba(0, 0, 0, 0.1),
+    0 0 20px hsl(var(--primary) / 0.1);
+}
+
 /* Responsive Improvements */
 @media (max-width: 640px) {
   .animated-bg::before {
@@ -345,8 +441,10 @@
   .animated-bg::before,
   .animated-bg::after,
   .floating-animation,
-  .gradient-text {
-    animation: none;
+  .gradient-text,
+  .particle,
+  .wave-bg {
+    animation: none !important;
   }
   
   .hover-lift:hover {

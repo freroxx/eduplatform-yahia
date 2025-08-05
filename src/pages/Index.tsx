@@ -11,9 +11,10 @@ import StatsOverview from "@/components/StatsOverview";
 import QuickStats from "@/components/QuickStats";
 import ChangelogDialog from "@/components/ChangelogDialog";
 import Footer from "@/components/Footer";
+import UserOnboarding from "@/components/UserOnboarding";
+import WelcomeTutorial from "@/components/WelcomeTutorial";
 import { useSettings } from "@/hooks/useSettings";
 import { useExerciseStats } from "@/hooks/useExerciseStats";
-import { Link } from "react-router-dom";
 
 const Index = () => {
   const [showOnboarding, setShowOnboarding] = useState(false);
@@ -42,10 +43,9 @@ const Index = () => {
       lessons: 12,
       exercises: 48,
       progress: getSubjectStats('math').progress,
-      difficulty: "Intermédiaire",
+      difficulty: "Moyen" as const,
       topics: ["Fonctions linéaires", "Équations", "Géométrie", "Statistiques"],
       estimatedTime: "2h 30min",
-      // Additional properties required by EnhancedSubjectCard
       name: "Mathématiques",
       bgGradient: "from-blue-500 to-cyan-500",
       duration: "2h 30min",
@@ -60,7 +60,7 @@ const Index = () => {
       lessons: 10,
       exercises: 35,
       progress: getSubjectStats('french').progress,
-      difficulty: "Facile",
+      difficulty: "Facile" as const,
       topics: ["Typologie textuelle", "Grammaire", "Orthographe", "Littérature"],
       estimatedTime: "2h 15min",
       name: "Français",
@@ -77,7 +77,7 @@ const Index = () => {
       lessons: 8,
       exercises: 32,
       progress: getSubjectStats('english').progress,
-      difficulty: "Intermédiaire",
+      difficulty: "Moyen" as const,
       topics: ["Tenses", "Vocabulary", "Grammar", "Communication"],
       estimatedTime: "1h 45min",
       name: "Anglais",
@@ -94,7 +94,7 @@ const Index = () => {
       lessons: 9,
       exercises: 28,
       progress: getSubjectStats('physics').progress,
-      difficulty: "Difficile",
+      difficulty: "Difficile" as const,
       topics: ["Optique", "Mécanique", "Électricité", "Chimie"],
       estimatedTime: "3h 00min",
       name: "Physique-Chimie",
@@ -111,7 +111,7 @@ const Index = () => {
       lessons: 7,
       exercises: 25,
       progress: getSubjectStats('svt').progress,
-      difficulty: "Intermédiaire",
+      difficulty: "Moyen" as const,
       topics: ["Génétique", "Écologie", "Biologie", "Environnement"],
       estimatedTime: "2h 00min",
       name: "SVT",
@@ -128,7 +128,7 @@ const Index = () => {
       lessons: 6,
       exercises: 22,
       progress: getSubjectStats('histoire-geo').progress,
-      difficulty: "Facile",
+      difficulty: "Facile" as const,
       topics: ["Histoire moderne", "Géopolitique", "Économie", "Société"],
       estimatedTime: "2h 30min",
       name: "Histoire-Géographie",
@@ -145,7 +145,7 @@ const Index = () => {
       lessons: 5,
       exercises: 18,
       progress: getSubjectStats('arabic').progress,
-      difficulty: "Intermédiaire",
+      difficulty: "Moyen" as const,
       topics: ["النحو", "الصرف", "الأدب", "البلاغة"],
       estimatedTime: "1h 30min",
       name: "العربية",
@@ -273,7 +273,14 @@ const Index = () => {
           transition={{ duration: 0.6, delay: 0.2 }}
           className="mb-12"
         >
-          <QuickStats />
+          <QuickStats 
+            totalLessons={totalStats.totalLessons}
+            completedLessons={totalStats.coursesCompleted}
+            totalStudyTime={totalStats.totalStudyTime}
+            currentStreak={totalStats.streak}
+            averageScore={totalStats.averageScore}
+            weeklyGoal={totalStats.weeklyGoal}
+          />
         </motion.section>
 
         {/* Featured Updates */}

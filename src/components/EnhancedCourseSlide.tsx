@@ -1,3 +1,4 @@
+
 import React, { useState } from "react";
 import { motion, AnimatePresence } from "framer-motion";
 import { ChevronLeft, ChevronRight, BookOpen, CheckCircle, FileText, Download } from "lucide-react";
@@ -16,7 +17,7 @@ interface Slide {
 interface EnhancedCourseSlideProps {
   lessonTitle: string;
   slides: Slide[];
-  pdfUrl?: string;
+  pdfUrl?: string | string[];
 }
 
 const EnhancedCourseSlide = ({ lessonTitle, slides, pdfUrl }: EnhancedCourseSlideProps) => {
@@ -26,7 +27,7 @@ const EnhancedCourseSlide = ({ lessonTitle, slides, pdfUrl }: EnhancedCourseSlid
   // Safety check for empty slides
   if (!slides || slides.length === 0) {
     return (
-      <div className="min-h-screen bg-gradient-to-br from-blue-50 via-indigo-50 to-purple-50 dark:from-gray-900 dark:via-gray-800 dark:to-gray-900 flex items-center justify-center">
+      <div className="min-h-screen animated-bg flex items-center justify-center">
         <div className="text-center p-8">
           <BookOpen className="h-16 w-16 mx-auto mb-4 text-muted-foreground" />
           <h2 className="text-2xl font-bold mb-2">Aucun contenu disponible</h2>
@@ -89,6 +90,8 @@ const EnhancedCourseSlide = ({ lessonTitle, slides, pdfUrl }: EnhancedCourseSlid
     }
   };
 
+  const imageCount = Array.isArray(pdfUrl) ? pdfUrl.length : (pdfUrl ? 1 : 0);
+
   return (
     <motion.div 
       className="min-h-screen animated-bg"
@@ -98,7 +101,7 @@ const EnhancedCourseSlide = ({ lessonTitle, slides, pdfUrl }: EnhancedCourseSlid
     >
       {/* Header */}
       <motion.div 
-        className="bg-background/80 backdrop-blur-sm border-b border-border sticky top-0 z-10"
+        className="bg-background/90 backdrop-blur-md border-b border-border sticky top-0 z-10 shadow-lg"
         initial={{ y: -50, opacity: 0 }}
         animate={{ y: 0, opacity: 1 }}
         transition={{ delay: 0.2 }}
@@ -107,7 +110,7 @@ const EnhancedCourseSlide = ({ lessonTitle, slides, pdfUrl }: EnhancedCourseSlid
           <div className="flex items-center justify-between">
             <div className="flex items-center gap-3">
               <motion.div 
-                className={`p-2 rounded-lg bg-gradient-to-r ${getSlideColor(currentSlideData?.type || 'intro')} text-white`}
+                className={`p-2 rounded-lg bg-gradient-to-r ${getSlideColor(currentSlideData?.type || 'intro')} text-white shadow-lg`}
                 whileHover={{ scale: 1.05 }}
                 whileTap={{ scale: 0.95 }}
               >
@@ -124,7 +127,7 @@ const EnhancedCourseSlide = ({ lessonTitle, slides, pdfUrl }: EnhancedCourseSlid
             </div>
             <div className="flex items-center gap-4">
               <div className="w-32">
-                <Progress value={progress} className="h-2" />
+                <Progress value={progress} className="h-3 rounded-full" />
               </div>
               <span className="text-sm font-medium text-muted-foreground">
                 {Math.round(progress)}%
@@ -134,10 +137,10 @@ const EnhancedCourseSlide = ({ lessonTitle, slides, pdfUrl }: EnhancedCourseSlid
                   variant="outline"
                   size="sm"
                   onClick={() => setShowPDF(!showPDF)}
-                  className="hover:scale-105 transition-transform"
+                  className="hover:scale-105 transition-transform shadow-md hover:shadow-lg"
                 >
                   <FileText className="h-4 w-4 mr-2" />
-                  PDF
+                  PDF {imageCount > 1 && `(${imageCount})`}
                 </Button>
               )}
             </div>
@@ -155,7 +158,7 @@ const EnhancedCourseSlide = ({ lessonTitle, slides, pdfUrl }: EnhancedCourseSlid
           />
         ) : (
           <Tabs defaultValue="slides" className="w-full">
-            <TabsList className="grid w-full grid-cols-2">
+            <TabsList className="grid w-full grid-cols-2 mb-6">
               <TabsTrigger value="slides" className="flex items-center gap-2">
                 <BookOpen className="h-4 w-4" />
                 Slides
@@ -163,14 +166,14 @@ const EnhancedCourseSlide = ({ lessonTitle, slides, pdfUrl }: EnhancedCourseSlid
               {pdfUrl && (
                 <TabsTrigger value="pdf" className="flex items-center gap-2">
                   <FileText className="h-4 w-4" />
-                  PDF Complet
+                  PDF Complet {imageCount > 1 && `(${imageCount} pages)`}
                 </TabsTrigger>
               )}
             </TabsList>
             
             <TabsContent value="slides">
               <motion.div 
-                className="bg-card/90 backdrop-blur-sm rounded-2xl shadow-xl border border-border overflow-hidden"
+                className="bg-card/95 backdrop-blur-sm rounded-2xl shadow-2xl border border-border overflow-hidden hover:shadow-3xl transition-shadow duration-300"
                 initial={{ y: 20, opacity: 0 }}
                 animate={{ y: 0, opacity: 1 }}
                 transition={{ delay: 0.3 }}
@@ -185,7 +188,7 @@ const EnhancedCourseSlide = ({ lessonTitle, slides, pdfUrl }: EnhancedCourseSlid
                     className="p-8"
                   >
                     <div className="mb-6">
-                      <h2 className="text-3xl font-bold text-foreground mb-4">
+                      <h2 className="text-3xl font-bold text-foreground mb-4 bg-gradient-to-r from-blue-600 to-purple-600 bg-clip-text text-transparent">
                         {currentSlideData?.title}
                       </h2>
                     </div>
@@ -193,7 +196,7 @@ const EnhancedCourseSlide = ({ lessonTitle, slides, pdfUrl }: EnhancedCourseSlid
                     <ScrollArea className="h-[60vh]">
                       <div className="pr-4">
                         <div className="prose prose-lg max-w-none dark:prose-invert">
-                          <div className="whitespace-pre-line text-muted-foreground leading-relaxed">
+                          <div className="whitespace-pre-line text-muted-foreground leading-relaxed text-lg">
                             {currentSlideData?.content}
                           </div>
                         </div>
@@ -204,7 +207,7 @@ const EnhancedCourseSlide = ({ lessonTitle, slides, pdfUrl }: EnhancedCourseSlid
 
                 {/* Navigation */}
                 <motion.div 
-                  className="px-8 py-6 bg-muted/50 border-t border-border"
+                  className="px-8 py-6 bg-muted/30 border-t border-border backdrop-blur-sm"
                   initial={{ y: 20, opacity: 0 }}
                   animate={{ y: 0, opacity: 1 }}
                   transition={{ delay: 0.5 }}
@@ -214,21 +217,21 @@ const EnhancedCourseSlide = ({ lessonTitle, slides, pdfUrl }: EnhancedCourseSlid
                       onClick={prevSlide}
                       disabled={currentSlide === 0}
                       variant="outline"
-                      className="flex items-center gap-2 hover:scale-105 transition-transform"
+                      className="flex items-center gap-2 hover:scale-105 transition-transform shadow-md"
                     >
                       <ChevronLeft className="h-4 w-4" />
                       Précédent
                     </Button>
 
-                    <div className="flex gap-2">
+                    <div className="flex gap-3">
                       {slides.map((_, index) => (
                         <motion.button
                           key={index}
                           onClick={() => setCurrentSlide(index)}
-                          className={`w-3 h-3 rounded-full transition-all duration-300 ${
+                          className={`w-4 h-4 rounded-full transition-all duration-300 ${
                             index === currentSlide
-                              ? "bg-primary scale-125"
-                              : "bg-muted-foreground/30 hover:bg-muted-foreground/50"
+                              ? "bg-primary scale-125 shadow-lg"
+                              : "bg-muted-foreground/30 hover:bg-muted-foreground/50 hover:scale-110"
                           }`}
                           whileHover={{ scale: 1.2 }}
                           whileTap={{ scale: 0.9 }}
@@ -239,7 +242,7 @@ const EnhancedCourseSlide = ({ lessonTitle, slides, pdfUrl }: EnhancedCourseSlid
                     <Button
                       onClick={nextSlide}
                       disabled={currentSlide === slides.length - 1}
-                      className="flex items-center gap-2 hover:scale-105 transition-transform"
+                      className="flex items-center gap-2 hover:scale-105 transition-transform shadow-md"
                     >
                       Suivant
                       <ChevronRight className="h-4 w-4" />

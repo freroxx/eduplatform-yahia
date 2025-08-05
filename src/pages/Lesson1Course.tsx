@@ -14,6 +14,19 @@ const Lesson1Course = () => {
   const [currentSlide, setCurrentSlide] = useState(0);
   const [showPDF, setShowPDF] = useState(false);
 
+  // Produit scalaire images
+  const produitScalaireImages = [
+    "/lovable-uploads/cd4a7174-2c37-4430-9977-542863367029.png",
+    "/lovable-uploads/48671fc1-0965-4d5e-95fd-46dae4cf46e6.png",
+    "/lovable-uploads/dca2f400-4e17-4ce5-92a6-86eb06edf538.png",
+    "/lovable-uploads/dabaf442-6867-47c1-a06a-2f67b46ee150.png",
+    "/lovable-uploads/a3b682bc-0d23-4380-a56d-f9420410c7d6.png",
+    "/lovable-uploads/daf64bbb-f1f3-4315-a24e-3fbd0cec347d.png",
+    "/lovable-uploads/baba2588-7595-448e-8891-8c5f3d728943.png",
+    "/lovable-uploads/a2b5935a-5511-4c72-9cdc-ad634f9d5bd4.png",
+    "/lovable-uploads/e402c0ef-008a-4d0e-8b0f-2e7ca9f9baed.png"
+  ];
+
   const lessonContent = {
     "1": {
       title: "Généralités sur les fonctions",
@@ -194,6 +207,42 @@ const Lesson1Course = () => {
           example: "Mesurer la hauteur d'un bâtiment avec un théodolite"
         }
       ]
+    },
+    "7": {
+      title: "Produit scalaire",
+      pdfUrl: produitScalaireImages,
+      slides: [
+        {
+          title: "Introduction au produit scalaire",
+          content: "Le produit scalaire est une notion fondamentale en mathématiques, particulièrement en géométrie vectorielle. Il a été introduit au milieu du XIXe siècle par le mathématicien allemand Hermann Grassmann.",
+          formula: "Pour deux vecteurs u⃗ et v⃗, le produit scalaire est noté u⃗·v⃗",
+          example: "Le produit scalaire permet de calculer des angles, des distances et des projections orthogonales."
+        },
+        {
+          title: "Définition du produit scalaire",
+          content: "Soient u⃗ et v⃗ deux vecteurs du plan. Le produit scalaire de u⃗ par v⃗, noté u⃗·v⃗, est le nombre réel défini par plusieurs méthodes équivalentes.",
+          formula: "u⃗·v⃗ = ||u⃗|| × ||v⃗|| × cos(u⃗,v⃗)",
+          example: "Si u⃗ = 0⃗ ou v⃗ = 0⃗ alors u⃗·v⃗ = 0"
+        },
+        {
+          title: "Propriétés du produit scalaire",
+          content: "Le produit scalaire possède plusieurs propriétés importantes : commutativité, distributivité, et relation avec la norme d'un vecteur.",
+          formula: "u⃗·v⃗ = v⃗·u⃗ (commutativité)",
+          example: "u⃗·u⃗ = ||u⃗||² (carré scalaire)"
+        },
+        {
+          title: "Applications géométriques",
+          content: "Le produit scalaire permet de résoudre de nombreux problèmes géométriques : calcul d'angles, vérification d'orthogonalité, calcul de projections.",
+          formula: "Deux vecteurs sont orthogonaux ⟺ u⃗·v⃗ = 0",
+          example: "Dans un triangle rectangle ABC, AB⃗·AC⃗ = 0"
+        },
+        {
+          title: "Théorème d'Al-Kashi",
+          content: "Le théorème d'Al-Kashi (ou loi des cosinus) généralise le théorème de Pythagore aux triangles quelconques.",
+          formula: "BC² = AB² + AC² - 2AB × AC × cos(Â)",
+          example: "Si Â = 90°, on retrouve le théorème de Pythagore : BC² = AB² + AC²"
+        }
+      ]
     }
   };
 
@@ -268,7 +317,7 @@ const Lesson1Course = () => {
               {lesson.title}
             </h1>
             <p className="text-muted-foreground">
-              Chapitre {id} - Cours interactif
+              Chapitre {id} - Cours interactif avec support PDF
             </p>
           </motion.div>
 
@@ -292,15 +341,15 @@ const Lesson1Course = () => {
                     variant="outline"
                     size="sm"
                     onClick={() => setShowPDF(!showPDF)}
-                    className="hover:scale-105 transition-transform"
+                    className="hover:scale-105 transition-transform shadow-md"
                   >
                     <FileText className="h-4 w-4 mr-2" />
-                    PDF
+                    PDF {Array.isArray(lesson.pdfUrl) && `(${lesson.pdfUrl.length} pages)`}
                   </Button>
                 )}
               </div>
             </div>
-            <Progress value={progress} className="w-full" />
+            <Progress value={progress} className="w-full h-3 rounded-full" />
           </motion.div>
 
           {/* Content */}
@@ -321,14 +370,14 @@ const Lesson1Course = () => {
                   exit={{ opacity: 0, x: -50, scale: 0.95 }}
                   transition={{ duration: 0.5, ease: "easeInOut" }}
                 >
-                  <Card className="mb-8 bg-card/90 backdrop-blur-sm border-0 shadow-2xl hover:shadow-3xl transition-shadow duration-300">
-                    <CardHeader>
-                      <CardTitle className="text-2xl text-center text-card-foreground flex items-center justify-center gap-2">
-                        <BookOpen className="h-6 w-6 text-indigo-600" />
+                  <Card className="mb-8 bg-card/95 backdrop-blur-sm border-0 shadow-2xl hover:shadow-3xl transition-all duration-300">
+                    <CardHeader className="bg-gradient-to-r from-indigo-500 via-purple-500 to-pink-500 text-white rounded-t-lg">
+                      <CardTitle className="text-2xl text-center flex items-center justify-center gap-2">
+                        <BookOpen className="h-6 w-6" />
                         {lesson.slides[currentSlide].title}
                       </CardTitle>
                     </CardHeader>
-                    <CardContent className="space-y-6">
+                    <CardContent className="space-y-6 p-8">
                       <motion.div 
                         className="text-lg leading-relaxed text-card-foreground"
                         initial={{ opacity: 0 }}
@@ -340,15 +389,15 @@ const Lesson1Course = () => {
                       
                       {lesson.slides[currentSlide].formula && (
                         <motion.div 
-                          className="bg-indigo-50 dark:bg-indigo-900/20 p-4 rounded-lg border border-indigo-200 dark:border-indigo-800"
+                          className="bg-gradient-to-r from-indigo-50 to-blue-50 dark:from-indigo-900/20 dark:to-blue-900/20 p-6 rounded-xl border border-indigo-200 dark:border-indigo-800 shadow-inner"
                           initial={{ opacity: 0, y: 20 }}
                           animate={{ opacity: 1, y: 0 }}
                           transition={{ delay: 0.4 }}
                         >
-                          <h4 className="font-semibold text-indigo-800 dark:text-indigo-200 mb-2">
-                            Formule :
+                          <h4 className="font-semibold text-indigo-800 dark:text-indigo-200 mb-3 text-lg">
+                            💡 Formule :
                           </h4>
-                          <div className="font-mono text-lg text-indigo-700 dark:text-indigo-300">
+                          <div className="font-mono text-xl text-indigo-700 dark:text-indigo-300 bg-white/50 dark:bg-black/20 p-3 rounded-lg">
                             {lesson.slides[currentSlide].formula}
                           </div>
                         </motion.div>
@@ -356,15 +405,15 @@ const Lesson1Course = () => {
 
                       {lesson.slides[currentSlide].example && (
                         <motion.div 
-                          className="bg-green-50 dark:bg-green-900/20 p-4 rounded-lg border border-green-200 dark:border-green-800"
+                          className="bg-gradient-to-r from-green-50 to-emerald-50 dark:from-green-900/20 dark:to-emerald-900/20 p-6 rounded-xl border border-green-200 dark:border-green-800 shadow-inner"
                           initial={{ opacity: 0, y: 20 }}
                           animate={{ opacity: 1, y: 0 }}
                           transition={{ delay: 0.5 }}
                         >
-                          <h4 className="font-semibold text-green-800 dark:text-green-200 mb-2">
-                            Exemple :
+                          <h4 className="font-semibold text-green-800 dark:text-green-200 mb-3 text-lg">
+                            📝 Exemple :
                           </h4>
-                          <div className="text-green-700 dark:text-green-300">
+                          <div className="text-green-700 dark:text-green-300 bg-white/50 dark:bg-black/20 p-3 rounded-lg">
                             {lesson.slides[currentSlide].example}
                           </div>
                         </motion.div>
@@ -386,21 +435,21 @@ const Lesson1Course = () => {
                   disabled={currentSlide === 0}
                   variant="outline"
                   size="lg"
-                  className="hover:scale-105 transition-transform disabled:hover:scale-100"
+                  className="hover:scale-105 transition-transform disabled:hover:scale-100 shadow-md"
                 >
                   <ChevronLeft className="h-5 w-5 mr-2" />
                   Précédent
                 </Button>
 
-                <div className="flex space-x-2">
+                <div className="flex space-x-3">
                   {lesson.slides.map((_, index) => (
                     <motion.button
                       key={index}
                       onClick={() => setCurrentSlide(index)}
-                      className={`w-3 h-3 rounded-full transition-all duration-300 ${
+                      className={`w-4 h-4 rounded-full transition-all duration-300 ${
                         index === currentSlide
-                          ? "bg-indigo-600 scale-125"
-                          : "bg-gray-300 dark:bg-gray-600 hover:bg-gray-400 dark:hover:bg-gray-500"
+                          ? "bg-indigo-600 scale-125 shadow-lg"
+                          : "bg-gray-300 dark:bg-gray-600 hover:bg-gray-400 dark:hover:bg-gray-500 hover:scale-110"
                       }`}
                       whileHover={{ scale: 1.2 }}
                       whileTap={{ scale: 0.9 }}
@@ -413,7 +462,7 @@ const Lesson1Course = () => {
                   disabled={currentSlide === totalSlides - 1}
                   variant="outline"
                   size="lg"
-                  className="hover:scale-105 transition-transform disabled:hover:scale-100"
+                  className="hover:scale-105 transition-transform disabled:hover:scale-100 shadow-md"
                 >
                   Suivant
                   <ChevronRight className="h-5 w-5 ml-2" />

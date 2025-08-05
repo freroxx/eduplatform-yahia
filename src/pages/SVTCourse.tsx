@@ -1,252 +1,246 @@
 
-import { useState, useEffect } from "react";
+import { useState } from "react";
 import { motion } from "framer-motion";
-import CourseSlide from "@/components/CourseSlide";
-import LoadingSpinner from "@/components/LoadingSpinner";
+import { Button } from "@/components/ui/button";
+import { Card, CardContent, CardHeader, CardTitle } from "@/components/ui/card";
+import { Progress } from "@/components/ui/progress";
+import { ChevronLeft, ChevronRight, BookOpen, Microscope, Home } from "lucide-react";
+import { Link, useParams } from "react-router-dom";
+import GlobalHeader from "@/components/GlobalHeader";
 
 const SVTCourse = () => {
-  const [isLoading, setIsLoading] = useState(true);
-  const [progress, setProgress] = useState(0);
+  const { id } = useParams();
+  const [currentSlide, setCurrentSlide] = useState(0);
 
-  useEffect(() => {
-    const timer = setInterval(() => {
-      setProgress((prev) => {
-        if (prev >= 100) {
-          setIsLoading(false);
-          clearInterval(timer);
-          return 100;
+  const lessonContent = {
+    "1": {
+      title: "La cellule unité structurale du vivant",
+      slides: [
+        {
+          title: "Qu'est-ce qu'une cellule ?",
+          content: "La cellule est l'unité structurale et fonctionnelle de base de tous les êtres vivants. Elle constitue le plus petit niveau d'organisation capable de maintenir la vie.",
+          formula: "Cellule = Membrane + Cytoplasme + Matériel génétique",
+          example: "Une bactérie est constituée d'une seule cellule, tandis qu'un être humain en compte environ 37 000 milliards."
+        },
+        {
+          title: "Types de cellules",
+          content: "On distingue deux grands types de cellules : les cellules procaryotes (sans noyau) et les cellules eucaryotes (avec noyau).",
+          formula: "Procaryotes : Bactéries, Archées | Eucaryotes : Plantes, Animaux, Champignons",
+          example: "E. coli est une cellule procaryote, les cellules de la peau humaine sont eucaryotes."
+        },
+        {
+          title: "Structure d'une cellule eucaryote",
+          content: "Les cellules eucaryotes possèdent des organites spécialisés : noyau, mitochondries, réticulum endoplasmique, appareil de Golgi, etc.",
+          formula: "Organites = Structures spécialisées dans des fonctions précises",
+          example: "Les mitochondries produisent l'énergie (ATP), le noyau contient l'ADN."
+        },
+        {
+          title: "Division cellulaire",
+          content: "Les cellules se reproduisent par division. La mitose permet la croissance et la réparation des tissus.",
+          formula: "1 cellule mère → 2 cellules filles identiques",
+          example: "Lors de la cicatrisation, les cellules de la peau se divisent pour réparer la blessure."
         }
-        return prev + 10;
-      });
-    }, 600);
-
-    return () => clearInterval(timer);
-  }, []);
-
-  const slides = [
-    {
-      title: "Module 1: Génétique et hérédité",
-      content: `La génétique est l'étude de l'hérédité et de la variation des caractères chez les êtres vivants. Ce module explore les mécanismes fondamentaux de la transmission des caractères héréditaires.
-      
-      Objectifs du module:
-      • Comprendre les bases de l'hérédité
-      • Étudier la structure et le rôle de l'ADN
-      • Maîtriser les lois de Mendel
-      • Analyser les chromosomes et les gènes
-      • Explorer les mutations génétiques
-      • Découvrir les applications de la génétique moderne`,
-      type: "intro" as const
+      ]
     },
-    {
-      title: "L'ADN : support de l'information génétique",
-      content: `🧬 Structure de l'ADN
-      
-      L'acide désoxyribonucléique (ADN) est une molécule constituée de:
-      • Deux brins antiparallèles en double hélice
-      • Quatre bases azotées: A (Adénine), T (Thymine), G (Guanine), C (Cytosine)
-      • Complémentarité des bases: A-T et G-C
-      
-      🔍 Organisation de l'information:
-      • Nucléotide: unité de base (base + sucre + phosphate)
-      • Gène: séquence d'ADN codant pour un caractère
-      • Chromosome: structure contenant de nombreux gènes
-      • Génome: ensemble de l'information génétique d'un organisme
-      
-      📊 Chez l'Homme:
-      • 46 chromosomes (23 paires)
-      • Environ 25 000 gènes
-      • 3,2 milliards de paires de bases`,
-      type: "definition" as const
+    "2": {
+      title: "L'unité chimique du vivant",
+      slides: [
+        {
+          title: "Les éléments chimiques du vivant",
+          content: "Le vivant est composé principalement de carbone (C), hydrogène (H), oxygène (O) et azote (N), représentant 96% de la matière vivante.",
+          formula: "CHON = 96% de la matière vivante",
+          example: "L'eau (H₂O) représente 60-70% du poids corporel humain."
+        },
+        {
+          title: "Les biomolécules",
+          content: "Quatre grandes familles de molécules constituent le vivant : glucides, lipides, protéines et acides nucléiques.",
+          formula: "Biomolécules = Glucides + Lipides + Protéines + Acides nucléiques",
+          example: "Le glucose (glucide) fournit l'énergie, l'ADN (acide nucléique) porte l'information génétique."
+        },
+        {
+          title: "Les protéines",
+          content: "Les protéines sont des polymères d'acides aminés. Elles assurent des fonctions structurales, enzymatiques et de transport.",
+          formula: "Protéine = Chaîne d'acides aminés repliée dans l'espace",
+          example: "L'hémoglobine transporte l'oxygène, les enzymes catalysent les réactions."
+        },
+        {
+          title: "L'ADN, support de l'hérédité",
+          content: "L'ADN contient l'information génétique sous forme de séquences de nucléotides (A, T, G, C).",
+          formula: "ADN = Double hélice de nucléotides (A-T, G-C)",
+          example: "Le génome humain contient environ 3 milliards de paires de bases."
+        }
+      ]
     },
-    {
-      title: "Les chromosomes et le caryotype",
-      content: `🔬 Organisation chromosomique
-      
-      **Caryotype:** Représentation ordonnée des chromosomes d'un individu
-      
-      🧬 Chez l'Homme (2n = 46):
-      • 22 paires d'autosomes (chromosomes non sexuels)
-      • 1 paire de chromosomes sexuels (XX chez la femme, XY chez l'homme)
-      
-      📍 Structure du chromosome:
-      • Centromère: point d'attache des chromatides
-      • Chromatides: deux copies identiques du chromosome
-      • Télomères: extrémités protectrices
-      • Bras courts (p) et bras longs (q)
-      
-      🔄 Cycle cellulaire:
-      • Interphase: duplication de l'ADN
-      • Mitose: division équationnelle (2n → 2n)
-      • Méiose: division réductionnelle (2n → n)`,
-      type: "definition" as const
-    },
-    {
-      title: "Les lois de Mendel",
-      content: `👨‍🔬 Gregor Mendel (1822-1884) - Père de la génétique
-      
-      **1ère loi: Loi d'uniformité**
-      Le croisement de deux races pures différant par un caractère donne une descendance F1 uniforme.
-      
-      **2ème loi: Loi de disjonction**
-      Les caractères qui se sont associés en F1 se séparent en F2 selon des proportions définies (3:1).
-      
-      **3ème loi: Loi d'indépendance**
-      Les caractères héréditaires se transmettent indépendamment les uns des autres.
-      
-      🧮 Exemple classique (couleur des graines):
-      • P: Vert (vv) × Jaune (VV)
-      • F1: 100% Jaune (Vv) - dominance du jaune
-      • F2: 75% Jaune (VV, Vv) + 25% Vert (vv)
-      • Ratio phénotypique: 3:1`,
-      type: "definition" as const
-    },
-    {
-      title: "Allèles et dominance",
-      content: `🎭 Concepts fondamentaux
-      
-      **Allèle:** Version alternative d'un même gène
-      • Allèle dominant: s'exprime toujours (noté en majuscule: A)
-      • Allèle récessif: ne s'exprime qu'à l'état homozygote (noté en minuscule: a)
-      
-      🧬 Génotypes possibles:
-      • Homozygote dominant: AA
-      • Homozygote récessif: aa
-      • Hétérozygote: Aa
-      
-      👁️ Types de dominance:
-      • **Dominance complète:** A > a (l'hétérozygote = homozygote dominant)
-      • **Codominance:** A = a (les deux allèles s'expriment)
-      • **Dominance incomplète:** phénotype intermédiaire chez l'hétérozygote
-      
-      📝 Notation:
-      • Génotype: constitution génétique (Aa)
-      • Phénotype: expression observable (yeux bruns)`,
-      type: "definition" as const
-    },
-    {
-      title: "Exemple pratique : Croisements",
-      content: `🧮 Exercice résolu
-      
-      **Énoncé:** Chez la drosophile, les ailes normales (V+) dominent les ailes vestigiales (v). Croisement entre deux drosophiles hétérozygotes.
-      
-      **Données:**
-      • Parents: V+v × V+v
-      • V+ = ailes normales (dominant)
-      • v = ailes vestigiales (récessif)
-      
-      **Gamètes produits:**
-      • Parent 1: 50% V+, 50% v
-      • Parent 2: 50% V+, 50% v
-      
-      **Échiquier de Punnett:**
-      ```
-           V+    v
-      V+  V+V+  V+v
-      v   V+v   vv
-      ```
-      
-      **Résultats F1:**
-      • 25% V+V+ (ailes normales)
-      • 50% V+v (ailes normales)  
-      • 25% vv (ailes vestigiales)
-      • **Ratio phénotypique: 3:1**`,
-      type: "example" as const
-    },
-    {
-      title: "Les mutations génétiques",
-      content: `🔄 Types de mutations
-      
-      **Mutations ponctuelles:**
-      • Substitution: remplacement d'une base par une autre
-      • Insertion: ajout d'une ou plusieurs bases
-      • Délétion: suppression d'une ou plusieurs bases
-      
-      **Mutations chromosomiques:**
-      • Duplication: répétition d'un segment
-      • Inversion: retournement d'un segment
-      • Translocation: échange entre chromosomes non homologues
-      • Aneuploïdie: nombre anormal de chromosomes
-      
-      🎯 Conséquences:
-      • **Neutres:** pas d'effet sur le phénotype
-      • **Délétères:** effet néfaste (maladies génétiques)
-      • **Bénéfiques:** avantage adaptatif (rare)
-      
-      🧬 Exemples:
-      • Drépanocytose: substitution dans le gène de l'hémoglobine
-      • Trisomie 21: chromosome 21 surnuméraire`,
-      type: "definition" as const
-    },
-    {
-      title: "Applications de la génétique",
-      content: `🔬 Génétique moderne
-      
-      **Thérapie génique:**
-      • Correction de gènes défaillants
-      • Introduction de gènes thérapeutiques
-      • Applications: mucoviscidose, immunodéficiences
-      
-      **OGM (Organismes Génétiquement Modifiés):**
-      • Agriculture: résistance aux herbicides, aux insectes
-      • Médecine: production d'insuline, hormones de croissance
-      • Recherche: modèles d'étude des maladies
-      
-      **Diagnostic génétique:**
-      • Test de paternité
-      • Dépistage de maladies héréditaires
-      • Médecine personnalisée
-      
-      **Biotechnologies:**
-      • PCR (amplification d'ADN)
-      • Séquençage du génome
-      • Empreinte génétique
-      • CRISPR-Cas9 (édition génomique)`,
-      type: "example" as const
-    },
-    {
-      title: "Récapitulatif",
-      content: `✅ Points clés à retenir:
-      
-      🧬 Structure et fonction:
-      • ADN: support de l'information génétique
-      • Gènes et allèles: unités de l'hérédité
-      • Chromosomes: organisation de l'ADN
-      
-      📊 Lois de l'hérédité:
-      • Lois de Mendel: base de la génétique
-      • Dominance et récessivité
-      • Croisements et ratios phénotypiques
-      
-      🔄 Variation génétique:
-      • Mutations: source de diversité
-      • Conséquences sur les organismes
-      • Évolution des espèces
-      
-      🎓 Prochaine étape:
-      Nous explorerons l'écologie et les interactions entre les êtres vivants et leur environnement.`,
-      type: "summary" as const
+    "3": {
+      title: "La biodiversité",
+      slides: [
+        {
+          title: "Définition de la biodiversité",
+          content: "La biodiversité désigne la variété des formes de vie sur Terre, à trois niveaux : génétique, spécifique et écosystémique.",
+          formula: "Biodiversité = Diversité génétique + Diversité spécifique + Diversité écosystémique",
+          example: "On estime à 8,7 millions le nombre d'espèces sur Terre."
+        },
+        {
+          title: "Classification du vivant",
+          content: "Les êtres vivants sont classés selon leurs caractères communs en groupes emboîtés : règne, embranchement, classe, ordre, famille, genre, espèce.",
+          formula: "RECOFGE : Règne > Embranchement > Classe > Ordre > Famille > Genre > Espèce",
+          example: "Homo sapiens appartient au règne Animal, embranchement Vertébrés, classe Mammifères."
+        },
+        {
+          title: "Les écosystèmes",
+          content: "Un écosystème comprend tous les êtres vivants d'un milieu et leurs interactions avec le milieu physique.",
+          formula: "Écosystème = Biocénose (êtres vivants) + Biotope (milieu physique)",
+          example: "La forêt amazonienne, les récifs coralliens, les zones humides."
+        },
+        {
+          title: "Menaces sur la biodiversité",
+          content: "La biodiversité est menacée par les activités humaines : destruction d'habitats, pollution, changement climatique, espèces invasives.",
+          formula: "Menaces = Destruction + Pollution + Climat + Invasives",
+          example: "La déforestation détruit l'habitat de nombreuses espèces tropicales."
+        }
+      ]
     }
-  ];
+  };
 
-  if (isLoading) {
-    return (
-      <div className="min-h-screen bg-gradient-to-br from-green-50 via-teal-50 to-cyan-50 dark:from-gray-900 dark:via-gray-800 dark:to-gray-900 flex items-center justify-center">
-        <LoadingSpinner text="Chargement du cours de SVT..." progress={progress} type="progress" />
-      </div>
-    );
-  }
+  const lesson = lessonContent[id as keyof typeof lessonContent] || lessonContent["1"];
+  const totalSlides = lesson.slides.length;
+
+  const nextSlide = () => {
+    setCurrentSlide((prev) => (prev + 1) % totalSlides);
+  };
+
+  const prevSlide = () => {
+    setCurrentSlide((prev) => (prev - 1 + totalSlides) % totalSlides);
+  };
+
+  const progress = ((currentSlide + 1) / totalSlides) * 100;
 
   return (
-    <motion.div
-      initial={{ opacity: 0 }}
-      animate={{ opacity: 1 }}
-      transition={{ duration: 0.5 }}
-    >
-      <CourseSlide 
-        lessonTitle="Module 1: Génétique et hérédité" 
-        slides={slides} 
-      />
-    </motion.div>
+    <div className="min-h-screen animated-bg">
+      <GlobalHeader />
+      
+      <div className="container mx-auto px-4 py-8">
+        <motion.div
+          initial={{ opacity: 0, y: 20 }}
+          animate={{ opacity: 1, y: 0 }}
+          className="max-w-4xl mx-auto"
+        >
+          {/* Header */}
+          <div className="flex items-center justify-between mb-8">
+            <Link to="/lessons/svt">
+              <Button variant="outline" size="sm">
+                <ChevronLeft className="h-4 w-4 mr-2" />
+                Retour aux leçons
+              </Button>
+            </Link>
+            <Link to="/">
+              <Button variant="outline" size="sm">
+                <Home className="h-4 w-4 mr-2" />
+                Accueil
+              </Button>
+            </Link>
+          </div>
+
+          {/* Course Title */}
+          <div className="text-center mb-8">
+            <h1 className="text-3xl font-bold text-foreground mb-2 flex items-center justify-center gap-3">
+              <Microscope className="h-8 w-8 text-green-600" />
+              {lesson.title}
+            </h1>
+            <p className="text-muted-foreground">
+              Leçon {id} - Cours interactif SVT
+            </p>
+          </div>
+
+          {/* Progress */}
+          <div className="mb-8">
+            <div className="flex justify-between items-center mb-2">
+              <span className="text-sm text-muted-foreground">
+                Slide {currentSlide + 1} sur {totalSlides}
+              </span>
+              <span className="text-sm text-muted-foreground">
+                {Math.round(progress)}% terminé
+              </span>
+            </div>
+            <Progress value={progress} className="w-full" />
+          </div>
+
+          {/* Slide Content */}
+          <Card className="mb-8 bg-card/90 backdrop-blur-sm border-0 shadow-2xl">
+            <CardHeader>
+              <CardTitle className="text-2xl text-center text-card-foreground flex items-center justify-center gap-2">
+                <BookOpen className="h-6 w-6 text-green-600" />
+                {lesson.slides[currentSlide].title}
+              </CardTitle>
+            </CardHeader>
+            <CardContent className="space-y-6">
+              <div className="text-lg leading-relaxed text-card-foreground">
+                {lesson.slides[currentSlide].content}
+              </div>
+              
+              {lesson.slides[currentSlide].formula && (
+                <div className="bg-green-50 dark:bg-green-900/20 p-4 rounded-lg border border-green-200 dark:border-green-800">
+                  <h4 className="font-semibold text-green-800 dark:text-green-200 mb-2">
+                    Schéma conceptuel :
+                  </h4>
+                  <div className="font-mono text-lg text-green-700 dark:text-green-300">
+                    {lesson.slides[currentSlide].formula}
+                  </div>
+                </div>
+              )}
+
+              {lesson.slides[currentSlide].example && (
+                <div className="bg-blue-50 dark:bg-blue-900/20 p-4 rounded-lg border border-blue-200 dark:border-blue-800">
+                  <h4 className="font-semibold text-blue-800 dark:text-blue-200 mb-2">
+                    Exemple concret :
+                  </h4>
+                  <div className="text-blue-700 dark:text-blue-300">
+                    {lesson.slides[currentSlide].example}
+                  </div>
+                </div>
+              )}
+            </CardContent>
+          </Card>
+
+          {/* Navigation */}
+          <div className="flex justify-between items-center">
+            <Button
+              onClick={prevSlide}
+              disabled={currentSlide === 0}
+              variant="outline"
+              size="lg"
+            >
+              <ChevronLeft className="h-5 w-5 mr-2" />
+              Précédent
+            </Button>
+
+            <div className="flex space-x-2">
+              {lesson.slides.map((_, index) => (
+                <button
+                  key={index}
+                  onClick={() => setCurrentSlide(index)}
+                  className={`w-3 h-3 rounded-full transition-colors ${
+                    index === currentSlide
+                      ? "bg-green-600"
+                      : "bg-gray-300 dark:bg-gray-600"
+                  }`}
+                />
+              ))}
+            </div>
+
+            <Button
+              onClick={nextSlide}
+              disabled={currentSlide === totalSlides - 1}
+              variant="outline"
+              size="lg"
+            >
+              Suivant
+              <ChevronRight className="h-5 w-5 ml-2" />
+            </Button>
+          </div>
+        </motion.div>
+      </div>
+    </div>
   );
 };
 

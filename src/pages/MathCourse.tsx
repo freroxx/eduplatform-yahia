@@ -4,7 +4,7 @@ import { motion } from "framer-motion";
 import CourseSlide from "@/components/CourseSlide";
 import LoadingSpinner from "@/components/LoadingSpinner";
 
-// Module 1: Fonctions et équations du second degré
+// Module 1: Fonctions linéaires et affines
 const MathCourse = () => {
   const [isLoading, setIsLoading] = useState(true);
   const [progress, setProgress] = useState(0);
@@ -26,153 +26,187 @@ const MathCourse = () => {
 
   const slides = [
     {
-      title: "Module 1: Fonctions et équations du second degré",
-      content: `Les fonctions du second degré sont des polynômes de degré 2 qui jouent un rôle fondamental en mathématiques et dans de nombreuses applications pratiques.
+      title: "Module 1: Fonctions linéaires et affines",
+      content: `Les fonctions linéaires et affines sont des fonctions polynomiales du premier degré qui établissent une relation de proportionnalité ou quasi-proportionnalité entre deux variables.
       
       Objectifs du module:
-      • Maîtriser la forme canonique et factorisée
-      • Résoudre les équations du second degré
-      • Étudier les variations et représentations graphiques
-      • Analyser le discriminant et ses applications
-      • Résoudre des problèmes concrets`,
+      • Comprendre la différence entre fonctions linéaires et affines
+      • Maîtriser le calcul du coefficient directeur
+      • Déterminer l'équation d'une droite
+      • Interpréter graphiquement les paramètres
+      • Résoudre des problèmes de la vie courante
+      • Étudier les positions relatives de droites`,
       type: "intro" as const
     },
     {
-      title: "Définition et forme générale",
+      title: "Fonctions linéaires",
       content: `📐 Définition
-      Une fonction du second degré f est définie sur ℝ par:
-      f(x) = ax² + bx + c
+      Une fonction linéaire f est définie sur ℝ par:
+      f(x) = ax
       
-      Où a, b, c sont des réels avec a ≠ 0
+      Où a est un nombre réel appelé coefficient directeur
       
-      🔍 Formes remarquables:
-      • Forme développée: f(x) = ax² + bx + c
-      • Forme canonique: f(x) = a(x - α)² + β
-      • Forme factorisée: f(x) = a(x - x₁)(x - x₂)
+      🔍 Propriétés importantes:
+      • La représentation graphique est une droite passant par l'origine O(0,0)
+      • Le coefficient a détermine la pente de la droite
+      • Si a > 0: la fonction est croissante
+      • Si a < 0: la fonction est décroissante
+      • Si a = 0: la fonction est constante (f(x) = 0)
       
-      💡 Le coefficient a détermine:
-      - Si a > 0: parabole tournée vers le haut
-      - Si a < 0: parabole tournée vers le bas`,
+      💡 Exemple pratique:
+      f(x) = 3x représente une relation de proportionnalité
+      Le coefficient de proportionnalité est 3`,
       type: "definition" as const
     },
     {
-      title: "La forme canonique",
-      content: `🎯 Transformation en forme canonique
-      
-      Pour f(x) = ax² + bx + c, on obtient:
-      f(x) = a(x - α)² + β
+      title: "Fonctions affines",
+      content: `📊 Définition
+      Une fonction affine f est définie sur ℝ par:
+      f(x) = ax + b
       
       Avec:
-      • α = -b/(2a) (abscisse du sommet)
-      • β = f(α) (ordonnée du sommet)
+      • a: coefficient directeur (pente de la droite)
+      • b: ordonnée à l'origine
       
-      🔧 Méthode de calcul:
-      1. Factoriser par a: f(x) = a(x² + (b/a)x) + c
-      2. Compléter le carré: x² + (b/a)x = (x + b/(2a))² - (b/(2a))²
-      3. Simplifier pour obtenir la forme canonique
+      🎯 Caractéristiques:
+      • Si b = 0: la fonction est linéaire
+      • Si a = 0: la fonction est constante f(x) = b
+      • La représentation graphique est une droite
+      • Elle passe par le point (0, b)
       
-      ⭐ Le sommet S(α, β) est un point remarquable de la parabole`,
+      🔧 Pour déterminer une fonction affine:
+      Il suffit de connaître deux points de la droite ou un point et le coefficient directeur`,
       type: "definition" as const
     },
     {
-      title: "Exemple pratique",
-      content: `🧮 Soit f(x) = 2x² - 8x + 5
+      title: "Calcul du coefficient directeur",
+      content: `📏 Formule du coefficient directeur
       
-      Étape 1: Identifier les coefficients
-      a = 2, b = -8, c = 5
+      Pour deux points A(x₁, y₁) et B(x₂, y₂) avec x₁ ≠ x₂:
       
-      Étape 2: Calculer α et β
-      α = -(-8)/(2×2) = 8/4 = 2
-      β = f(2) = 2(2)² - 8(2) + 5 = 8 - 16 + 5 = -3
+      a = (y₂ - y₁)/(x₂ - x₁)
       
-      Étape 3: Écrire la forme canonique
-      f(x) = 2(x - 2)² - 3
+      🧮 Exemple pratique:
+      Soit A(1, 2) et B(4, 8)
       
-      📊 Interprétation:
-      • Sommet: S(2, -3)
-      • Parabole tournée vers le haut (a > 0)
-      • Minimum global: -3 atteint en x = 2`,
+      a = (8 - 2)/(4 - 1) = 6/3 = 2
+      
+      📈 Interprétation:
+      • Si a > 0: la droite "monte" (fonction croissante)
+      • Si a < 0: la droite "descend" (fonction décroissante)
+      • Plus |a| est grand, plus la droite est "pentue"
+      • a représente la variation de y quand x augmente de 1`,
       type: "example" as const
     },
     {
-      title: "Équations du second degré",
-      content: `⚖️ Résolution de ax² + bx + c = 0
+      title: "Détermination d'une équation de droite",
+      content: `🎯 Méthodes pour trouver l'équation f(x) = ax + b
       
-      🔑 Le discriminant Δ = b² - 4ac détermine le nombre de solutions:
+      **Méthode 1: Avec deux points A(x₁, y₁) et B(x₂, y₂)**
+      1. Calculer a = (y₂ - y₁)/(x₂ - x₁)
+      2. Utiliser un des points pour trouver b: y₁ = ax₁ + b donc b = y₁ - ax₁
       
-      • Si Δ > 0: deux solutions réelles distinctes
-        x₁ = (-b - √Δ)/(2a) et x₂ = (-b + √Δ)/(2a)
+      **Méthode 2: Avec un point et le coefficient directeur**
+      1. On connaît a
+      2. Utiliser le point pour trouver b
       
-      • Si Δ = 0: une solution double
-        x = -b/(2a)
+      **Méthode 3: Avec l'ordonnée à l'origine et un autre point**
+      1. On connaît b (ordonnée à l'origine)
+      2. Utiliser l'autre point pour trouver a
       
-      • Si Δ < 0: aucune solution réelle
-      
-      📝 Relations de Viète:
-      Si x₁ et x₂ sont les racines:
-      • x₁ + x₂ = -b/a
-      • x₁ × x₂ = c/a`,
+      🔍 Vérification: Substituer les coordonnées des points dans l'équation trouvée`,
       type: "definition" as const
     },
     {
-      title: "Représentation graphique",
-      content: `📈 La parabole: courbe représentative
+      title: "Exemple détaillé",
+      content: `📝 Exercice résolu
       
-      🎨 Éléments caractéristiques:
-      • Sommet S(α, β): point extremum
-      • Axe de symétrie: x = α
-      • Ordonnée à l'origine: f(0) = c
-      • Racines: points d'intersection avec l'axe des x
+      **Énoncé:** Déterminer l'équation de la droite passant par A(2, 5) et B(6, 13)
       
-      📊 Variations:
-      • Si a > 0: f décroissante sur ]-∞; α] puis croissante sur [α; +∞[
-      • Si a < 0: f croissante sur ]-∞; α] puis décroissante sur [α; +∞[
+      **Étape 1:** Calcul du coefficient directeur
+      a = (13 - 5)/(6 - 2) = 8/4 = 2
       
-      🔍 Signe de f(x):
-      Dépend du signe de a et de la position de x par rapport aux racines`,
-      type: "definition" as const
-    },
-    {
-      title: "Applications pratiques",
-      content: `🚀 Domaines d'application:
+      **Étape 2:** Calcul de l'ordonnée à l'origine
+      En utilisant le point A(2, 5):
+      5 = 2×2 + b
+      5 = 4 + b
+      b = 1
       
-      📐 Géométrie:
-      • Calcul d'aires maximales et minimales
-      • Optimisation de formes géométriques
+      **Étape 3:** Équation de la droite
+      f(x) = 2x + 1
       
-      🏃‍♂️ Physique:
-      • Trajectoires paraboliques des projectiles
-      • Lois de la chute libre: h(t) = -½gt² + v₀t + h₀
-      
-      💼 Économie:
-      • Fonctions de coût, recette, bénéfice
-      • Optimisation de la production
-      
-      📊 Statistiques:
-      • Méthode des moindres carrés
-      • Ajustement parabolique de données`,
+      **Vérification:** 
+      • Pour A(2, 5): f(2) = 2×2 + 1 = 5 ✓
+      • Pour B(6, 13): f(6) = 2×6 + 1 = 13 ✓`,
       type: "example" as const
+    },
+    {
+      title: "Applications et problèmes",
+      content: `🌍 Situations de la vie courante
+      
+      **Exemple 1: Tarification**
+      Un taxi applique un tarif de 2€ prise en charge + 1,50€/km
+      Coût = 1,50×distance + 2
+      
+      **Exemple 2: Conversion de température**
+      °F = 9/5 × °C + 32
+      Fonction affine avec a = 9/5 et b = 32
+      
+      **Exemple 3: Évolution d'une quantité**
+      Une citerne contient 500L d'eau. On la vide à raison de 25L/min
+      Volume(t) = 500 - 25t (fonction affine décroissante)
+      
+      🎯 Méthode de résolution:
+      1. Identifier les variables
+      2. Repérer la relation affine
+      3. Déterminer les coefficients
+      4. Interpréter les résultats`,
+      type: "example" as const
+    },
+    {
+      title: "Positions relatives de droites",
+      content: `📐 Étude de deux droites
+      
+      Soient d₁: y = a₁x + b₁ et d₂: y = a₂x + b₂
+      
+      **Droites parallèles:**
+      • a₁ = a₂ et b₁ ≠ b₂
+      • Elles ont la même pente mais ne se croisent jamais
+      
+      **Droites confondues:**
+      • a₁ = a₂ et b₁ = b₂
+      • C'est la même droite
+      
+      **Droites sécantes:**
+      • a₁ ≠ a₂
+      • Elles se coupent en un point unique
+      
+      🔍 Point d'intersection:
+      Résoudre a₁x + b₁ = a₂x + b₂
+      x = (b₂ - b₁)/(a₁ - a₂)`,
+      type: "definition" as const
     },
     {
       title: "Récapitulatif et méthodes",
       content: `✅ Points clés à retenir:
       
-      🎯 Les trois formes:
-      • Développée: ax² + bx + c
-      • Canonique: a(x - α)² + β
-      • Factorisée: a(x - x₁)(x - x₂)
+      🎯 Définitions:
+      • Fonction linéaire: f(x) = ax (droite par l'origine)
+      • Fonction affine: f(x) = ax + b (droite quelconque)
       
-      🔧 Méthodes de résolution:
-      • Factorisation directe
-      • Complétion du carré
-      • Formule du discriminant
-      • Méthode graphique
+      🔧 Méthodes essentielles:
+      • Coefficient directeur: a = (y₂ - y₁)/(x₂ - x₁)
+      • Équation avec 2 points: calculer a puis b
+      • Interprétation graphique des paramètres a et b
       
-      📈 Analyse complète:
-      1. Identifier les coefficients et calculer Δ
-      2. Déterminer le sommet et l'axe de symétrie
-      3. Étudier les variations et le signe
-      4. Tracer la parabole avec les points clés`,
+      📈 Applications pratiques:
+      • Problèmes de proportionnalité
+      • Tarifications et coûts
+      • Évolutions linéaires
+      • Conversions d'unités
+      
+      🎓 Prochaine étape:
+      Nous aborderons les systèmes d'équations linéaires et leurs méthodes de résolution.`,
       type: "summary" as const
     }
   ];
@@ -192,7 +226,7 @@ const MathCourse = () => {
       transition={{ duration: 0.5 }}
     >
       <CourseSlide 
-        lessonTitle="Module 1: Fonctions du second degré" 
+        lessonTitle="Module 1: Fonctions linéaires et affines" 
         slides={slides} 
       />
     </motion.div>

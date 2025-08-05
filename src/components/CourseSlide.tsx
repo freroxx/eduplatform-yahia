@@ -1,15 +1,15 @@
 
-import { Card, CardContent } from "@/components/ui/card";
+import React, { useState } from "react";
+import { motion, AnimatePresence } from "framer-motion";
+import { ChevronLeft, ChevronRight, BookOpen, CheckCircle } from "lucide-react";
 import { Button } from "@/components/ui/button";
-import { Badge } from "@/components/ui/badge";
-import { ChevronLeft, ChevronRight, Home, BookOpen, Target, Lightbulb, FileText, BarChart3 } from "lucide-react";
-import { useState } from "react";
-import { Link } from "react-router-dom";
+import { Progress } from "@/components/ui/progress";
+import { ScrollArea } from "@/components/ui/scroll-area";
 
 interface Slide {
   title: string;
   content: string;
-  type: "intro" | "definition" | "example" | "exercise" | "summary" | "introduction" | "content" | "conclusion";
+  type: "intro" | "definition" | "example" | "summary";
 }
 
 interface CourseSlideProps {
@@ -20,189 +20,162 @@ interface CourseSlideProps {
 const CourseSlide = ({ lessonTitle, slides }: CourseSlideProps) => {
   const [currentSlide, setCurrentSlide] = useState(0);
 
-  // Early return if no slides available
+  // Safety check for empty slides
   if (!slides || slides.length === 0) {
     return (
-      <div className="min-h-screen bg-gradient-to-br from-blue-50 via-indigo-50 to-purple-50 flex flex-col items-center justify-center">
-        <Card className="w-full max-w-2xl bg-white/90 backdrop-blur-sm border-0 shadow-2xl">
-          <CardContent className="p-12 text-center">
-            <BookOpen className="h-16 w-16 text-gray-400 mx-auto mb-4" />
-            <h2 className="text-2xl font-bold text-gray-800 mb-4">Cours non disponible</h2>
-            <p className="text-gray-600 mb-6">Ce cours n'est pas encore disponible ou n'existe pas.</p>
-            <Link to="/lessons">
-              <Button className="flex items-center space-x-2">
-                <Home className="h-4 w-4" />
-                <span>Retour aux leçons</span>
-              </Button>
-            </Link>
-          </CardContent>
-        </Card>
+      <div className="min-h-screen bg-gradient-to-br from-blue-50 via-indigo-50 to-purple-50 dark:from-gray-900 dark:via-gray-800 dark:to-gray-900 flex items-center justify-center">
+        <div className="text-center p-8">
+          <BookOpen className="h-16 w-16 mx-auto mb-4 text-muted-foreground" />
+          <h2 className="text-2xl font-bold mb-2">Aucun contenu disponible</h2>
+          <p className="text-muted-foreground">Ce cours sera bientôt disponible.</p>
+        </div>
       </div>
     );
   }
 
+  const currentSlideData = slides[currentSlide];
+  const progress = ((currentSlide + 1) / slides.length) * 100;
+
   const nextSlide = () => {
-    setCurrentSlide((prev) => (prev + 1) % slides.length);
+    if (currentSlide < slides.length - 1) {
+      setCurrentSlide(currentSlide + 1);
+    }
   };
 
   const prevSlide = () => {
-    setCurrentSlide((prev) => (prev - 1 + slides.length) % slides.length);
-  };
-
-  const getSlideColor = (type: string) => {
-    switch (type) {
-      case "intro":
-      case "introduction": return "from-blue-500 to-indigo-600";
-      case "definition": return "from-green-500 to-teal-600";
-      case "example": return "from-orange-500 to-red-600";
-      case "exercise": return "from-purple-500 to-pink-600";
-      case "summary":
-      case "conclusion": return "from-gray-600 to-gray-800";
-      case "content": return "from-indigo-500 to-purple-600";
-      default: return "from-indigo-500 to-purple-600";
+    if (currentSlide > 0) {
+      setCurrentSlide(currentSlide - 1);
     }
   };
 
   const getSlideIcon = (type: string) => {
     switch (type) {
       case "intro":
-      case "introduction": return <BookOpen className="h-6 w-6" />;
-      case "definition": return <Target className="h-6 w-6" />;
-      case "example": return <Lightbulb className="h-6 w-6" />;
-      case "exercise": return <FileText className="h-6 w-6" />;
+        return <BookOpen className="h-6 w-6" />;
+      case "definition":
+        return <BookOpen className="h-6 w-6" />;
+      case "example":
+        return <CheckCircle className="h-6 w-6" />;
       case "summary":
-      case "conclusion": return <BarChart3 className="h-6 w-6" />;
-      case "content": return <BookOpen className="h-6 w-6" />;
-      default: return <BookOpen className="h-6 w-6" />;
+        return <CheckCircle className="h-6 w-6" />;
+      default:
+        return <BookOpen className="h-6 w-6" />;
     }
   };
 
-  const getSlideTypeName = (type: string) => {
+  const getSlideColor = (type: string) => {
     switch (type) {
       case "intro":
-      case "introduction": return "Introduction";
-      case "definition": return "Définition";
-      case "example": return "Exemple";
-      case "exercise": return "Exercice";
+        return "from-blue-500 to-purple-600";
+      case "definition":
+        return "from-green-500 to-teal-600";
+      case "example":
+        return "from-orange-500 to-red-600";
       case "summary":
-      case "conclusion": return "Résumé";
-      case "content": return "Contenu";
-      default: return "Contenu";
+        return "from-purple-500 to-pink-600";
+      default:
+        return "from-blue-500 to-purple-600";
     }
   };
 
-  // Ensure currentSlide is within bounds
-  const safeCurrentSlide = Math.min(currentSlide, slides.length - 1);
-  const currentSlideData = slides[safeCurrentSlide];
-
-  // Additional safety check
-  if (!currentSlideData) {
-    return (
-      <div className="min-h-screen bg-gradient-to-br from-blue-50 via-indigo-50 to-purple-50 flex flex-col items-center justify-center">
-        <Card className="w-full max-w-2xl bg-white/90 backdrop-blur-sm border-0 shadow-2xl">
-          <CardContent className="p-12 text-center">
-            <BookOpen className="h-16 w-16 text-gray-400 mx-auto mb-4" />
-            <h2 className="text-2xl font-bold text-gray-800 mb-4">Erreur de chargement</h2>
-            <p className="text-gray-600 mb-6">Impossible de charger le contenu du cours.</p>
-            <Link to="/lessons">
-              <Button className="flex items-center space-x-2">
-                <Home className="h-4 w-4" />
-                <span>Retour aux leçons</span>
-              </Button>
-            </Link>
-          </CardContent>
-        </Card>
-      </div>
-    );
-  }
-
   return (
-    <div className="min-h-screen bg-gradient-to-br from-blue-50 via-indigo-50 to-purple-50 flex flex-col">
-      <header className="bg-white/80 backdrop-blur-md border-b border-gray-200/50 p-4 sticky top-0 z-50">
-        <div className="container mx-auto flex items-center justify-between">
-          <Link to="/lessons" className="flex items-center space-x-2 text-indigo-600 hover:text-indigo-700 transition-all duration-200 hover:scale-105">
-            <Home className="h-5 w-5" />
-            <span className="font-medium">Retour aux leçons</span>
-          </Link>
-          <div className="text-center flex-1">
-            <h1 className="text-xl font-bold text-gray-800">{lessonTitle}</h1>
-            <div className="flex items-center justify-center space-x-2 mt-1">
-              <Badge variant="outline" className="text-xs">
+    <div className="min-h-screen bg-gradient-to-br from-blue-50 via-indigo-50 to-purple-50 dark:from-gray-900 dark:via-gray-800 dark:to-gray-900">
+      {/* Header */}
+      <div className="bg-white/80 dark:bg-gray-900/80 backdrop-blur-sm border-b border-gray-200 dark:border-gray-700 sticky top-0 z-10">
+        <div className="max-w-6xl mx-auto px-6 py-4">
+          <div className="flex items-center justify-between">
+            <div className="flex items-center gap-3">
+              <div className={`p-2 rounded-lg bg-gradient-to-r ${getSlideColor(currentSlideData.type)} text-white`}>
                 {getSlideIcon(currentSlideData.type)}
-                <span className="ml-1">{getSlideTypeName(currentSlideData.type)}</span>
-              </Badge>
+              </div>
+              <div>
+                <h1 className="text-xl font-bold text-gray-900 dark:text-white">
+                  {lessonTitle}
+                </h1>
+                <p className="text-sm text-muted-foreground">
+                  Slide {currentSlide + 1} sur {slides.length}
+                </p>
+              </div>
             </div>
-          </div>
-          <div className="text-sm text-gray-600 font-medium">
-            {safeCurrentSlide + 1} / {slides.length}
+            <div className="flex items-center gap-4">
+              <div className="w-32">
+                <Progress value={progress} className="h-2" />
+              </div>
+              <span className="text-sm font-medium text-muted-foreground">
+                {Math.round(progress)}%
+              </span>
+            </div>
           </div>
         </div>
-      </header>
-
-      <div className="flex-1 flex items-center justify-center p-8">
-        <Card className="w-full max-w-5xl h-[500px] bg-white/90 backdrop-blur-sm border-0 shadow-2xl">
-          <CardContent className="h-full p-0 relative overflow-hidden">
-            <div className={`absolute inset-0 bg-gradient-to-r ${getSlideColor(currentSlideData.type)} opacity-10`}></div>
-            <div className="relative h-full flex flex-col justify-center items-center p-12 text-center">
-              <div className="mb-6">
-                <div className={`inline-flex items-center justify-center w-16 h-16 rounded-full bg-gradient-to-r ${getSlideColor(currentSlideData.type)} text-white mb-4`}>
-                  {getSlideIcon(currentSlideData.type)}
-                </div>
-                <Badge className={`bg-gradient-to-r ${getSlideColor(currentSlideData.type)} text-white border-0 px-3 py-1`}>
-                  {getSlideTypeName(currentSlideData.type)}
-                </Badge>
-              </div>
-              
-              <h2 className="text-4xl font-bold text-gray-800 mb-8 leading-tight">
-                {currentSlideData.title}
-              </h2>
-              
-              <div className="text-lg text-gray-700 leading-relaxed max-w-4xl">
-                {currentSlideData.content.split('\n').map((line, index) => (
-                  <p key={index} className="mb-4 last:mb-0">{line}</p>
-                ))}
-              </div>
-            </div>
-          </CardContent>
-        </Card>
       </div>
 
-      <div className="bg-white/80 backdrop-blur-md border-t border-gray-200/50 p-4">
-        <div className="container mx-auto flex items-center justify-between">
-          <Button
-            onClick={prevSlide}
-            variant="outline"
-            disabled={safeCurrentSlide === 0}
-            className="flex items-center space-x-2 hover:bg-indigo-50 hover:border-indigo-300 transition-all duration-200"
-          >
-            <ChevronLeft className="h-4 w-4" />
-            <span>Précédent</span>
-          </Button>
+      {/* Main Content */}
+      <div className="max-w-6xl mx-auto px-6 py-8">
+        <div className="bg-white dark:bg-gray-900 rounded-2xl shadow-xl border border-gray-200 dark:border-gray-700 overflow-hidden">
+          <AnimatePresence mode="wait">
+            <motion.div
+              key={currentSlide}
+              initial={{ opacity: 0, x: 20 }}
+              animate={{ opacity: 1, x: 0 }}
+              exit={{ opacity: 0, x: -20 }}
+              transition={{ duration: 0.3 }}
+              className="p-8"
+            >
+              <div className="mb-6">
+                <h2 className="text-3xl font-bold text-gray-900 dark:text-white mb-4">
+                  {currentSlideData.title}
+                </h2>
+              </div>
 
-          <div className="flex space-x-2">
-            {slides.map((slide, index) => (
-              <button
-                key={index}
-                onClick={() => setCurrentSlide(index)}
-                className={`w-4 h-4 rounded-full transition-all duration-300 ${
-                  index === safeCurrentSlide
-                    ? `bg-gradient-to-r ${getSlideColor(slide.type)} scale-125 shadow-lg`
-                    : "bg-gray-300 hover:bg-gray-400 hover:scale-110"
-                }`}
-                title={`${index + 1}. ${slide.title}`}
-              />
-            ))}
+              <ScrollArea className="h-[60vh]">
+                <div className="pr-4">
+                  <div className="prose prose-lg max-w-none dark:prose-invert">
+                    <div className="whitespace-pre-line text-gray-700 dark:text-gray-300 leading-relaxed">
+                      {currentSlideData.content}
+                    </div>
+                  </div>
+                </div>
+              </ScrollArea>
+            </motion.div>
+          </AnimatePresence>
+
+          {/* Navigation */}
+          <div className="px-8 py-6 bg-gray-50 dark:bg-gray-800 border-t border-gray-200 dark:border-gray-700">
+            <div className="flex items-center justify-between">
+              <Button
+                onClick={prevSlide}
+                disabled={currentSlide === 0}
+                variant="outline"
+                className="flex items-center gap-2"
+              >
+                <ChevronLeft className="h-4 w-4" />
+                Précédent
+              </Button>
+
+              <div className="flex gap-2">
+                {slides.map((_, index) => (
+                  <button
+                    key={index}
+                    onClick={() => setCurrentSlide(index)}
+                    className={`w-3 h-3 rounded-full transition-colors ${
+                      index === currentSlide
+                        ? "bg-blue-500"
+                        : "bg-gray-300 dark:bg-gray-600 hover:bg-gray-400 dark:hover:bg-gray-500"
+                    }`}
+                  />
+                ))}
+              </div>
+
+              <Button
+                onClick={nextSlide}
+                disabled={currentSlide === slides.length - 1}
+                className="flex items-center gap-2"
+              >
+                Suivant
+                <ChevronRight className="h-4 w-4" />
+              </Button>
+            </div>
           </div>
-
-          <Button
-            onClick={nextSlide}
-            variant="outline"
-            disabled={safeCurrentSlide === slides.length - 1}
-            className="flex items-center space-x-2 hover:bg-indigo-50 hover:border-indigo-300 transition-all duration-200"
-          >
-            <span>Suivant</span>
-            <ChevronRight className="h-4 w-4" />
-          </Button>
         </div>
       </div>
     </div>

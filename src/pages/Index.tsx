@@ -1,349 +1,383 @@
 
 import { useState, useEffect } from "react";
 import { motion } from "framer-motion";
-import { useNavigate } from "react-router-dom";
-import { Card, CardContent } from "@/components/ui/card";
+import { BookOpen, Brain, Trophy, TrendingUp, Users, Star, Zap, Target, Award, ChevronRight } from "lucide-react";
 import { Button } from "@/components/ui/button";
+import { Card, CardContent, CardDescription, CardHeader, CardTitle } from "@/components/ui/card";
 import { Badge } from "@/components/ui/badge";
-import { 
-  Calculator, 
-  Atom, 
-  BookOpen, 
-  PenTool, 
-  Landmark, 
-  Microscope,
-  GraduationCap,
-  Sparkles,
-  TrendingUp,
-  Users,
-  Globe,
-  Zap
-} from "lucide-react";
 import GlobalHeader from "@/components/GlobalHeader";
 import WelcomeBanner from "@/components/WelcomeBanner";
 import EnhancedSubjectCard from "@/components/EnhancedSubjectCard";
 import StatsOverview from "@/components/StatsOverview";
+import QuickStats from "@/components/QuickStats";
+import UserOnboarding from "@/components/UserOnboarding";
+import WelcomeTutorial from "@/components/WelcomeTutorial";
 import ChangelogDialog from "@/components/ChangelogDialog";
 import Footer from "@/components/Footer";
 import { useSettings } from "@/hooks/useSettings";
-import { useExerciseProgress } from "@/hooks/useExerciseProgress";
+import { useExerciseStats } from "@/hooks/useExerciseStats";
+import { Link } from "react-router-dom";
 
 const Index = () => {
-  const navigate = useNavigate();
-  const { settings } = useSettings();
-  const { totalPoints, completedExercises } = useExerciseProgress();
-  const [currentTime, setCurrentTime] = useState(new Date());
+  const [showOnboarding, setShowOnboarding] = useState(false);
+  const [showTutorial, setShowTutorial] = useState(false);
   const [showChangelog, setShowChangelog] = useState(false);
+  const { settings } = useSettings();
+  const { getSubjectStats, getTotalStats } = useExerciseStats();
+
+  const totalStats = getTotalStats();
 
   useEffect(() => {
-    const timer = setInterval(() => {
-      setCurrentTime(new Date());
-    }, 1000);
-    return () => clearInterval(timer);
+    const hasSeenOnboarding = localStorage.getItem('hasSeenOnboarding');
+    if (!hasSeenOnboarding) {
+      setShowOnboarding(true);
+    }
   }, []);
 
   const subjects = [
     {
       id: "math",
-      name: "Mathématiques",
-      nameArabic: "الرياضيات",
-      description: "Algèbre, géométrie, analyse et probabilités pour le tronc commun",
-      icon: <Calculator className="text-blue-600" />,
-      color: "blue",
-      bgGradient: "from-blue-600 via-blue-500 to-indigo-600",
+      title: "Mathématiques",
+      description: "Fonctions, équations, géométrie",
+      icon: "📊",
+      color: "from-blue-500 to-cyan-500",
       lessons: 12,
-      exercises: 45,
-      duration: "6h",
-      difficulty: "Moyen" as const,
-      path: "math",
-      featured: true
-    },
-    {
-      id: "physics",
-      name: "Physique",
-      nameArabic: "الفيزياء",
-      description: "Mécanique, électricité, optique et physique moderne",
-      icon: <Atom className="text-emerald-600" />,
-      color: "emerald",
-      bgGradient: "from-emerald-600 via-teal-500 to-cyan-600",
-      lessons: 15,
-      exercises: 38,
-      duration: "8h",
-      difficulty: "Difficile" as const,
-      path: "physics"
-    },
-    {
-      id: "arabic",
-      name: "Langue Arabe",
-      nameArabic: "اللغة العربية",
-      description: "Grammaire, littérature, expression écrite et orale",
-      icon: <BookOpen className="text-orange-600" />,
-      color: "orange",
-      bgGradient: "from-orange-600 via-amber-500 to-yellow-500",
-      lessons: 18,
-      exercises: 42,
-      duration: "7h",
-      difficulty: "Moyen" as const,
-      path: "arabic",
-      isNew: true
+      exercises: 48,
+      progress: getSubjectStats('math').progress,
+      difficulty: "Intermédiaire",
+      topics: ["Fonctions linéaires", "Équations", "Géométrie", "Statistiques"],
+      estimatedTime: "2h 30min"
     },
     {
       id: "french",
-      name: "Français",
-      nameArabic: "الفرنسية",
-      description: "Littérature, grammaire, expression et communication",
-      icon: <PenTool className="text-red-600" />,
-      color: "red",
-      bgGradient: "from-red-600 via-rose-500 to-pink-600",
-      lessons: 16,
+      title: "Français",
+      description: "Littérature, grammaire, expression",
+      icon: "📚",
+      color: "from-red-500 to-pink-500", 
+      lessons: 10,
       exercises: 35,
-      duration: "6h",
-      difficulty: "Moyen" as const,
-      path: "french"
+      progress: getSubjectStats('french').progress,
+      difficulty: "Facile",
+      topics: ["Typologie textuelle", "Grammaire", "Orthographe", "Littérature"],
+      estimatedTime: "2h 15min"
     },
     {
-      id: "history-geo",
-      name: "Histoire-Géographie",
-      nameArabic: "التاريخ والجغرافيا",
-      description: "Histoire du Maroc et du monde, géographie physique et humaine",
-      icon: <Landmark className="text-purple-600" />,
-      color: "purple",
-      bgGradient: "from-purple-600 via-violet-500 to-indigo-600",
-      lessons: 20,
-      exercises: 40,
-      duration: "9h",
-      difficulty: "Moyen" as const,
-      path: "histoire-geo"
+      id: "english",
+      title: "Anglais",
+      description: "Grammaire, vocabulaire, communication",
+      icon: "🇬🇧",
+      color: "from-green-500 to-emerald-500",
+      lessons: 8,
+      exercises: 32,
+      progress: getSubjectStats('english').progress,
+      difficulty: "Intermédiaire",
+      topics: ["Tenses", "Vocabulary", "Grammar", "Communication"],
+      estimatedTime: "1h 45min"
+    },
+    {
+      id: "physics",
+      title: "Physique-Chimie",
+      description: "Mécanique, optique, chimie",
+      icon: "⚛️",
+      color: "from-purple-500 to-indigo-500",
+      lessons: 9,
+      exercises: 28,
+      progress: getSubjectStats('physics').progress,
+      difficulty: "Difficile",
+      topics: ["Optique", "Mécanique", "Électricité", "Chimie"],
+      estimatedTime: "3h 00min"
     },
     {
       id: "svt",
-      name: "Sciences de la Vie et de la Terre",
-      nameArabic: "علوم الحياة والأرض",
-      description: "Biologie, géologie, écologie et sciences de l'environnement",
-      icon: <Microscope className="text-green-600" />,
-      color: "green",
-      bgGradient: "from-green-600 via-emerald-500 to-teal-600",
-      lessons: 14,
-      exercises: 32,
-      duration: "7h",
-      difficulty: "Moyen" as const,
-      path: "svt"
+      title: "SVT",
+      description: "Biologie, génétique, environnement",
+      icon: "🧬",
+      color: "from-green-600 to-teal-500",
+      lessons: 7,
+      exercises: 25,
+      progress: getSubjectStats('svt').progress,
+      difficulty: "Intermédiaire",
+      topics: ["Génétique", "Écologie", "Biologie", "Environnement"],
+      estimatedTime: "2h 00min"
+    },
+    {
+      id: "histoire-geo",
+      title: "Histoire-Géographie",
+      description: "Histoire contemporaine, géographie",
+      icon: "🌍",
+      color: "from-amber-500 to-orange-500",
+      lessons: 6,
+      exercises: 22,
+      progress: getSubjectStats('histoire-geo').progress,
+      difficulty: "Facile",
+      topics: ["Histoire moderne", "Géopolitique", "Économie", "Société"],
+      estimatedTime: "2h 30min"
+    },
+    {
+      id: "arabic",
+      title: "العربية",
+      description: "اللغة العربية، الأدب، القواعد",
+      icon: "🕌",
+      color: "from-teal-500 to-cyan-500",
+      lessons: 5,
+      exercises: 18,
+      progress: getSubjectStats('arabic').progress,
+      difficulty: "Intermédiaire",
+      topics: ["النحو", "الصرف", "الأدب", "البلاغة"],
+      estimatedTime: "1h 30min"
     }
   ];
 
-  const getGreeting = () => {
-    const hour = currentTime.getHours();
-    if (hour < 12) return "Bonjour";
-    if (hour < 18) return "Bon après-midi";
-    return "Bonsoir";
-  };
+  const featuredUpdates = [
+    {
+      title: "Nouveaux exercices interactifs",
+      description: "Plus de 50 nouveaux exercices avec corrections détaillées",
+      icon: <Zap className="h-5 w-5" />,
+      badge: "Nouveau"
+    },
+    {
+      title: "Mode concentration",
+      description: "Étudiez sans distractions avec le nouveau mode focus",
+      icon: <Target className="h-5 w-5" />,
+      badge: "Amélioré"
+    },
+    {
+      title: "Suivi des progrès",
+      description: "Visualisez vos performances avec des statistiques détaillées",
+      icon: <TrendingUp className="h-5 w-5" />,
+      badge: "Beta"
+    }
+  ];
 
-  const platformStats = {
-    totalStudents: "15,000+",
-    totalLessons: subjects.reduce((sum, subject) => sum + subject.lessons, 0),
-    totalExercises: subjects.reduce((sum, subject) => sum + subject.exercises, 0),
-    successRate: "94%"
-  };
+  const achievements = [
+    { title: "Premier cours terminé", icon: <BookOpen className="h-5 w-5" />, unlocked: totalStats.coursesCompleted > 0 },
+    { title: "Studieux", icon: <Brain className="h-5 w-5" />, unlocked: totalStats.exercisesCompleted >= 10 },
+    { title: "Expert", icon: <Trophy className="h-5 w-5" />, unlocked: totalStats.averageScore >= 80 },
+    { title: "Assidu", icon: <Star className="h-5 w-5" />, unlocked: totalStats.streak >= 7 }
+  ];
 
   return (
     <div className="min-h-screen bg-gradient-to-br from-blue-50 via-indigo-50 to-purple-50 dark:from-gray-900 dark:via-gray-800 dark:to-gray-900">
       <GlobalHeader />
       
       {/* Hero Section */}
-      <div className="relative overflow-hidden">
-        <div className="absolute inset-0 bg-gradient-to-br from-indigo-600/20 via-purple-600/20 to-pink-600/20 animate-pulse"></div>
-        <div className="relative container mx-auto px-4 pt-8 pb-12">
-          <motion.div 
-            initial={{ opacity: 0, y: 20 }}
-            animate={{ opacity: 1, y: 0 }}
-            className="text-center mb-12"
-          >
-            <div className="flex items-center justify-center gap-3 mb-4">
-              <GraduationCap className="h-12 w-12 text-indigo-600" />
-              <h1 className="text-4xl md:text-6xl font-bold bg-gradient-to-r from-indigo-600 via-purple-600 to-pink-600 bg-clip-text text-transparent">
-                EduPlanet
-              </h1>
-            </div>
-            <p className="text-xl md:text-2xl text-muted-foreground mb-2">
-              {getGreeting()}, {settings.name || "Étudiant"} ! 
-            </p>
-            <p className="text-lg text-muted-foreground mb-8 max-w-3xl mx-auto">
-              Votre plateforme d'apprentissage interactive pour le Tronc Commun Sciences
-            </p>
-
-            {/* Platform Stats */}
-            <div className="grid grid-cols-2 md:grid-cols-4 gap-6 max-w-4xl mx-auto mb-8">
-              <div className="text-center">
-                <div className="text-2xl font-bold text-indigo-600 flex items-center justify-center gap-2">
-                  <Users className="h-5 w-5" />
-                  {platformStats.totalStudents}
-                </div>
-                <div className="text-sm text-muted-foreground">Étudiants actifs</div>
-              </div>
-              <div className="text-center">
-                <div className="text-2xl font-bold text-purple-600 flex items-center justify-center gap-2">
-                  <BookOpen className="h-5 w-5" />
-                  {platformStats.totalLessons}
-                </div>
-                <div className="text-sm text-muted-foreground">Leçons disponibles</div>
-              </div>
-              <div className="text-center">
-                <div className="text-2xl font-bold text-pink-600 flex items-center justify-center gap-2">
-                  <Zap className="h-5 w-5" />
-                  {platformStats.totalExercises}
-                </div>
-                <div className="text-sm text-muted-foreground">Exercices interactifs</div>
-              </div>
-              <div className="text-center">
-                <div className="text-2xl font-bold text-emerald-600 flex items-center justify-center gap-2">
-                  <TrendingUp className="h-5 w-5" />
-                  {platformStats.successRate}
-                </div>
-                <div className="text-sm text-muted-foreground">Taux de réussite</div>
-              </div>
-            </div>
-
-            <div className="flex flex-wrap justify-center gap-4">
-              <Button 
-                size="lg" 
-                className="bg-gradient-to-r from-indigo-600 to-purple-600 hover:from-indigo-700 hover:to-purple-700 text-white shadow-lg hover:shadow-xl transition-all duration-300 hover:scale-105"
-                onClick={() => navigate("/lessons")}
-              >
-                <Sparkles className="h-5 w-5 mr-2" />
-                Commencer l'apprentissage
+      <motion.section
+        initial={{ opacity: 0, y: 20 }}
+        animate={{ opacity: 1, y: 0 }}
+        transition={{ duration: 0.6 }}
+        className="relative overflow-hidden bg-gradient-to-r from-blue-600 via-purple-600 to-indigo-600 text-white"
+      >
+        <div className="absolute inset-0 bg-black/20" />
+        <div className="relative max-w-7xl mx-auto px-6 py-20">
+          <div className="text-center">
+            <motion.div
+              initial={{ scale: 0 }}
+              animate={{ scale: 1 }}
+              transition={{ duration: 0.8, delay: 0.2 }}
+              className="inline-flex items-center gap-2 bg-white/20 backdrop-blur-sm rounded-full px-4 py-2 mb-6"
+            >
+              <Award className="h-5 w-5" />
+              <span className="text-sm font-medium">Plateforme éducative #1</span>
+            </motion.div>
+            
+            <motion.h1
+              initial={{ opacity: 0, y: 30 }}
+              animate={{ opacity: 1, y: 0 }}
+              transition={{ duration: 0.8, delay: 0.3 }}
+              className="text-5xl md:text-7xl font-bold mb-6"
+            >
+              EduPlatform
+              <span className="block text-3xl md:text-4xl text-blue-200 font-normal mt-2">
+                Votre réussite commence ici
+              </span>
+            </motion.h1>
+            
+            <motion.p
+              initial={{ opacity: 0, y: 20 }}
+              animate={{ opacity: 1, y: 0 }}
+              transition={{ duration: 0.8, delay: 0.4 }}
+              className="text-xl md:text-2xl text-blue-100 mb-8 max-w-3xl mx-auto"
+            >
+              Une plateforme d'apprentissage moderne avec des cours interactifs, 
+              des exercices personnalisés et un suivi de progression avancé.
+            </motion.p>
+            
+            <motion.div
+              initial={{ opacity: 0, y: 20 }}
+              animate={{ opacity: 1, y: 0 }}
+              transition={{ duration: 0.8, delay: 0.5 }}
+              className="flex flex-col sm:flex-row gap-4 justify-center"
+            >
+              <Button size="lg" className="bg-white text-blue-600 hover:bg-blue-50 text-lg px-8 py-3">
+                Commencer maintenant
+                <ChevronRight className="ml-2 h-5 w-5" />
               </Button>
-              <Button 
-                variant="outline" 
-                size="lg"
-                className="border-indigo-200 text-indigo-600 hover:bg-indigo-50 shadow-lg hover:shadow-xl transition-all duration-300 hover:scale-105"
-              >
-                <Globe className="h-5 w-5 mr-2" />
-                Explorer les matières
+              <Button size="lg" variant="outline" className="border-white text-white hover:bg-white hover:text-blue-600 text-lg px-8 py-3">
+                Découvrir les cours
               </Button>
-            </div>
-          </motion.div>
-
-          <WelcomeBanner onShowChangelog={() => setShowChangelog(true)} />
+            </motion.div>
+          </div>
         </div>
-      </div>
+        
+        {/* Floating elements */}
+        <div className="absolute top-20 left-10 opacity-20">
+          <motion.div
+            animate={{ rotate: 360 }}
+            transition={{ duration: 20, repeat: Infinity, ease: "linear" }}
+            className="w-16 h-16 border-4 border-white rounded-full"
+          />
+        </div>
+        <div className="absolute bottom-20 right-10 opacity-20">
+          <motion.div
+            animate={{ y: [-10, 10, -10] }}
+            transition={{ duration: 4, repeat: Infinity, ease: "easeInOut" }}
+            className="w-12 h-12 bg-white rounded-lg"
+          />
+        </div>
+      </motion.section>
 
-      <div className="container mx-auto px-4 pb-12">
-        {/* User Stats */}
-        <motion.div 
+      <div className="max-w-7xl mx-auto px-6 py-12">
+        <WelcomeBanner />
+        
+        {/* Quick Stats */}
+        <motion.section
           initial={{ opacity: 0, y: 20 }}
           animate={{ opacity: 1, y: 0 }}
-          transition={{ delay: 0.2 }}
+          transition={{ duration: 0.6, delay: 0.2 }}
           className="mb-12"
         >
-          <StatsOverview />
-        </motion.div>
+          <QuickStats />
+        </motion.section>
 
-        {/* Quick Actions */}
-        <motion.div 
+        {/* Featured Updates */}
+        <motion.section
           initial={{ opacity: 0, y: 20 }}
           animate={{ opacity: 1, y: 0 }}
-          transition={{ delay: 0.3 }}
+          transition={{ duration: 0.6, delay: 0.3 }}
           className="mb-12"
         >
-          <Card className="bg-gradient-to-r from-indigo-500 via-purple-500 to-pink-500 border-0 shadow-2xl text-white">
-            <CardContent className="p-8">
-              <div className="text-center mb-6">
-                <h2 className="text-2xl font-bold mb-2">Actions rapides</h2>
-                <p className="text-white/80">Accédez rapidement à vos contenus préférés</p>
-              </div>
-              <div className="grid grid-cols-1 md:grid-cols-3 gap-4">
-                <Button 
-                  variant="secondary"
-                  className="bg-white/20 hover:bg-white/30 text-white border-white/30 backdrop-blur-sm h-auto p-4"
-                  onClick={() => navigate("/lessons")}
-                >
-                  <BookOpen className="h-6 w-6 mb-2" />
-                  <div>
-                    <div className="font-semibold">Toutes les leçons</div>
-                    <div className="text-sm text-white/80">Explorez tous les cours</div>
-                  </div>
-                </Button>
-                <Button 
-                  variant="secondary"
-                  className="bg-white/20 hover:bg-white/30 text-white border-white/30 backdrop-blur-sm h-auto p-4"
-                  onClick={() => navigate("/lessons/physics")}
-                >
-                  <Atom className="h-6 w-6 mb-2" />
-                  <div>
-                    <div className="font-semibold">Physique</div>
-                    <div className="text-sm text-white/80">Matière populaire</div>
-                  </div>
-                </Button>
-                <Button 
-                  variant="secondary"
-                  className="bg-white/20 hover:bg-white/30 text-white border-white/30 backdrop-blur-sm h-auto p-4"
-                  onClick={() => navigate("/settings")}
-                >
-                  <GraduationCap className="h-6 w-6 mb-2" />
-                  <div>
-                    <div className="font-semibold">Mon profil</div>
-                    <div className="text-sm text-white/80">Paramètres et progression</div>
-                  </div>
-                </Button>
-              </div>
-            </CardContent>
-          </Card>
-        </motion.div>
-
-        {/* Subject Cards */}
-        <motion.div 
-          initial={{ opacity: 0, y: 20 }}
-          animate={{ opacity: 1, y: 0 }}
-          transition={{ delay: 0.4 }}
-          className="mb-12"
-        >
-          <div className="text-center mb-8">
-            <h2 className="text-3xl font-bold mb-4 bg-gradient-to-r from-indigo-600 to-purple-600 bg-clip-text text-transparent">
-              Explorez nos matières
+          <div className="flex items-center justify-between mb-6">
+            <h2 className="text-2xl font-bold text-gray-900 dark:text-white">
+              Nouveautés
             </h2>
-            <p className="text-lg text-muted-foreground max-w-2xl mx-auto">
-              Des cours complets et interactifs adaptés au programme du Tronc Commun Sciences
-            </p>
+            <Button 
+              variant="outline" 
+              onClick={() => setShowChangelog(true)}
+              className="text-sm"
+            >
+              Voir toutes les mises à jour
+            </Button>
           </div>
           
-          <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-8">
-            {subjects.map((subject, index) => (
-              <EnhancedSubjectCard 
-                key={subject.id} 
-                subject={subject} 
-                index={index}
-              />
+          <div className="grid md:grid-cols-3 gap-6">
+            {featuredUpdates.map((update, index) => (
+              <motion.div
+                key={update.title}
+                initial={{ opacity: 0, y: 20 }}
+                animate={{ opacity: 1, y: 0 }}
+                transition={{ duration: 0.6, delay: 0.1 * index }}
+              >
+                <Card className="h-full hover:shadow-lg transition-shadow">
+                  <CardHeader>
+                    <div className="flex items-start justify-between">
+                      <div className="flex items-center gap-3">
+                        <div className="p-2 bg-blue-100 dark:bg-blue-900 rounded-lg">
+                          {update.icon}
+                        </div>
+                        <CardTitle className="text-lg">{update.title}</CardTitle>
+                      </div>
+                      <Badge variant="secondary">{update.badge}</Badge>
+                    </div>
+                  </CardHeader>
+                  <CardContent>
+                    <CardDescription className="text-base">
+                      {update.description}
+                    </CardDescription>
+                  </CardContent>
+                </Card>
+              </motion.div>
             ))}
           </div>
-        </motion.div>
+        </motion.section>
 
-        {/* Call to Action */}
-        <motion.div 
+        {/* Achievements */}
+        <motion.section
           initial={{ opacity: 0, y: 20 }}
           animate={{ opacity: 1, y: 0 }}
-          transition={{ delay: 0.6 }}
-          className="text-center"
+          transition={{ duration: 0.6, delay: 0.4 }}
+          className="mb-12"
         >
-          <Card className="bg-gradient-to-r from-emerald-50 via-teal-50 to-cyan-50 dark:from-emerald-900/20 dark:via-teal-900/20 dark:to-cyan-900/20 border-0 shadow-lg">
-            <CardContent className="p-8">
-              <h3 className="text-2xl font-bold mb-4 text-emerald-700 dark:text-emerald-300">
-                Prêt à commencer votre parcours d'apprentissage ?
-              </h3>
-              <p className="text-muted-foreground mb-6 max-w-2xl mx-auto">
-                Rejoignez des milliers d'étudiants qui font confiance à EduPlanet pour réussir leurs études.
-                Commencez dès maintenant et découvrez une nouvelle façon d'apprendre !
-              </p>
-              <Button 
-                size="lg" 
-                className="bg-gradient-to-r from-emerald-600 to-teal-600 hover:from-emerald-700 hover:to-teal-700 text-white shadow-lg hover:shadow-xl transition-all duration-300 hover:scale-105"
-                onClick={() => navigate("/lessons")}
+          <h2 className="text-2xl font-bold text-gray-900 dark:text-white mb-6">
+            Vos réussites
+          </h2>
+          <div className="grid grid-cols-2 md:grid-cols-4 gap-4">
+            {achievements.map((achievement, index) => (
+              <motion.div
+                key={achievement.title}
+                initial={{ opacity: 0, scale: 0.8 }}
+                animate={{ opacity: 1, scale: 1 }}
+                transition={{ duration: 0.4, delay: 0.1 * index }}
               >
-                <Sparkles className="h-5 w-5 mr-2" />
-                Commencer maintenant
-              </Button>
-            </CardContent>
-          </Card>
-        </motion.div>
+                <Card className={`text-center p-4 ${achievement.unlocked ? 'bg-gradient-to-br from-yellow-50 to-amber-50 dark:from-yellow-900/20 dark:to-amber-900/20 border-yellow-200 dark:border-yellow-800' : 'bg-gray-50 dark:bg-gray-800 opacity-60'}`}>
+                  <div className={`inline-flex p-3 rounded-full mb-3 ${achievement.unlocked ? 'bg-yellow-100 dark:bg-yellow-900 text-yellow-600 dark:text-yellow-400' : 'bg-gray-200 dark:bg-gray-700 text-gray-400'}`}>
+                    {achievement.icon}
+                  </div>
+                  <h3 className="font-semibold text-sm">{achievement.title}</h3>
+                  {achievement.unlocked && (
+                    <Badge className="mt-2" variant="secondary">
+                      Débloqué
+                    </Badge>
+                  )}
+                </Card>
+              </motion.div>
+            ))}
+          </div>
+        </motion.section>
+
+        {/* Subjects Grid */}
+        <motion.section
+          initial={{ opacity: 0, y: 20 }}
+          animate={{ opacity: 1, y: 0 }}
+          transition={{ duration: 0.6, delay: 0.5 }}
+          className="mb-12"
+        >
+          <div className="flex items-center justify-between mb-8">
+            <div>
+              <h2 className="text-3xl font-bold text-gray-900 dark:text-white mb-2">
+                Vos matières
+              </h2>
+              <p className="text-muted-foreground">
+                Choisissez une matière pour commencer votre apprentissage
+              </p>
+            </div>
+            <div className="flex items-center gap-2 text-sm text-muted-foreground">
+              <Users className="h-4 w-4" />
+              <span>+2,847 étudiants actifs</span>
+            </div>
+          </div>
+          
+          <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-6">
+            {subjects.map((subject, index) => (
+              <motion.div
+                key={subject.id}
+                initial={{ opacity: 0, y: 20 }}
+                animate={{ opacity: 1, y: 0 }}
+                transition={{ duration: 0.6, delay: 0.1 * index }}
+              >
+                <EnhancedSubjectCard subject={subject} />
+              </motion.div>
+            ))}
+          </div>
+        </motion.section>
+
+        {/* Stats Overview */}
+        <motion.section
+          initial={{ opacity: 0, y: 20 }}
+          animate={{ opacity: 1, y: 0 }}
+          transition={{ duration: 0.6, delay: 0.6 }}
+        >
+          <StatsOverview />
+        </motion.section>
       </div>
 
       <ChangelogDialog 
@@ -352,6 +386,19 @@ const Index = () => {
       />
 
       <Footer />
+
+      {showOnboarding && (
+        <UserOnboarding 
+          onComplete={() => {
+            setShowOnboarding(false);
+            setShowTutorial(true);
+          }} 
+        />
+      )}
+
+      {showTutorial && (
+        <WelcomeTutorial onComplete={() => setShowTutorial(false)} />
+      )}
     </div>
   );
 };

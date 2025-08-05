@@ -347,8 +347,8 @@ const Index = () => {
       </div>
 
       <ChangelogDialog 
-        isOpen={showChangelog} 
-        onClose={() => setShowChangelog(false)} 
+        open={showChangelog} 
+        onOpenChange={setShowChangelog} 
       />
 
       <Footer />

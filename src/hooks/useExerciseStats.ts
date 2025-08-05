@@ -116,13 +116,20 @@ export const useExerciseStats = () => {
   };
 
   const getTotalStats = () => {
+    const totalLessons = Object.values(stats.subjectStats).reduce((acc, subject) => acc + subject.total, 0) || 52; // Default total
+    const totalStudyTime = Math.round(stats.completedExercises * 10); // 10 min per exercise
+    const weeklyGoal = 5; // Default weekly goal
+    
     return {
       totalExercises: stats.totalExercises,
       exercisesCompleted: stats.completedExercises,
       coursesCompleted: Object.values(stats.subjectStats).reduce((acc, subject) => acc + Math.min(subject.completed, 1), 0),
       totalPoints: stats.earnedPoints,
       averageScore: stats.averageScore,
-      streak: stats.streakDays
+      streak: stats.streakDays,
+      totalLessons,
+      totalStudyTime,
+      weeklyGoal
     };
   };
 

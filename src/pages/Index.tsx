@@ -398,7 +398,7 @@ const Index = () => {
                 animate={{ opacity: 1, y: 0 }}
                 transition={{ duration: 0.6, delay: 0.1 * index }}
               >
-                <EnhancedSubjectCard subject={subject} />
+                <EnhancedSubjectCard subject={subject} index={index} />
               </motion.div>
             ))}
           </div>

@@ -3,37 +3,49 @@ import React from "react";
 import { Card, CardContent, CardHeader, CardTitle } from "@/components/ui/card";
 import { BookOpen, Clock, Target, TrendingUp } from "lucide-react";
 import { motion } from "framer-motion";
-import { useExerciseStats } from "@/hooks/useExerciseStats";
 
-const QuickStats = () => {
-  const { getTotalStats } = useExerciseStats();
-  const totalStats = getTotalStats();
+interface QuickStatsProps {
+  totalLessons: number;
+  completedLessons: number;
+  totalStudyTime: number;
+  currentStreak: number;
+  averageScore: number;
+  weeklyGoal: number;
+}
 
+const QuickStats = ({ 
+  totalLessons, 
+  completedLessons, 
+  totalStudyTime, 
+  currentStreak, 
+  averageScore, 
+  weeklyGoal 
+}: QuickStatsProps) => {
   const stats = [
     {
       title: "Cours terminés",
-      value: totalStats.coursesCompleted || 0,
+      value: completedLessons || 0,
       icon: BookOpen,
       color: "text-blue-500",
       bgColor: "bg-blue-50 dark:bg-blue-900/20"
     },
     {
       title: "Exercices complétés",
-      value: totalStats.exercisesCompleted || 0,
+      value: Math.round(averageScore) || 0,
       icon: Target,
       color: "text-green-500",
       bgColor: "bg-green-50 dark:bg-green-900/20"
     },
     {
       title: "Temps d'étude",
-      value: `${Math.round((totalStats.exercisesCompleted || 0) * 10)}min`,
+      value: `${totalStudyTime}min`,
       icon: Clock,
       color: "text-purple-500",
       bgColor: "bg-purple-50 dark:bg-purple-900/20"
     },
     {
       title: "Série actuelle",
-      value: `${totalStats.streak || 0} jours`,
+      value: `${currentStreak || 0} jours`,
       icon: TrendingUp,
       color: "text-orange-500",
       bgColor: "bg-orange-50 dark:bg-orange-900/20"

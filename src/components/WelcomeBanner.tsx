@@ -6,7 +6,7 @@ import { Card } from "@/components/ui/card";
 import { Sparkles, X, FileText } from "lucide-react";
 
 interface WelcomeBannerProps {
-  onShowChangelog: () => void;
+  onShowChangelog?: () => void;
 }
 
 const WelcomeBanner = ({ onShowChangelog }: WelcomeBannerProps) => {
@@ -20,9 +20,9 @@ const WelcomeBanner = ({ onShowChangelog }: WelcomeBannerProps) => {
         initial={{ opacity: 0, y: -100 }}
         animate={{ opacity: 1, y: 0 }}
         exit={{ opacity: 0, y: -100 }}
-        className="relative"
+        className="relative mb-8"
       >
-        <Card className="mx-4 mt-4 bg-gradient-to-r from-purple-600 via-pink-600 to-blue-600 text-white border-0 shadow-2xl overflow-hidden">
+        <Card className="bg-gradient-to-r from-purple-600 via-pink-600 to-blue-600 text-white border-0 shadow-2xl overflow-hidden">
           <div className="absolute inset-0 bg-gradient-to-r from-white/10 to-transparent" />
           <div className="relative p-6">
             <Button
@@ -50,14 +50,16 @@ const WelcomeBanner = ({ onShowChangelog }: WelcomeBannerProps) => {
                   Découvrez les nouvelles fonctionnalités et améliorations
                 </p>
                 
-                <Button
-                  variant="secondary"
-                  onClick={onShowChangelog}
-                  className="bg-white/20 hover:bg-white/30 text-white border-white/30"
-                >
-                  <FileText className="h-4 w-4 mr-2" />
-                  Voir les nouveautés
-                </Button>
+                {onShowChangelog && (
+                  <Button
+                    variant="secondary"
+                    onClick={onShowChangelog}
+                    className="bg-white/20 hover:bg-white/30 text-white border-white/30"
+                  >
+                    <FileText className="h-4 w-4 mr-2" />
+                    Voir les nouveautés
+                  </Button>
+                )}
               </div>
             </div>
           </div>

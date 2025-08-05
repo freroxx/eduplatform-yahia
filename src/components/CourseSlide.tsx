@@ -9,7 +9,7 @@ import { ScrollArea } from "@/components/ui/scroll-area";
 interface Slide {
   title: string;
   content: string;
-  type: "intro" | "definition" | "example" | "summary";
+  type: "intro" | "definition" | "example" | "summary" | "exercise" | "content" | "introduction" | "conclusion";
 }
 
 interface CourseSlideProps {
@@ -51,12 +51,16 @@ const CourseSlide = ({ lessonTitle, slides }: CourseSlideProps) => {
   const getSlideIcon = (type: string) => {
     switch (type) {
       case "intro":
+      case "introduction":
         return <BookOpen className="h-6 w-6" />;
       case "definition":
+      case "content":
         return <BookOpen className="h-6 w-6" />;
       case "example":
+      case "exercise":
         return <CheckCircle className="h-6 w-6" />;
       case "summary":
+      case "conclusion":
         return <CheckCircle className="h-6 w-6" />;
       default:
         return <BookOpen className="h-6 w-6" />;
@@ -66,12 +70,16 @@ const CourseSlide = ({ lessonTitle, slides }: CourseSlideProps) => {
   const getSlideColor = (type: string) => {
     switch (type) {
       case "intro":
+      case "introduction":
         return "from-blue-500 to-purple-600";
       case "definition":
+      case "content":
         return "from-green-500 to-teal-600";
       case "example":
+      case "exercise":
         return "from-orange-500 to-red-600";
       case "summary":
+      case "conclusion":
         return "from-purple-500 to-pink-600";
       default:
         return "from-blue-500 to-purple-600";

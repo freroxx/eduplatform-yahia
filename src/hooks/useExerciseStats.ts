@@ -96,6 +96,36 @@ export const useExerciseStats = () => {
     };
   };
 
+  const getSubjectStats = (subject: string) => {
+    const subjectData = stats.subjectStats[subject];
+    if (!subjectData) return { 
+      completed: 0, 
+      total: 0, 
+      points: 0, 
+      progress: 0,
+      lastActivity: new Date().toISOString().split('T')[0]
+    };
+    
+    return {
+      completed: subjectData.completed,
+      total: Math.max(subjectData.total, 10), // Default minimum total
+      points: subjectData.points,
+      progress: subjectData.total > 0 ? Math.round((subjectData.completed / subjectData.total) * 100) : 0,
+      lastActivity: subjectData.lastActivity
+    };
+  };
+
+  const getTotalStats = () => {
+    return {
+      totalExercises: stats.totalExercises,
+      exercisesCompleted: stats.completedExercises,
+      coursesCompleted: Object.values(stats.subjectStats).reduce((acc, subject) => acc + Math.min(subject.completed, 1), 0),
+      totalPoints: stats.earnedPoints,
+      averageScore: stats.averageScore,
+      streak: stats.streakDays
+    };
+  };
+
   const resetStats = () => {
     setStats({
       totalExercises: 0,
@@ -113,6 +143,8 @@ export const useExerciseStats = () => {
     stats,
     updateExerciseCompletion,
     getSubjectProgress,
+    getSubjectStats,
+    getTotalStats,
     resetStats
   };
 };

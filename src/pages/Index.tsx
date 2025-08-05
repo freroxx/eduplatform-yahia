@@ -1,4 +1,3 @@
-
 import { useState, useEffect } from "react";
 import { motion } from "framer-motion";
 import { BookOpen, Brain, Trophy, TrendingUp, Users, Star, Zap, Target, Award, ChevronRight } from "lucide-react";
@@ -10,8 +9,6 @@ import WelcomeBanner from "@/components/WelcomeBanner";
 import EnhancedSubjectCard from "@/components/EnhancedSubjectCard";
 import StatsOverview from "@/components/StatsOverview";
 import QuickStats from "@/components/QuickStats";
-import UserOnboarding from "@/components/UserOnboarding";
-import WelcomeTutorial from "@/components/WelcomeTutorial";
 import ChangelogDialog from "@/components/ChangelogDialog";
 import Footer from "@/components/Footer";
 import { useSettings } from "@/hooks/useSettings";
@@ -34,6 +31,7 @@ const Index = () => {
     }
   }, []);
 
+  // Subject data with proper typing
   const subjects = [
     {
       id: "math",
@@ -46,7 +44,12 @@ const Index = () => {
       progress: getSubjectStats('math').progress,
       difficulty: "Intermédiaire",
       topics: ["Fonctions linéaires", "Équations", "Géométrie", "Statistiques"],
-      estimatedTime: "2h 30min"
+      estimatedTime: "2h 30min",
+      // Additional properties required by EnhancedSubjectCard
+      name: "Mathématiques",
+      bgGradient: "from-blue-500 to-cyan-500",
+      duration: "2h 30min",
+      path: "/math"
     },
     {
       id: "french",
@@ -59,7 +62,11 @@ const Index = () => {
       progress: getSubjectStats('french').progress,
       difficulty: "Facile",
       topics: ["Typologie textuelle", "Grammaire", "Orthographe", "Littérature"],
-      estimatedTime: "2h 15min"
+      estimatedTime: "2h 15min",
+      name: "Français",
+      bgGradient: "from-red-500 to-pink-500",
+      duration: "2h 15min",
+      path: "/french"
     },
     {
       id: "english",
@@ -72,7 +79,11 @@ const Index = () => {
       progress: getSubjectStats('english').progress,
       difficulty: "Intermédiaire",
       topics: ["Tenses", "Vocabulary", "Grammar", "Communication"],
-      estimatedTime: "1h 45min"
+      estimatedTime: "1h 45min",
+      name: "Anglais",
+      bgGradient: "from-green-500 to-emerald-500",
+      duration: "1h 45min",
+      path: "/english"
     },
     {
       id: "physics",
@@ -85,7 +96,11 @@ const Index = () => {
       progress: getSubjectStats('physics').progress,
       difficulty: "Difficile",
       topics: ["Optique", "Mécanique", "Électricité", "Chimie"],
-      estimatedTime: "3h 00min"
+      estimatedTime: "3h 00min",
+      name: "Physique-Chimie",
+      bgGradient: "from-purple-500 to-indigo-500",
+      duration: "3h 00min",
+      path: "/physics"
     },
     {
       id: "svt",
@@ -98,7 +113,11 @@ const Index = () => {
       progress: getSubjectStats('svt').progress,
       difficulty: "Intermédiaire",
       topics: ["Génétique", "Écologie", "Biologie", "Environnement"],
-      estimatedTime: "2h 00min"
+      estimatedTime: "2h 00min",
+      name: "SVT",
+      bgGradient: "from-green-600 to-teal-500",
+      duration: "2h 00min",
+      path: "/svt"
     },
     {
       id: "histoire-geo",
@@ -111,7 +130,11 @@ const Index = () => {
       progress: getSubjectStats('histoire-geo').progress,
       difficulty: "Facile",
       topics: ["Histoire moderne", "Géopolitique", "Économie", "Société"],
-      estimatedTime: "2h 30min"
+      estimatedTime: "2h 30min",
+      name: "Histoire-Géographie",
+      bgGradient: "from-amber-500 to-orange-500",
+      duration: "2h 30min",
+      path: "/histoire-geo"
     },
     {
       id: "arabic",
@@ -124,7 +147,11 @@ const Index = () => {
       progress: getSubjectStats('arabic').progress,
       difficulty: "Intermédiaire",
       topics: ["النحو", "الصرف", "الأدب", "البلاغة"],
-      estimatedTime: "1h 30min"
+      estimatedTime: "1h 30min",
+      name: "العربية",
+      bgGradient: "from-teal-500 to-cyan-500",
+      duration: "1h 30min",
+      path: "/arabic"
     }
   ];
 
@@ -237,7 +264,7 @@ const Index = () => {
       </motion.section>
 
       <div className="max-w-7xl mx-auto px-6 py-12">
-        <WelcomeBanner />
+        <WelcomeBanner onShowChangelog={() => setShowChangelog(true)} />
         
         {/* Quick Stats */}
         <motion.section

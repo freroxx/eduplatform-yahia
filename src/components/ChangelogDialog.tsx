@@ -1,141 +1,164 @@
 
-import { Dialog, DialogContent, DialogHeader, DialogTitle } from '@/components/ui/dialog';
-import { Badge } from '@/components/ui/badge';
-import { Button } from '@/components/ui/button';
-import { CheckCircle, Star, Zap, Globe, BookOpen, Palette } from 'lucide-react';
-import { motion } from 'framer-motion';
+import { Dialog, DialogContent, DialogHeader, DialogTitle } from "@/components/ui/dialog";
+import { Badge } from "@/components/ui/badge";
+import { ScrollArea } from "@/components/ui/scroll-area";
+import { Separator } from "@/components/ui/separator";
+import { Sparkles, Bug, Settings, BookOpen, Target, Zap } from "lucide-react";
 
 interface ChangelogDialogProps {
-  isOpen: boolean;
-  onClose: () => void;
+  open: boolean;
+  onOpenChange: (open: boolean) => void;
 }
 
-const ChangelogDialog = ({ isOpen, onClose }: ChangelogDialogProps) => {
-  const changes = [
+const ChangelogDialog = ({ open, onOpenChange }: ChangelogDialogProps) => {
+  const versions = [
     {
-      icon: Globe,
-      title: 'Sélection de pays',
-      description: 'Choisissez votre pays pendant l\'inscription pour une expérience personnalisée',
-      type: 'new'
+      version: "4.8.0",
+      date: "Janvier 2025",
+      type: "major",
+      changes: [
+        {
+          type: "feature",
+          icon: BookOpen,
+          title: "Contenu de cours complet",
+          description: "Tous les cours ont maintenant leur contenu unique et leurs exercices spécifiques"
+        },
+        {
+          type: "feature",
+          icon: Settings,
+          title: "Paramètres avancés",
+          description: "Nouvelles options de notification, mode concentration, et préférences d'apprentissage"
+        },
+        {
+          type: "fix",
+          icon: Bug,
+          title: "Correction des cours dupliqués",
+          description: "Chaque leçon a maintenant son propre contenu unique"
+        },
+        {
+          type: "fix",
+          icon: Bug,
+          title: "Correction du cours de mathématiques",
+          description: "Le premier cours de mathématiques a été entièrement refait"
+        },
+        {
+          type: "feature",
+          icon: Target,
+          title: "Système de progression amélioré",
+          description: "Suivi détaillé des progrès avec statistiques personnalisées"
+        },
+        {
+          type: "feature",
+          icon: Zap,
+          title: "Performance optimisée",
+          description: "Temps de chargement réduits et navigation plus fluide"
+        }
+      ]
     },
     {
-      icon: BookOpen,
-      title: 'Contenu enrichi',
-      description: 'Cours et exercices complets pour Mathématiques, Arabe et Histoire-Géographie',
-      type: 'improved'
+      version: "4.7.2",
+      date: "Décembre 2024",
+      type: "patch",
+      changes: [
+        {
+          type: "fix",
+          icon: Bug,
+          title: "Correction des erreurs de navigation",
+          description: "Les liens entre les pages fonctionnent maintenant correctement"
+        },
+        {
+          type: "feature",
+          icon: Sparkles,
+          title: "Interface utilisateur améliorée",
+          description: "Nouvelles animations et transitions fluides"
+        }
+      ]
     },
     {
-      icon: Zap,
-      title: 'Interface simplifiée',
-      description: 'Suppression des champs inutiles et amélioration de l\'expérience utilisateur',
-      type: 'improved'
-    },
-    {
-      icon: CheckCircle,
-      title: 'Corrections de bugs',
-      description: 'Résolution des problèmes d\'embeds et amélioration des performances',
-      type: 'fixed'
-    },
-    {
-      icon: Palette,
-      title: 'Design moderne',
-      description: 'Interface repensée avec de meilleures animations et une typographie améliorée',
-      type: 'improved'
-    },
-    {
-      icon: Star,
-      title: 'Tutoriel interactif',
-      description: 'Découverte guidée des fonctionnalités lors de votre première visite',
-      type: 'new'
+      version: "4.7.0",
+      date: "Novembre 2024",
+      type: "minor",
+      changes: [
+        {
+          type: "feature",
+          icon: BookOpen,
+          title: "Assistant IA intégré",
+          description: "Aide personnalisée pour vos études avec intelligence artificielle"
+        },
+        {
+          type: "feature",
+          icon: Target,
+          title: "Système d'exercices interactif",
+          description: "Exercices adaptatifs avec correction automatique"
+        }
+      ]
     }
   ];
 
-  const getTypeColor = (type: string) => {
+  const getVersionBadgeColor = (type: string) => {
     switch (type) {
-      case 'new': return 'bg-green-500';
-      case 'improved': return 'bg-blue-500';
-      case 'fixed': return 'bg-red-500';
-      default: return 'bg-gray-500';
+      case "major": return "bg-red-500 text-white";
+      case "minor": return "bg-blue-500 text-white";
+      case "patch": return "bg-green-500 text-white";
+      default: return "bg-gray-500 text-white";
     }
   };
 
-  const getTypeLabel = (type: string) => {
+  const getChangeIcon = (type: string) => {
     switch (type) {
-      case 'new': return 'Nouveau';
-      case 'improved': return 'Amélioré';
-      case 'fixed': return 'Corrigé';
-      default: return 'Autre';
+      case "feature": return "text-green-600";
+      case "fix": return "text-orange-600";
+      case "improvement": return "text-blue-600";
+      default: return "text-gray-600";
     }
   };
 
   return (
-    <Dialog open={isOpen} onOpenChange={onClose}>
-      <DialogContent className="max-w-2xl max-h-[80vh] overflow-y-auto" hideCloseButton>
+    <Dialog open={open} onOpenChange={onOpenChange}>
+      <DialogContent className="max-w-2xl max-h-[80vh]">
         <DialogHeader>
-          <div className="flex items-center space-x-3 mb-4">
-            <div className="bg-gradient-to-r from-purple-600 to-pink-600 text-white p-3 rounded-full">
-              <Star className="h-6 w-6" />
-            </div>
-            <div>
-              <DialogTitle className="text-2xl font-bold gradient-text">
-                Nouveautés v4.5
-              </DialogTitle>
-              <p className="text-muted-foreground">Découvrez les dernières améliorations</p>
-            </div>
-          </div>
+          <DialogTitle className="flex items-center gap-2">
+            <Sparkles className="h-6 w-6 text-primary" />
+            Nouveautés EduPlatform
+          </DialogTitle>
         </DialogHeader>
-
-        <div className="space-y-6">
-          <div className="bg-gradient-to-r from-purple-50 to-pink-50 dark:from-purple-950/20 dark:to-pink-950/20 p-4 rounded-lg border">
-            <h3 className="font-semibold text-lg mb-2">🎉 Version 4.5 disponible !</h3>
-            <p className="text-muted-foreground">
-              Cette mise à jour apporte des améliorations significatives à votre expérience d'apprentissage
-              avec un contenu enrichi, une interface simplifiée et de nouvelles fonctionnalités.
-            </p>
-          </div>
-
-          <div className="space-y-4">
-            {changes.map((change, index) => (
-              <motion.div
-                key={change.title}
-                initial={{ opacity: 0, x: -20 }}
-                animate={{ opacity: 1, x: 0 }}
-                transition={{ delay: index * 0.1 }}
-                className="flex items-start space-x-4 p-4 rounded-lg border bg-card hover-lift"
-              >
-                <div className={`p-2 rounded-full ${getTypeColor(change.type)} text-white flex-shrink-0`}>
-                  <change.icon className="h-4 w-4" />
-                </div>
-                <div className="flex-1">
-                  <div className="flex items-center space-x-2 mb-2">
-                    <h4 className="font-semibold">{change.title}</h4>
-                    <Badge variant="outline" className={`text-xs ${getTypeColor(change.type)} text-white border-0`}>
-                      {getTypeLabel(change.type)}
+        
+        <ScrollArea className="max-h-[60vh] pr-4">
+          <div className="space-y-6">
+            {versions.map((version, index) => (
+              <div key={version.version} className="space-y-4">
+                <div className="flex items-center justify-between">
+                  <div className="flex items-center gap-3">
+                    <h3 className="text-xl font-bold">Version {version.version}</h3>
+                    <Badge className={getVersionBadgeColor(version.type)}>
+                      {version.type}
                     </Badge>
                   </div>
-                  <p className="text-muted-foreground text-sm">{change.description}</p>
+                  <span className="text-sm text-muted-foreground">{version.date}</span>
                 </div>
-              </motion.div>
+                
+                <div className="space-y-3">
+                  {version.changes.map((change, changeIndex) => {
+                    const IconComponent = change.icon;
+                    return (
+                      <div key={changeIndex} className="flex gap-3 p-3 rounded-lg bg-muted/50">
+                        <div className={`flex-shrink-0 ${getChangeIcon(change.type)}`}>
+                          <IconComponent className="h-5 w-5" />
+                        </div>
+                        <div className="space-y-1">
+                          <h4 className="font-semibold text-foreground">{change.title}</h4>
+                          <p className="text-sm text-muted-foreground">{change.description}</p>
+                        </div>
+                      </div>
+                    );
+                  })}
+                </div>
+                
+                {index < versions.length - 1 && <Separator className="my-6" />}
+              </div>
             ))}
           </div>
-
-          <div className="bg-muted/50 p-4 rounded-lg">
-            <h4 className="font-semibold mb-2">📚 Contenu ajouté</h4>
-            <ul className="text-sm text-muted-foreground space-y-1">
-              <li>• 15 leçons complètes en Mathématiques (Semestre 1 & 2)</li>
-              <li>• 6 modules complets en Arabe avec exercices</li>
-              <li>• 26 leçons d'Histoire-Géographie restructurées</li>
-              <li>• Intégration musicale améliorée</li>
-              <li>• Interface responsive optimisée</li>
-            </ul>
-          </div>
-
-          <div className="flex justify-end pt-4 border-t">
-            <Button onClick={onClose} className="px-6 btn-modern hover-glow">
-              Parfait, merci !
-            </Button>
-          </div>
-        </div>
+        </ScrollArea>
       </DialogContent>
     </Dialog>
   );

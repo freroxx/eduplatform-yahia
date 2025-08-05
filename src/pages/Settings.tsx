@@ -1,115 +1,90 @@
 
 import { useState } from "react";
 import { motion } from "framer-motion";
-import { Card, CardContent, CardDescription, CardHeader, CardTitle } from "@/components/ui/card";
+import { Card, CardContent, CardHeader, CardTitle } from "@/components/ui/card";
 import { Button } from "@/components/ui/button";
 import { Input } from "@/components/ui/input";
 import { Label } from "@/components/ui/label";
-import { Badge } from "@/components/ui/badge";
+import { Switch } from "@/components/ui/switch";
 import { Select, SelectContent, SelectItem, SelectTrigger, SelectValue } from "@/components/ui/select";
-import { Checkbox } from "@/components/ui/checkbox";
-import { useToast } from "@/hooks/use-toast";
-import { useSettings } from "@/hooks/useSettings";
-import { ArrowLeft, User, Palette, Save, Sun, Moon, Monitor, Trash2, GraduationCap, UserCheck, Globe, BookMarked } from "lucide-react";
+import { Separator } from "@/components/ui/separator";
+import { Badge } from "@/components/ui/badge";
+import { Slider } from "@/components/ui/slider";
+import { ArrowLeft, User, Palette, Bell, Book, Shield, Download, Trash2, Moon, Sun, Monitor, Volume2 } from "lucide-react";
 import { Link } from "react-router-dom";
+import { useSettings } from "@/hooks/useSettings";
+import { useToast } from "@/hooks/use-toast";
+import GlobalHeader from "@/components/GlobalHeader";
 
 const Settings = () => {
-  const { settings, updateName, updateTheme, updateUserType, updateCountry, updateSubjects } = useSettings();
+  const { settings, updateName, updateTheme, updateCountry, updateSubjects } = useSettings();
   const { toast } = useToast();
-  const [tempName, setTempName] = useState(settings.name);
-  const [tempCountry, setTempCountry] = useState(settings.country);
-  const [tempSubjects, setTempSubjects] = useState(settings.subjects);
+  const [name, setName] = useState(settings.name);
+  const [notifications, setNotifications] = useState(true);
+  const [soundEffects, setSoundEffects] = useState(true);
+  const [autoSave, setAutoSave] = useState(true);
+  const [concentrationMode, setConcentrationMode] = useState(false);
+  const [studyReminders, setStudyReminders] = useState(true);
+  const [fontSize, setFontSize] = useState([16]);
+  const [animationSpeed, setAnimationSpeed] = useState([100]);
 
   const countries = [
-    'Maroc', 'Algérie', 'Tunisie', 'France', 'Canada', 'Belgique', 'Suisse',
-    'Sénégal', 'Côte d\'Ivoire', 'Mali', 'Burkina Faso', 'Niger', 'Mauritanie'
+    "Maroc", "Algérie", "Tunisie", "France", "Canada", "Sénégal", "Côte d'Ivoire", "Mali"
   ];
 
-  const availableSubjects = [
-    "Mathématiques", "Physique Chimie", "SVT", "Français", "العربية", "Anglais", "Histoire-Géographie"
+  const allSubjects = [
+    "Mathématiques", "Physique", "Français", "Arabe", "Histoire-Géo", "SVT", 
+    "Anglais", "Espagnol", "Informatique", "Philosophie"
   ];
 
-  const handleSaveName = () => {
-    if (!tempName.trim()) {
-      toast({
-        title: "Erreur",
-        description: "Le nom ne peut pas être vide",
-        variant: "destructive"
-      });
-      return;
-    }
+  const handleSave = () => {
+    updateName(name);
+    toast({
+      title: "Paramètres sauvegardés",
+      description: "Vos préférences ont été mises à jour avec succès.",
+    });
+  };
+
+  const handleExportData = () => {
+    const data = {
+      settings,
+      exportDate: new Date().toISOString(),
+      version: "4.8.0"
+    };
+    const blob = new Blob([JSON.stringify(data, null, 2)], { type: 'application/json' });
+    const url = URL.createObjectURL(blob);
+    const a = document.createElement('a');
+    a.href = url;
+    a.download = 'eduplatform-data.json';
+    a.click();
+    URL.revokeObjectURL(url);
     
-    updateName(tempName.trim());
     toast({
-      title: "Nom mis à jour",
-      description: "Votre nom a été modifié avec succès",
+      title: "Données exportées",
+      description: "Vos données ont été téléchargées avec succès.",
     });
   };
 
-  const handleSaveCountry = () => {
-    updateCountry(tempCountry);
-    toast({
-      title: "Pays mis à jour",
-      description: "Votre pays a été modifié avec succès",
-    });
-  };
-
-  const handleSaveSubjects = () => {
-    updateSubjects(tempSubjects);
-    toast({
-      title: "Matières mises à jour",
-      description: "Vos matières préférées ont été modifiées avec succès",
-    });
-  };
-
-  const handleThemeChange = (theme: 'light' | 'dark' | 'auto') => {
-    updateTheme(theme);
-    toast({
-      title: "Thème mis à jour",
-      description: `Thème changé vers ${theme === 'light' ? 'clair' : theme === 'dark' ? 'sombre' : 'automatique'}`,
-    });
-  };
-
-  const handleUserTypeChange = (userType: 'student' | 'teacher') => {
-    updateUserType(userType);
-    toast({
-      title: "Type d'utilisateur mis à jour",
-      description: `Vous êtes maintenant ${userType === 'student' ? 'étudiant(e)' : 'enseignant(e)'}`,
-    });
-  };
-
-  const handleSubjectToggle = (subject: string) => {
-    setTempSubjects(prev => 
-      prev.includes(subject) 
-        ? prev.filter(s => s !== subject)
-        : [...prev, subject]
-    );
-  };
-
-  const clearAllData = () => {
-    if (confirm("Êtes-vous sûr de vouloir effacer toutes vos données ? Cette action est irréversible.")) {
+  const handleResetSettings = () => {
+    if (confirm("Êtes-vous sûr de vouloir réinitialiser tous vos paramètres ?")) {
       localStorage.clear();
-      toast({
-        title: "Données effacées",
-        description: "Toutes vos données ont été supprimées",
-      });
       window.location.reload();
     }
   };
 
-  const themeOptions = [
-    { value: 'light', label: 'Clair', icon: Sun, description: 'Interface claire et lumineuse' },
-    { value: 'dark', label: 'Sombre', icon: Moon, description: 'Interface sombre, reposante pour les yeux' },
-    { value: 'auto', label: 'Automatique', icon: Monitor, description: "S'adapte à votre système" }
-  ];
-
-  const userTypeOptions = [
-    { value: 'student', label: 'Étudiant(e)', icon: User, description: 'Je suis ici pour apprendre' },
-    { value: 'teacher', label: 'Enseignant(e)', icon: GraduationCap, description: 'Je suis ici pour enseigner' }
-  ];
+  const getThemeIcon = (theme: string) => {
+    switch (theme) {
+      case 'light': return Sun;
+      case 'dark': return Moon;
+      case 'auto': return Monitor;
+      default: return Monitor;
+    }
+  };
 
   return (
-    <div className="min-h-screen animated-bg">
+    <div className="min-h-screen bg-gradient-to-br from-blue-50 via-indigo-50 to-purple-50 dark:from-gray-900 dark:via-gray-800 dark:to-gray-900">
+      <GlobalHeader />
+      
       <div className="container mx-auto px-4 py-8">
         <motion.div
           initial={{ opacity: 0, y: 20 }}
@@ -117,301 +92,258 @@ const Settings = () => {
           className="max-w-4xl mx-auto"
         >
           {/* Header */}
-          <div className="flex items-center mb-8">
+          <div className="flex items-center justify-between mb-8">
             <Link to="/">
-              <Button variant="ghost" size="sm" className="mr-4">
+              <Button variant="outline" size="sm">
                 <ArrowLeft className="h-4 w-4 mr-2" />
                 Retour
               </Button>
             </Link>
-            <h1 className="text-3xl font-bold text-gray-900 dark:text-white">Paramètres</h1>
+            <h1 className="text-3xl font-bold text-foreground">Paramètres</h1>
+            <Badge variant="secondary">v4.8.0</Badge>
           </div>
 
-          <div className="grid gap-6">
+          <div className="grid grid-cols-1 lg:grid-cols-2 gap-6">
             {/* Profile Settings */}
-            <motion.div
-              initial={{ opacity: 0, x: -20 }}
-              animate={{ opacity: 1, x: 0 }}
-              transition={{ delay: 0.1 }}
-            >
-              <Card className="glass-morphism">
-                <CardHeader>
-                  <CardTitle className="flex items-center gap-2">
-                    <User className="h-5 w-5" />
-                    Profil utilisateur
-                  </CardTitle>
-                  <CardDescription>
-                    Modifiez vos informations personnelles
-                  </CardDescription>
-                </CardHeader>
-                <CardContent className="space-y-6">
-                  {/* Name */}
-                  <div className="space-y-2">
-                    <Label htmlFor="name">Nom complet</Label>
-                    <div className="flex gap-2">
-                      <Input
-                        id="name"
-                        value={tempName}
-                        onChange={(e) => setTempName(e.target.value)}
-                        placeholder="Votre nom complet"
-                        className="flex-1"
-                      />
-                      <Button 
-                        onClick={handleSaveName}
-                        disabled={tempName === settings.name}
-                        className="btn-hover-effect"
-                      >
-                        <Save className="h-4 w-4 mr-2" />
-                        Sauvegarder
-                      </Button>
-                    </div>
-                  </div>
+            <Card className="bg-card/90 backdrop-blur-sm border-0 shadow-lg">
+              <CardHeader>
+                <CardTitle className="flex items-center gap-2">
+                  <User className="h-5 w-5 text-blue-600" />
+                  Profil utilisateur
+                </CardTitle>
+              </CardHeader>
+              <CardContent className="space-y-4">
+                <div className="space-y-2">
+                  <Label htmlFor="name">Nom</Label>
+                  <Input
+                    id="name"
+                    value={name}
+                    onChange={(e) => setName(e.target.value)}
+                    placeholder="Votre nom"
+                  />
+                </div>
+                
+                <div className="space-y-2">
+                  <Label>Pays</Label>
+                  <Select value={settings.country} onValueChange={updateCountry}>
+                    <SelectTrigger>
+                      <SelectValue />
+                    </SelectTrigger>
+                    <SelectContent>
+                      {countries.map((country) => (
+                        <SelectItem key={country} value={country}>
+                          {country}
+                        </SelectItem>
+                      ))}
+                    </SelectContent>
+                  </Select>
+                </div>
 
-                  {/* Country */}
-                  <div className="space-y-2">
-                    <Label htmlFor="country">
-                      <Globe className="h-4 w-4 inline mr-2" />
-                      Pays
-                    </Label>
-                    <div className="flex gap-2">
-                      <Select value={tempCountry} onValueChange={setTempCountry}>
-                        <SelectTrigger className="flex-1">
-                          <SelectValue />
-                        </SelectTrigger>
-                        <SelectContent>
-                          {countries.map((country) => (
-                            <SelectItem key={country} value={country}>
-                              {country}
-                            </SelectItem>
-                          ))}
-                        </SelectContent>
-                      </Select>
-                      <Button 
-                        onClick={handleSaveCountry}
-                        disabled={tempCountry === settings.country}
-                        className="btn-hover-effect"
-                      >
-                        <Save className="h-4 w-4 mr-2" />
-                        Sauvegarder
-                      </Button>
-                    </div>
-                  </div>
-
-                  <div className="pt-2 flex flex-wrap gap-2">
-                    <Badge variant="outline">
-                      {settings.name || 'Non défini'}
-                    </Badge>
-                    <Badge variant="outline">
-                      {settings.country}
-                    </Badge>
-                    <Badge variant="outline">
-                      {settings.userType === 'student' ? 'Étudiant(e)' : 'Enseignant(e)'}
-                    </Badge>
-                  </div>
-                </CardContent>
-              </Card>
-            </motion.div>
-
-            {/* User Type */}
-            <motion.div
-              initial={{ opacity: 0, x: -20 }}
-              animate={{ opacity: 1, x: 0 }}
-              transition={{ delay: 0.15 }}
-            >
-              <Card className="glass-morphism">
-                <CardHeader>
-                  <CardTitle className="flex items-center gap-2">
-                    <UserCheck className="h-5 w-5" />
-                    Type d'utilisateur
-                  </CardTitle>
-                  <CardDescription>
-                    Changez votre rôle sur la plateforme
-                  </CardDescription>
-                </CardHeader>
-                <CardContent>
-                  <div className="grid gap-3">
-                    {userTypeOptions.map((option) => {
-                      const Icon = option.icon;
-                      const isActive = settings.userType === option.value;
-                      
-                      return (
-                        <motion.div
-                          key={option.value}
-                          whileHover={{ scale: 1.02 }}
-                          whileTap={{ scale: 0.98 }}
-                        >
-                          <Button
-                            variant={isActive ? "default" : "outline"}
-                            onClick={() => handleUserTypeChange(option.value as 'student' | 'teacher')}
-                            className="w-full justify-start h-auto p-4 btn-hover-effect"
-                          >
-                            <div className="flex items-center gap-4 w-full">
-                              <div className={`p-2 rounded-full ${isActive ? 'bg-white/20' : 'bg-gray-100 dark:bg-gray-700'}`}>
-                                <Icon className="h-4 w-4" />
-                              </div>
-                              <div className="text-left flex-1">
-                                <div className="font-medium">{option.label}</div>
-                                <div className={`text-sm ${isActive ? 'text-white/80' : 'text-gray-500'}`}>
-                                  {option.description}
-                                </div>
-                              </div>
-                              {isActive && (
-                                <Badge variant="secondary" className="bg-white/20 text-white">
-                                  Actif
-                                </Badge>
-                              )}
-                            </div>
-                          </Button>
-                        </motion.div>
-                      );
-                    })}
-                  </div>
-                </CardContent>
-              </Card>
-            </motion.div>
-
-            {/* Subjects */}
-            <motion.div
-              initial={{ opacity: 0, x: -20 }}
-              animate={{ opacity: 1, x: 0 }}
-              transition={{ delay: 0.2 }}
-            >
-              <Card className="glass-morphism">
-                <CardHeader>
-                  <CardTitle className="flex items-center gap-2">
-                    <BookMarked className="h-5 w-5" />
-                    Matières préférées
-                  </CardTitle>
-                  <CardDescription>
-                    Sélectionnez les matières qui vous intéressent
-                  </CardDescription>
-                </CardHeader>
-                <CardContent className="space-y-4">
-                  <div className="grid grid-cols-2 gap-3">
-                    {availableSubjects.map((subject) => (
-                      <div
+                <div className="space-y-2">
+                  <Label>Matières d'intérêt</Label>
+                  <div className="flex flex-wrap gap-2">
+                    {allSubjects.map((subject) => (
+                      <Badge
                         key={subject}
-                        className="flex items-center space-x-3 p-3 rounded-lg border hover:border-indigo-200 transition-all cursor-pointer"
+                        variant={settings.subjects.includes(subject) ? "default" : "outline"}
+                        className="cursor-pointer"
+                        onClick={() => {
+                          const newSubjects = settings.subjects.includes(subject)
+                            ? settings.subjects.filter(s => s !== subject)
+                            : [...settings.subjects, subject];
+                          updateSubjects(newSubjects);
+                        }}
                       >
-                        <Checkbox
-                          id={subject}
-                          checked={tempSubjects.includes(subject)}
-                          onCheckedChange={() => handleSubjectToggle(subject)}
-                        />
-                        <Label htmlFor={subject} className="cursor-pointer text-sm font-medium">
-                          {subject}
-                        </Label>
-                      </div>
+                        {subject}
+                      </Badge>
                     ))}
                   </div>
-                  <Button 
-                    onClick={handleSaveSubjects}
-                    disabled={JSON.stringify(tempSubjects) === JSON.stringify(settings.subjects)}
-                    className="w-full btn-hover-effect"
-                  >
-                    <Save className="h-4 w-4 mr-2" />
-                    Sauvegarder les matières
-                  </Button>
-                </CardContent>
-              </Card>
-            </motion.div>
+                </div>
+              </CardContent>
+            </Card>
 
-            {/* Theme Settings */}
-            <motion.div
-              initial={{ opacity: 0, x: -20 }}
-              animate={{ opacity: 1, x: 0 }}
-              transition={{ delay: 0.25 }}
-            >
-              <Card className="glass-morphism">
-                <CardHeader>
-                  <CardTitle className="flex items-center gap-2">
-                    <Palette className="h-5 w-5" />
-                    Apparence
-                  </CardTitle>
-                  <CardDescription>
-                    Personnalisez l'apparence de l'application
-                  </CardDescription>
-                </CardHeader>
-                <CardContent>
-                  <div className="grid gap-3">
-                    {themeOptions.map((option) => {
-                      const Icon = option.icon;
-                      const isActive = settings.theme === option.value;
-                      
+            {/* Appearance Settings */}
+            <Card className="bg-card/90 backdrop-blur-sm border-0 shadow-lg">
+              <CardHeader>
+                <CardTitle className="flex items-center gap-2">
+                  <Palette className="h-5 w-5 text-purple-600" />
+                  Apparence
+                </CardTitle>
+              </CardHeader>
+              <CardContent className="space-y-4">
+                <div className="space-y-2">
+                  <Label>Thème</Label>
+                  <div className="grid grid-cols-3 gap-2">
+                    {[
+                      { value: 'light', label: 'Clair' },
+                      { value: 'dark', label: 'Sombre' },
+                      { value: 'auto', label: 'Auto' }
+                    ].map((theme) => {
+                      const IconComponent = getThemeIcon(theme.value);
                       return (
-                        <motion.div
-                          key={option.value}
-                          whileHover={{ scale: 1.02 }}
-                          whileTap={{ scale: 0.98 }}
+                        <Button
+                          key={theme.value}
+                          variant={settings.theme === theme.value ? "default" : "outline"}
+                          className="flex flex-col gap-2 h-16"
+                          onClick={() => updateTheme(theme.value as any)}
                         >
-                          <Button
-                            variant={isActive ? "default" : "outline"}
-                            onClick={() => handleThemeChange(option.value as 'light' | 'dark' | 'auto')}
-                            className="w-full justify-start h-auto p-4 btn-hover-effect"
-                          >
-                            <div className="flex items-center gap-4 w-full">
-                              <div className={`p-2 rounded-full ${isActive ? 'bg-white/20' : 'bg-gray-100 dark:bg-gray-700'}`}>
-                                <Icon className="h-4 w-4" />
-                              </div>
-                              <div className="text-left flex-1">
-                                <div className="font-medium">{option.label}</div>
-                                <div className={`text-sm ${isActive ? 'text-white/80' : 'text-gray-500'}`}>
-                                  {option.description}
-                                </div>
-                              </div>
-                              {isActive && (
-                                <Badge variant="secondary" className="bg-white/20 text-white">
-                                  Actif
-                                </Badge>
-                              )}
-                            </div>
-                          </Button>
-                        </motion.div>
+                          <IconComponent className="h-4 w-4" />
+                          <span className="text-xs">{theme.label}</span>
+                        </Button>
                       );
                     })}
                   </div>
-                </CardContent>
-              </Card>
-            </motion.div>
+                </div>
+
+                <div className="space-y-3">
+                  <Label>Taille de police: {fontSize[0]}px</Label>
+                  <Slider
+                    value={fontSize}
+                    onValueChange={setFontSize}
+                    max={24}
+                    min={12}
+                    step={1}
+                    className="w-full"
+                  />
+                </div>
+
+                <div className="space-y-3">
+                  <Label>Vitesse d'animation: {animationSpeed[0]}%</Label>
+                  <Slider
+                    value={animationSpeed}
+                    onValueChange={setAnimationSpeed}
+                    max={150}
+                    min={50}
+                    step={10}
+                    className="w-full"
+                  />
+                </div>
+              </CardContent>
+            </Card>
+
+            {/* Learning Preferences */}
+            <Card className="bg-card/90 backdrop-blur-sm border-0 shadow-lg">
+              <CardHeader>
+                <CardTitle className="flex items-center gap-2">
+                  <Book className="h-5 w-5 text-green-600" />
+                  Préférences d'apprentissage
+                </CardTitle>
+              </CardHeader>
+              <CardContent className="space-y-4">
+                <div className="flex items-center justify-between">
+                  <div>
+                    <Label>Mode concentration</Label>
+                    <p className="text-sm text-muted-foreground">Masque les distractions</p>
+                  </div>
+                  <Switch
+                    checked={concentrationMode}
+                    onCheckedChange={setConcentrationMode}
+                  />
+                </div>
+
+                <div className="flex items-center justify-between">
+                  <div>
+                    <Label>Sauvegarde automatique</Label>
+                    <p className="text-sm text-muted-foreground">Sauvegarde votre progression</p>
+                  </div>
+                  <Switch
+                    checked={autoSave}
+                    onCheckedChange={setAutoSave}
+                  />
+                </div>
+
+                <div className="flex items-center justify-between">
+                  <div>
+                    <Label>Rappels d'étude</Label>
+                    <p className="text-sm text-muted-foreground">Notifications quotidiennes</p>
+                  </div>
+                  <Switch
+                    checked={studyReminders}
+                    onCheckedChange={setStudyReminders}
+                  />
+                </div>
+              </CardContent>
+            </Card>
+
+            {/* Notifications & Audio */}
+            <Card className="bg-card/90 backdrop-blur-sm border-0 shadow-lg">
+              <CardHeader>
+                <CardTitle className="flex items-center gap-2">
+                  <Bell className="h-5 w-5 text-orange-600" />
+                  Notifications & Audio
+                </CardTitle>
+              </CardHeader>
+              <CardContent className="space-y-4">
+                <div className="flex items-center justify-between">
+                  <div>
+                    <Label>Notifications push</Label>
+                    <p className="text-sm text-muted-foreground">Nouveaux cours et exercices</p>
+                  </div>
+                  <Switch
+                    checked={notifications}
+                    onCheckedChange={setNotifications}
+                  />
+                </div>
+
+                <div className="flex items-center justify-between">
+                  <div className="flex items-center gap-2">
+                    <Volume2 className="h-4 w-4" />
+                    <Label>Effets sonores</Label>
+                  </div>
+                  <Switch
+                    checked={soundEffects}
+                    onCheckedChange={setSoundEffects}
+                  />
+                </div>
+              </CardContent>
+            </Card>
 
             {/* Data Management */}
-            <motion.div
-              initial={{ opacity: 0, x: -20 }}
-              animate={{ opacity: 1, x: 0 }}
-              transition={{ delay: 0.3 }}
-            >
-              <Card className="glass-morphism border-red-200 dark:border-red-800">
-                <CardHeader>
-                  <CardTitle className="flex items-center gap-2 text-red-600 dark:text-red-400">
-                    <Trash2 className="h-5 w-5" />
-                    Zone de danger
-                  </CardTitle>
-                  <CardDescription>
-                    Actions irréversibles sur vos données
-                  </CardDescription>
-                </CardHeader>
-                <CardContent>
-                  <div className="space-y-4">
-                    <div className="p-4 border border-red-200 dark:border-red-800 rounded-lg bg-red-50 dark:bg-red-900/20">
-                      <h4 className="font-medium text-red-800 dark:text-red-200 mb-2">
-                        Effacer toutes les données
-                      </h4>
-                      <p className="text-sm text-red-600 dark:text-red-300 mb-4">
-                        Cela supprimera définitivement votre profil, vos préférences, et votre progression.
-                      </p>
-                      <Button 
-                        variant="destructive" 
-                        onClick={clearAllData}
-                        className="bg-red-600 hover:bg-red-700 btn-hover-effect"
-                      >
-                        <Trash2 className="h-4 w-4 mr-2" />
-                        Effacer toutes les données
-                      </Button>
-                    </div>
-                  </div>
-                </CardContent>
-              </Card>
-            </motion.div>
+            <Card className="bg-card/90 backdrop-blur-sm border-0 shadow-lg lg:col-span-2">
+              <CardHeader>
+                <CardTitle className="flex items-center gap-2">
+                  <Shield className="h-5 w-5 text-red-600" />
+                  Gestion des données
+                </CardTitle>
+              </CardHeader>
+              <CardContent className="space-y-4">
+                <div className="grid grid-cols-1 sm:grid-cols-3 gap-4">
+                  <Button
+                    onClick={handleSave}
+                    className="flex items-center gap-2"
+                  >
+                    <User className="h-4 w-4" />
+                    Sauvegarder
+                  </Button>
+                  
+                  <Button
+                    onClick={handleExportData}
+                    variant="outline"
+                    className="flex items-center gap-2"
+                  >
+                    <Download className="h-4 w-4" />
+                    Exporter mes données
+                  </Button>
+                  
+                  <Button
+                    onClick={handleResetSettings}
+                    variant="destructive"
+                    className="flex items-center gap-2"
+                  >
+                    <Trash2 className="h-4 w-4" />
+                    Réinitialiser
+                  </Button>
+                </div>
+
+                <Separator />
+                
+                <div className="text-sm text-muted-foreground space-y-2">
+                  <p><strong>Stockage local:</strong> Vos données sont stockées localement sur cet appareil.</p>
+                  <p><strong>Confidentialité:</strong> Aucune donnée personnelle n'est transmise à des tiers.</p>
+                  <p><strong>Sauvegarde:</strong> Exportez régulièrement vos données pour éviter leur perte.</p>
+                </div>
+              </CardContent>
+            </Card>
           </div>
         </motion.div>
       </div>

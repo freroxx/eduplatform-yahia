@@ -20,6 +20,27 @@ interface CourseSlideProps {
 const CourseSlide = ({ lessonTitle, slides }: CourseSlideProps) => {
   const [currentSlide, setCurrentSlide] = useState(0);
 
+  // Early return if no slides available
+  if (!slides || slides.length === 0) {
+    return (
+      <div className="min-h-screen bg-gradient-to-br from-blue-50 via-indigo-50 to-purple-50 flex flex-col items-center justify-center">
+        <Card className="w-full max-w-2xl bg-white/90 backdrop-blur-sm border-0 shadow-2xl">
+          <CardContent className="p-12 text-center">
+            <BookOpen className="h-16 w-16 text-gray-400 mx-auto mb-4" />
+            <h2 className="text-2xl font-bold text-gray-800 mb-4">Cours non disponible</h2>
+            <p className="text-gray-600 mb-6">Ce cours n'est pas encore disponible ou n'existe pas.</p>
+            <Link to="/lessons">
+              <Button className="flex items-center space-x-2">
+                <Home className="h-4 w-4" />
+                <span>Retour aux leçons</span>
+              </Button>
+            </Link>
+          </CardContent>
+        </Card>
+      </div>
+    );
+  }
+
   const nextSlide = () => {
     setCurrentSlide((prev) => (prev + 1) % slides.length);
   };
@@ -70,7 +91,30 @@ const CourseSlide = ({ lessonTitle, slides }: CourseSlideProps) => {
     }
   };
 
-  const currentSlideData = slides[currentSlide];
+  // Ensure currentSlide is within bounds
+  const safeCurrentSlide = Math.min(currentSlide, slides.length - 1);
+  const currentSlideData = slides[safeCurrentSlide];
+
+  // Additional safety check
+  if (!currentSlideData) {
+    return (
+      <div className="min-h-screen bg-gradient-to-br from-blue-50 via-indigo-50 to-purple-50 flex flex-col items-center justify-center">
+        <Card className="w-full max-w-2xl bg-white/90 backdrop-blur-sm border-0 shadow-2xl">
+          <CardContent className="p-12 text-center">
+            <BookOpen className="h-16 w-16 text-gray-400 mx-auto mb-4" />
+            <h2 className="text-2xl font-bold text-gray-800 mb-4">Erreur de chargement</h2>
+            <p className="text-gray-600 mb-6">Impossible de charger le contenu du cours.</p>
+            <Link to="/lessons">
+              <Button className="flex items-center space-x-2">
+                <Home className="h-4 w-4" />
+                <span>Retour aux leçons</span>
+              </Button>
+            </Link>
+          </CardContent>
+        </Card>
+      </div>
+    );
+  }
 
   return (
     <div className="min-h-screen bg-gradient-to-br from-blue-50 via-indigo-50 to-purple-50 flex flex-col">
@@ -90,7 +134,7 @@ const CourseSlide = ({ lessonTitle, slides }: CourseSlideProps) => {
             </div>
           </div>
           <div className="text-sm text-gray-600 font-medium">
-            {currentSlide + 1} / {slides.length}
+            {safeCurrentSlide + 1} / {slides.length}
           </div>
         </div>
       </header>
@@ -128,7 +172,7 @@ const CourseSlide = ({ lessonTitle, slides }: CourseSlideProps) => {
           <Button
             onClick={prevSlide}
             variant="outline"
-            disabled={currentSlide === 0}
+            disabled={safeCurrentSlide === 0}
             className="flex items-center space-x-2 hover:bg-indigo-50 hover:border-indigo-300 transition-all duration-200"
           >
             <ChevronLeft className="h-4 w-4" />
@@ -141,7 +185,7 @@ const CourseSlide = ({ lessonTitle, slides }: CourseSlideProps) => {
                 key={index}
                 onClick={() => setCurrentSlide(index)}
                 className={`w-4 h-4 rounded-full transition-all duration-300 ${
-                  index === currentSlide
+                  index === safeCurrentSlide
                     ? `bg-gradient-to-r ${getSlideColor(slide.type)} scale-125 shadow-lg`
                     : "bg-gray-300 hover:bg-gray-400 hover:scale-110"
                 }`}
@@ -153,7 +197,7 @@ const CourseSlide = ({ lessonTitle, slides }: CourseSlideProps) => {
           <Button
             onClick={nextSlide}
             variant="outline"
-            disabled={currentSlide === slides.length - 1}
+            disabled={safeCurrentSlide === slides.length - 1}
             className="flex items-center space-x-2 hover:bg-indigo-50 hover:border-indigo-300 transition-all duration-200"
           >
             <span>Suivant</span>

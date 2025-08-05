@@ -23,6 +23,7 @@ import GlobalHeader from "@/components/GlobalHeader";
 import WelcomeBanner from "@/components/WelcomeBanner";
 import EnhancedSubjectCard from "@/components/EnhancedSubjectCard";
 import StatsOverview from "@/components/StatsOverview";
+import ChangelogDialog from "@/components/ChangelogDialog";
 import Footer from "@/components/Footer";
 import { useSettings } from "@/hooks/useSettings";
 import { useExerciseProgress } from "@/hooks/useExerciseProgress";
@@ -32,6 +33,7 @@ const Index = () => {
   const { settings } = useSettings();
   const { totalPoints, completedExercises } = useExerciseProgress();
   const [currentTime, setCurrentTime] = useState(new Date());
+  const [showChangelog, setShowChangelog] = useState(false);
 
   useEffect(() => {
     const timer = setInterval(() => {
@@ -163,7 +165,7 @@ const Index = () => {
               </h1>
             </div>
             <p className="text-xl md:text-2xl text-muted-foreground mb-2">
-              {getGreeting()}, {settings.userName || "Étudiant"} ! 
+              {getGreeting()}, {settings.name || "Étudiant"} ! 
             </p>
             <p className="text-lg text-muted-foreground mb-8 max-w-3xl mx-auto">
               Votre plateforme d'apprentissage interactive pour le Tronc Commun Sciences
@@ -221,7 +223,7 @@ const Index = () => {
             </div>
           </motion.div>
 
-          <WelcomeBanner />
+          <WelcomeBanner onShowChangelog={() => setShowChangelog(true)} />
         </div>
       </div>
 
@@ -343,6 +345,11 @@ const Index = () => {
           </Card>
         </motion.div>
       </div>
+
+      <ChangelogDialog 
+        isOpen={showChangelog} 
+        onClose={() => setShowChangelog(false)} 
+      />
 
       <Footer />
     </div>

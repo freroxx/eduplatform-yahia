@@ -1,5 +1,6 @@
+
 import React, { useState, useEffect } from 'react';
-import { Search, X } from 'lucide-react';
+import { Search, X, BookOpen, Play, FileText, PenTool } from 'lucide-react';
 import { Button } from "@/components/ui/button";
 import { Input } from "@/components/ui/input";
 import { Dialog, DialogContent, DialogHeader, DialogTitle } from "@/components/ui/dialog";
@@ -25,53 +26,70 @@ const SearchBar: React.FC<SearchBarProps> = ({ isOpen, onClose }) => {
   const [query, setQuery] = useState('');
   const [results, setResults] = useState<SearchResult[]>([]);
   const [isSearching, setIsSearching] = useState(false);
+  const [recentSearches, setRecentSearches] = useState<string[]>([]);
 
-  // Mock search data - in a real app this would come from an API
+  // Enhanced search data
   const searchData: SearchResult[] = [
     {
       id: '1',
       title: 'Les ensembles de nombres',
-      description: 'Introduction aux ensembles N, Z, Q, D et R',
+      description: 'Introduction aux ensembles N, Z, Q, D et R avec exemples pratiques',
       type: 'course',
       subject: 'Mathématiques',
       link: '/lesson/1/course'
     },
     {
       id: '2',
+      title: 'Produit scalaire',
+      description: 'Cours complet sur le produit scalaire et ses applications',
+      type: 'course',
+      subject: 'Mathématiques',
+      link: '/lesson/1/course'
+    },
+    {
+      id: '3',
+      title: 'Statistiques',
+      description: 'Population statistique, caractères, effectifs et paramètres',
+      type: 'course',
+      subject: 'Mathématiques',
+      link: '/statistiques'
+    },
+    {
+      id: '4',
       title: 'Exercices sur les ensembles',
-      description: 'Exercices pratiques sur les ensembles de nombres',
+      description: 'Exercices pratiques avec correction détaillée',
       type: 'exercise',
       subject: 'Mathématiques',
       link: '/lesson/1/exercises'
     },
     {
-      id: '3',
-      title: 'Vidéos explicatives',
-      description: 'Vidéos YouTube sur les mathématiques',
+      id: '5',
+      title: 'Vidéos explicatives - Mathématiques',
+      description: 'Collection de vidéos YouTube pour approfondir',
       type: 'video',
       subject: 'Mathématiques',
       link: '/lesson/1/videos'
     },
     {
-      id: '4',
+      id: '6',
       title: 'Typologie textuelle',
-      description: 'Les différents types de textes en français',
+      description: 'Les différents types de textes et leurs caractéristiques',
       type: 'course',
       subject: 'Français',
       link: '/french/module1'
     },
     {
-      id: '5',
+      id: '7',
       title: 'La gravitation universelle',
-      description: 'Lois de Newton et gravitation',
+      description: 'Lois de Newton et applications de la gravitation',
       type: 'course',
       subject: 'Physique-Chimie',
       link: '/physics/lesson1'
     },
     {
-      id: '6',
+      id: '8',
       title: 'Techniques adaptatives écologiques',
-      description: 'Méthodes d\'étude sur le terrain',
+      description: 'Méthodes d\'étude et d\'observation sur le terrain',
       type: 'course',
       subject: 'SVT',
       link: '/svt/lesson1'
@@ -79,10 +97,17 @@ const SearchBar: React.FC<SearchBarProps> = ({ isOpen, onClose }) => {
   ];
 
   useEffect(() => {
-    if (query.length > 2) {
+    // Load recent searches from localStorage
+    const saved = localStorage.getItem('recentSearches');
+    if (saved) {
+      setRecentSearches(JSON.parse(saved));
+    }
+  }, []);
+
+  useEffect(() => {
+    if (query.length > 1) {
       setIsSearching(true);
       
-      // Simulate search delay
       const searchTimeout = setTimeout(() => {
         const filtered = searchData.filter(item =>
           item.title.toLowerCase().includes(query.toLowerCase()) ||
@@ -91,7 +116,7 @@ const SearchBar: React.FC<SearchBarProps> = ({ isOpen, onClose }) => {
         );
         setResults(filtered);
         setIsSearching(false);
-      }, 300);
+      }, 200);
 
       return () => clearTimeout(searchTimeout);
     } else {
@@ -100,13 +125,23 @@ const SearchBar: React.FC<SearchBarProps> = ({ isOpen, onClose }) => {
     }
   }, [query]);
 
+  const getTypeIcon = (type: string) => {
+    switch (type) {
+      case 'course': return <BookOpen className="h-4 w-4" />;
+      case 'exercise': return <PenTool className="h-4 w-4" />;
+      case 'video': return <Play className="h-4 w-4" />;
+      case 'lesson': return <FileText className="h-4 w-4" />;
+      default: return <BookOpen className="h-4 w-4" />;
+    }
+  };
+
   const getTypeColor = (type: string) => {
     switch (type) {
-      case 'course': return 'bg-blue-100 text-blue-800 dark:bg-blue-900 dark:text-blue-300';
-      case 'exercise': return 'bg-green-100 text-green-800 dark:bg-green-900 dark:text-green-300';
-      case 'video': return 'bg-red-100 text-red-800 dark:bg-red-900 dark:text-red-300';
-      case 'lesson': return 'bg-purple-100 text-purple-800 dark:bg-purple-900 dark:text-purple-300';
-      default: return 'bg-gray-100 text-gray-800 dark:bg-gray-900 dark:text-gray-300';
+      case 'course': return 'bg-blue-100 text-blue-800 hover:bg-blue-200 dark:bg-blue-900 dark:text-blue-300';
+      case 'exercise': return 'bg-green-100 text-green-800 hover:bg-green-200 dark:bg-green-900 dark:text-green-300';
+      case 'video': return 'bg-red-100 text-red-800 hover:bg-red-200 dark:bg-red-900 dark:text-red-300';
+      case 'lesson': return 'bg-purple-100 text-purple-800 hover:bg-purple-200 dark:bg-purple-900 dark:text-purple-300';
+      default: return 'bg-gray-100 text-gray-800 hover:bg-gray-200 dark:bg-gray-900 dark:text-gray-300';
     }
   };
 
@@ -120,112 +155,201 @@ const SearchBar: React.FC<SearchBarProps> = ({ isOpen, onClose }) => {
     }
   };
 
+  const saveRecentSearch = (searchTerm: string) => {
+    const updated = [searchTerm, ...recentSearches.filter(s => s !== searchTerm)].slice(0, 5);
+    setRecentSearches(updated);
+    localStorage.setItem('recentSearches', JSON.stringify(updated));
+  };
+
+  const handleResultClick = (result: SearchResult) => {
+    saveRecentSearch(result.title);
+    onClose();
+  };
+
+  const clearRecentSearches = () => {
+    setRecentSearches([]);
+    localStorage.removeItem('recentSearches');
+  };
+
   return (
     <Dialog open={isOpen} onOpenChange={onClose}>
-      <DialogContent className="max-w-2xl">
-        <DialogHeader>
-          <DialogTitle className="flex items-center space-x-2">
-            <Search className="h-5 w-5" />
-            <span>Rechercher dans les cours</span>
+      <DialogContent className="max-w-3xl max-h-[80vh] p-0 gap-0 bg-background/95 backdrop-blur-md border border-border/50 shadow-2xl">
+        <DialogHeader className="p-6 pb-4 border-b border-border/20">
+          <DialogTitle className="flex items-center space-x-3">
+            <motion.div
+              animate={{ rotate: [0, 360] }}
+              transition={{ duration: 2, repeat: Infinity, ease: "linear" }}
+            >
+              <Search className="h-6 w-6 text-primary" />
+            </motion.div>
+            <span className="text-xl font-semibold">Rechercher dans les cours</span>
           </DialogTitle>
         </DialogHeader>
 
-        <div className="space-y-4">
+        <div className="px-6 py-4">
           <div className="relative">
-            <Search className="absolute left-3 top-1/2 transform -translate-y-1/2 h-4 w-4 text-muted-foreground" />
+            <Search className="absolute left-4 top-1/2 transform -translate-y-1/2 h-5 w-5 text-muted-foreground" />
             <Input
               placeholder="Rechercher des cours, exercices, vidéos..."
               value={query}
               onChange={(e) => setQuery(e.target.value)}
-              className="pl-10 pr-10"
+              className="pl-12 pr-12 h-12 text-lg border-2 focus:border-primary/50 transition-all duration-200 rounded-xl"
               autoFocus
             />
-            {query && (
-              <Button
-                variant="ghost"
-                size="sm"
-                onClick={() => setQuery('')}
-                className="absolute right-2 top-1/2 transform -translate-y-1/2 h-6 w-6 p-0"
-              >
-                <X className="h-4 w-4" />
-              </Button>
-            )}
-          </div>
-
-          <div className="max-h-96 overflow-y-auto">
             <AnimatePresence>
-              {isSearching && (
+              {query && (
                 <motion.div
-                  initial={{ opacity: 0 }}
-                  animate={{ opacity: 1 }}
-                  exit={{ opacity: 0 }}
-                  className="flex items-center justify-center py-8"
+                  initial={{ opacity: 0, scale: 0.8 }}
+                  animate={{ opacity: 1, scale: 1 }}
+                  exit={{ opacity: 0, scale: 0.8 }}
+                  transition={{ duration: 0.2 }}
                 >
-                  <div className="animate-spin rounded-full h-6 w-6 border-2 border-primary border-t-transparent" />
-                  <span className="ml-2 text-muted-foreground">Recherche...</span>
-                </motion.div>
-              )}
-
-              {!isSearching && query.length > 2 && results.length === 0 && (
-                <motion.div
-                  initial={{ opacity: 0 }}
-                  animate={{ opacity: 1 }}
-                  className="text-center py-8 text-muted-foreground"
-                >
-                  Aucun résultat trouvé pour "{query}"
-                </motion.div>
-              )}
-
-              {!isSearching && results.length > 0 && (
-                <motion.div
-                  initial={{ opacity: 0 }}
-                  animate={{ opacity: 1 }}
-                  className="space-y-2"
-                >
-                  {results.map((result, index) => (
-                    <motion.div
-                      key={result.id}
-                      initial={{ opacity: 0, y: 10 }}
-                      animate={{ opacity: 1, y: 0 }}
-                      transition={{ delay: index * 0.05 }}
-                    >
-                      <Link
-                        to={result.link}
-                        onClick={onClose}
-                        className="block p-4 rounded-lg border hover:bg-muted/50 transition-colors group"
-                      >
-                        <div className="flex items-start justify-between">
-                          <div className="flex-1">
-                            <div className="flex items-center space-x-2 mb-1">
-                              <h3 className="font-medium group-hover:text-primary transition-colors">
-                                {result.title}
-                              </h3>
-                              <Badge className={getTypeColor(result.type)}>
-                                {getTypeLabel(result.type)}
-                              </Badge>
-                            </div>
-                            <p className="text-sm text-muted-foreground">
-                              {result.description}
-                            </p>
-                            <p className="text-xs text-muted-foreground mt-1">
-                              {result.subject}
-                            </p>
-                          </div>
-                        </div>
-                      </Link>
-                    </motion.div>
-                  ))}
+                  <Button
+                    variant="ghost"
+                    size="sm"
+                    onClick={() => setQuery('')}
+                    className="absolute right-3 top-1/2 transform -translate-y-1/2 h-8 w-8 p-0 hover:bg-red-100 dark:hover:bg-red-900 rounded-full"
+                  >
+                    <X className="h-4 w-4" />
+                  </Button>
                 </motion.div>
               )}
             </AnimatePresence>
-
-            {query.length <= 2 && (
-              <div className="text-center py-8 text-muted-foreground">
-                <Search className="h-12 w-12 mx-auto mb-4 opacity-20" />
-                <p>Tapez au moins 3 caractères pour rechercher</p>
-              </div>
-            )}
           </div>
+        </div>
+
+        <div className="max-h-[50vh] overflow-y-auto px-6 pb-6">
+          <AnimatePresence mode="wait">
+            {isSearching && (
+              <motion.div
+                key="searching"
+                initial={{ opacity: 0 }}
+                animate={{ opacity: 1 }}
+                exit={{ opacity: 0 }}
+                className="flex items-center justify-center py-12"
+              >
+                <div className="flex items-center space-x-3">
+                  <motion.div
+                    animate={{ rotate: 360 }}
+                    transition={{ duration: 1, repeat: Infinity, ease: "linear" }}
+                    className="w-6 h-6 border-2 border-primary border-t-transparent rounded-full"
+                  />
+                  <span className="text-muted-foreground font-medium">Recherche en cours...</span>
+                </div>
+              </motion.div>
+            )}
+
+            {!isSearching && query.length > 1 && results.length === 0 && (
+              <motion.div
+                key="no-results"
+                initial={{ opacity: 0, y: 20 }}
+                animate={{ opacity: 1, y: 0 }}
+                className="text-center py-12"
+              >
+                <Search className="h-12 w-12 mx-auto mb-4 text-muted-foreground/50" />
+                <p className="text-muted-foreground text-lg">
+                  Aucun résultat trouvé pour <span className="font-semibold">"{query}"</span>
+                </p>
+              </motion.div>
+            )}
+
+            {!isSearching && results.length > 0 && (
+              <motion.div
+                key="results"
+                initial={{ opacity: 0 }}
+                animate={{ opacity: 1 }}
+                className="space-y-3"
+              >
+                {results.map((result, index) => (
+                  <motion.div
+                    key={result.id}
+                    initial={{ opacity: 0, x: -20 }}
+                    animate={{ opacity: 1, x: 0 }}
+                    transition={{ delay: index * 0.05 }}
+                  >
+                    <Link
+                      to={result.link}
+                      onClick={() => handleResultClick(result)}
+                      className="block p-4 rounded-xl border border-border/50 hover:border-primary/30 bg-card/50 hover:bg-card/80 transition-all duration-200 group hover:shadow-lg hover:scale-[1.02]"
+                    >
+                      <div className="flex items-start justify-between">
+                        <div className="flex-1">
+                          <div className="flex items-center space-x-3 mb-2">
+                            <motion.div
+                              whileHover={{ scale: 1.1, rotate: 5 }}
+                              transition={{ duration: 0.2 }}
+                            >
+                              <Badge className={`${getTypeColor(result.type)} transition-all duration-200`}>
+                                {getTypeIcon(result.type)}
+                                <span className="ml-1">{getTypeLabel(result.type)}</span>
+                              </Badge>
+                            </motion.div>
+                            <h3 className="font-semibold group-hover:text-primary transition-colors text-lg">
+                              {result.title}
+                            </h3>
+                          </div>
+                          <p className="text-muted-foreground mb-2 leading-relaxed">
+                            {result.description}
+                          </p>
+                          <p className="text-xs text-primary/70 font-medium">
+                            {result.subject}
+                          </p>
+                        </div>
+                      </div>
+                    </Link>
+                  </motion.div>
+                ))}
+              </motion.div>
+            )}
+
+            {query.length <= 1 && (
+              <motion.div
+                key="empty"
+                initial={{ opacity: 0 }}
+                animate={{ opacity: 1 }}
+                className="space-y-6"
+              >
+                <div className="text-center py-8">
+                  <Search className="h-16 w-16 mx-auto mb-4 text-muted-foreground/30" />
+                  <p className="text-muted-foreground text-lg">
+                    Tapez au moins 2 caractères pour rechercher
+                  </p>
+                </div>
+                
+                {recentSearches.length > 0 && (
+                  <div>
+                    <div className="flex items-center justify-between mb-4">
+                      <h4 className="font-semibold text-sm uppercase tracking-wide text-muted-foreground">
+                        Recherches récentes
+                      </h4>
+                      <Button
+                        variant="ghost"
+                        size="sm"
+                        onClick={clearRecentSearches}
+                        className="text-xs hover:bg-red-100 dark:hover:bg-red-900"
+                      >
+                        Effacer
+                      </Button>
+                    </div>
+                    <div className="flex flex-wrap gap-2">
+                      {recentSearches.map((search, index) => (
+                        <motion.button
+                          key={index}
+                          initial={{ opacity: 0, scale: 0.8 }}
+                          animate={{ opacity: 1, scale: 1 }}
+                          transition={{ delay: index * 0.1 }}
+                          onClick={() => setQuery(search)}
+                          className="px-3 py-1.5 bg-muted hover:bg-muted/80 rounded-full text-sm transition-all duration-200 hover:scale-105"
+                        >
+                          {search}
+                        </motion.button>
+                      ))}
+                    </div>
+                  </div>
+                )}
+              </motion.div>
+            )}
+          </AnimatePresence>
         </div>
       </DialogContent>
     </Dialog>

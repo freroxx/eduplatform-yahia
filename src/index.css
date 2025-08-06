@@ -31,9 +31,10 @@
   --chart-5: 27 87% 67%;
   --radius: 0.5rem;
   
-  /* Animation variables */
-  --animation-speed: 100ms;
-  --animation-ease: cubic-bezier(0.4, 0, 0.2, 1);
+  /* Enhanced animation variables */
+  --animation-speed: 150ms;
+  --animation-ease: cubic-bezier(0.23, 1, 0.32, 1);
+  --animation-bounce: cubic-bezier(0.68, -0.55, 0.265, 1.55);
 }
 
 .dark {
@@ -74,57 +75,59 @@ body {
   transition: all var(--animation-speed) var(--animation-ease);
 }
 
-/* Enhanced animations */
+/* Enhanced keyframes with more fluid animations */
 @keyframes slideInUp {
   from {
     opacity: 0;
-    transform: translateY(2rem);
+    transform: translateY(2rem) scale(0.96);
   }
   to {
     opacity: 1;
-    transform: translateY(0);
+    transform: translateY(0) scale(1);
   }
 }
 
 @keyframes slideInRight {
   from {
     opacity: 0;
-    transform: translateX(2rem);
+    transform: translateX(2rem) scale(0.96);
   }
   to {
     opacity: 1;
-    transform: translateX(0);
+    transform: translateX(0) scale(1);
   }
 }
 
 @keyframes slideInLeft {
   from {
     opacity: 0;
-    transform: translateX(-2rem);
+    transform: translateX(-2rem) scale(0.96);
   }
   to {
     opacity: 1;
-    transform: translateX(0);
+    transform: translateX(0) scale(1);
   }
 }
 
 @keyframes fadeInScale {
   from {
     opacity: 0;
-    transform: scale(0.9);
+    transform: scale(0.88) rotate(-1deg);
   }
   to {
     opacity: 1;
-    transform: scale(1);
+    transform: scale(1) rotate(0deg);
   }
 }
 
 @keyframes pulse {
   0%, 100% {
     opacity: 1;
+    transform: scale(1);
   }
   50% {
     opacity: 0.7;
+    transform: scale(1.05);
   }
 }
 
@@ -139,69 +142,108 @@ body {
 
 @keyframes bounce {
   0%, 100% {
-    transform: translateY(-25%);
+    transform: translateY(-25%) scale(1);
     animation-timing-function: cubic-bezier(0.8, 0, 1, 1);
   }
   50% {
-    transform: translateY(0);
+    transform: translateY(0) scale(1.05);
     animation-timing-function: cubic-bezier(0, 0, 0.2, 1);
   }
 }
 
-/* Utility classes for animations */
+@keyframes float {
+  0%, 100% {
+    transform: translateY(0) rotate(0deg);
+  }
+  33% {
+    transform: translateY(-10px) rotate(1deg);
+  }
+  66% {
+    transform: translateY(-5px) rotate(-1deg);
+  }
+}
+
+@keyframes glow {
+  0%, 100% {
+    box-shadow: 0 0 20px hsl(var(--primary) / 0.1);
+  }
+  50% {
+    box-shadow: 0 0 30px hsl(var(--primary) / 0.3);
+  }
+}
+
+/* Enhanced utility classes */
 .animate-slide-in-up {
-  animation: slideInUp 0.6s var(--animation-ease);
+  animation: slideInUp 0.7s var(--animation-ease);
 }
 
 .animate-slide-in-right {
-  animation: slideInRight 0.6s var(--animation-ease);
+  animation: slideInRight 0.7s var(--animation-ease);
 }
 
 .animate-slide-in-left {
-  animation: slideInLeft 0.6s var(--animation-ease);
+  animation: slideInLeft 0.7s var(--animation-ease);
 }
 
 .animate-fade-in-scale {
-  animation: fadeInScale 0.5s var(--animation-ease);
+  animation: fadeInScale 0.6s var(--animation-bounce);
 }
 
 .animate-pulse-slow {
-  animation: pulse 2s cubic-bezier(0.4, 0, 0.6, 1) infinite;
+  animation: pulse 3s cubic-bezier(0.4, 0, 0.6, 1) infinite;
 }
 
 .animate-spin-slow {
-  animation: spin 2s linear infinite;
+  animation: spin 3s linear infinite;
 }
 
 .animate-bounce-subtle {
-  animation: bounce 1s infinite;
-  animation-iteration-count: 3;
+  animation: bounce 2s infinite;
 }
 
-/* Hover effects */
+.animate-float {
+  animation: float 6s ease-in-out infinite;
+}
+
+.animate-glow {
+  animation: glow 2s ease-in-out infinite;
+}
+
+/* Enhanced hover effects */
 .hover-lift {
-  transition: transform var(--animation-speed) var(--animation-ease), box-shadow var(--animation-speed) var(--animation-ease);
+  transition: all var(--animation-speed) var(--animation-ease);
+  transform-origin: center;
 }
 
 .hover-lift:hover {
-  transform: translateY(-0.125rem);
-  box-shadow: 0 10px 25px -3px rgb(0 0 0 / 0.1), 0 4px 6px -4px rgb(0 0 0 / 0.1);
+  transform: translateY(-0.25rem) scale(1.02);
+  box-shadow: 0 20px 25px -5px rgb(0 0 0 / 0.1), 0 10px 10px -5px rgb(0 0 0 / 0.04);
 }
 
 .hover-scale {
-  transition: transform var(--animation-speed) var(--animation-ease);
+  transition: all var(--animation-speed) var(--animation-bounce);
 }
 
 .hover-scale:hover {
-  transform: scale(1.05);
+  transform: scale(1.08) rotate(1deg);
 }
 
 .hover-scale-sm {
-  transition: transform var(--animation-speed) var(--animation-ease);
+  transition: all var(--animation-speed) var(--animation-ease);
 }
 
 .hover-scale-sm:hover {
-  transform: scale(1.02);
+  transform: scale(1.03) rotate(0.5deg);
+}
+
+.hover-blur {
+  transition: all var(--animation-speed) var(--animation-ease);
+  backdrop-filter: blur(0px);
+}
+
+.hover-blur:hover {
+  backdrop-filter: blur(8px);
+  background-color: hsl(var(--background) / 0.8);
 }
 
 /* Enhanced focus states */
@@ -212,7 +254,7 @@ body {
 .focus-enhanced:focus {
   outline: 2px solid hsl(var(--ring));
   outline-offset: 2px;
-  box-shadow: 0 0 0 2px hsl(var(--ring) / 0.2);
+  box-shadow: 0 0 0 4px hsl(var(--ring) / 0.2), 0 8px 24px hsl(var(--ring) / 0.15);
 }
 
 /* Smooth scrolling */
@@ -220,69 +262,53 @@ html {
   scroll-behavior: smooth;
 }
 
-/* Custom scrollbar */
+/* Custom scrollbar with enhanced styling */
 ::-webkit-scrollbar {
-  width: 8px;
+  width: 10px;
 }
 
 ::-webkit-scrollbar-track {
-  background: hsl(var(--muted));
-  border-radius: 4px;
+  background: hsl(var(--muted) / 0.3);
+  border-radius: 6px;
 }
 
 ::-webkit-scrollbar-thumb {
-  background: hsl(var(--muted-foreground) / 0.4);
-  border-radius: 4px;
-  transition: background var(--animation-speed) var(--animation-ease);
+  background: linear-gradient(180deg, hsl(var(--primary) / 0.6), hsl(var(--primary) / 0.4));
+  border-radius: 6px;
+  transition: all var(--animation-speed) var(--animation-ease);
 }
 
 ::-webkit-scrollbar-thumb:hover {
-  background: hsl(var(--muted-foreground) / 0.6);
+  background: linear-gradient(180deg, hsl(var(--primary) / 0.8), hsl(var(--primary) / 0.6));
+  transform: scale(1.1);
 }
 
-/* Background animations */
+/* Enhanced background animations */
 .animated-bg {
   background: linear-gradient(135deg, 
     hsl(var(--background)), 
-    hsl(var(--muted) / 0.5), 
+    hsl(var(--muted) / 0.3), 
+    hsl(var(--primary) / 0.05),
     hsl(var(--background))
   );
   background-size: 400% 400%;
-  animation: backgroundShift 15s ease infinite;
-}
-
-.disable-animations .animated-bg {
-  animation: none;
-  background: hsl(var(--background));
+  animation: backgroundShift 20s ease infinite;
 }
 
 @keyframes backgroundShift {
   0% { background-position: 0% 50%; }
-  50% { background-position: 100% 50%; }
+  25% { background-position: 100% 50%; }
+  50% { background-position: 100% 100%; }
+  75% { background-position: 0% 100%; }
   100% { background-position: 0% 50%; }
 }
 
-/* Concentration mode */
-.concentration-mode {
-  filter: none;
-}
-
-.concentration-mode * {
-  animation-duration: 0.1s !important;
-  transition-duration: 0.1s !important;
-}
-
-.concentration-mode .animated-bg {
-  animation: none !important;
-  background: hsl(var(--background)) !important;
-}
-
-/* Loading states */
+/* Loading states with enhanced shimmer */
 .loading-shimmer {
   background: linear-gradient(90deg, 
-    hsl(var(--muted)) 25%, 
-    hsl(var(--muted-foreground) / 0.1) 50%, 
-    hsl(var(--muted)) 75%
+    hsl(var(--muted) / 0.3) 25%, 
+    hsl(var(--primary) / 0.1) 50%, 
+    hsl(var(--muted) / 0.3) 75%
   );
   background-size: 200% 100%;
   animation: shimmer 2s infinite;
@@ -293,7 +319,7 @@ html {
   100% { background-position: 200% 0; }
 }
 
-/* Enhanced button states */
+/* Enhanced button states with ripple effect */
 .btn-enhanced {
   position: relative;
   overflow: hidden;
@@ -307,9 +333,9 @@ html {
   left: 50%;
   width: 0;
   height: 0;
-  background: rgba(255, 255, 255, 0.1);
+  background: radial-gradient(circle, rgba(255, 255, 255, 0.3) 0%, transparent 70%);
   border-radius: 50%;
-  transition: width 0.3s ease, height 0.3s ease;
+  transition: all 0.6s var(--animation-bounce);
   transform: translate(-50%, -50%);
 }
 
@@ -318,13 +344,91 @@ html {
   height: 300px;
 }
 
-/* Text selection */
-::selection {
-  background: hsl(var(--primary) / 0.2);
-  color: hsl(var(--primary-foreground));
+.btn-enhanced:active {
+  transform: scale(0.98);
 }
 
-/* Improved accessibility */
+/* Enhanced card styles with gradient borders */
+.card-enhanced {
+  backdrop-filter: blur(12px);
+  border: 1px solid transparent;
+  background: linear-gradient(135deg, hsl(var(--card) / 0.8), hsl(var(--muted) / 0.1));
+  background-clip: padding-box;
+  transition: all var(--animation-speed) var(--animation-ease);
+  position: relative;
+}
+
+.card-enhanced::before {
+  content: '';
+  position: absolute;
+  inset: 0;
+  padding: 1px;
+  background: linear-gradient(135deg, hsl(var(--primary) / 0.2), hsl(var(--border) / 0.5));
+  border-radius: inherit;
+  mask: linear-gradient(#fff 0 0) content-box, linear-gradient(#fff 0 0);
+  mask-composite: exclude;
+}
+
+.card-enhanced:hover {
+  transform: translateY(-2px) scale(1.01);
+  box-shadow: 0 25px 50px -12px hsl(var(--foreground) / 0.1);
+}
+
+.card-enhanced:hover::before {
+  background: linear-gradient(135deg, hsl(var(--primary) / 0.4), hsl(var(--ring) / 0.3));
+}
+
+/* Enhanced form elements */
+.form-element-enhanced {
+  transition: all var(--animation-speed) var(--animation-ease);
+  border: 2px solid hsl(var(--border));
+  backdrop-filter: blur(8px);
+  background: hsl(var(--background) / 0.5);
+}
+
+.form-element-enhanced:focus {
+  border-color: hsl(var(--ring));
+  box-shadow: 0 0 0 3px hsl(var(--ring) / 0.2);
+  outline: none;
+  transform: translateY(-1px);
+  background: hsl(var(--background) / 0.8);
+}
+
+/* Progress indicators with shine effect */
+.progress-enhanced {
+  overflow: hidden;
+  position: relative;
+  background: linear-gradient(90deg, hsl(var(--muted)), hsl(var(--muted) / 0.5));
+}
+
+.progress-enhanced::after {
+  content: '';
+  position: absolute;
+  top: 0;
+  left: -100%;
+  width: 100%;
+  height: 100%;
+  background: linear-gradient(90deg, 
+    transparent, 
+    rgba(255, 255, 255, 0.4), 
+    transparent
+  );
+  animation: progressShine 3s infinite;
+}
+
+@keyframes progressShine {
+  0% { left: -100%; }
+  100% { left: 100%; }
+}
+
+/* Text selection with enhanced styling */
+::selection {
+  background: hsl(var(--primary) / 0.3);
+  color: hsl(var(--primary-foreground));
+  text-shadow: 0 1px 2px hsl(var(--foreground) / 0.1);
+}
+
+/* Enhanced accessibility with motion preferences */
 @media (prefers-reduced-motion: reduce) {
   *,
   *::before,
@@ -337,51 +441,43 @@ html {
   
   .animated-bg {
     animation: none !important;
+    background: hsl(var(--background)) !important;
   }
 }
 
-/* Enhanced card styles */
-.card-enhanced {
-  backdrop-filter: blur(8px);
-  border: 1px solid hsl(var(--border) / 0.5);
+/* Enhanced interactive elements */
+.interactive-element {
   transition: all var(--animation-speed) var(--animation-ease);
+  cursor: pointer;
 }
 
-.card-enhanced:hover {
-  border-color: hsl(var(--border));
-  box-shadow: 0 8px 32px hsl(var(--foreground) / 0.1);
+.interactive-element:hover {
+  filter: brightness(1.05) saturate(1.1);
 }
 
-/* Improved form elements */
-.form-element-enhanced {
-  transition: all var(--animation-speed) var(--animation-ease);
-  border: 2px solid hsl(var(--border));
+.interactive-element:active {
+  transform: scale(0.98);
+  filter: brightness(0.95);
 }
 
-.form-element-enhanced:focus {
-  border-color: hsl(var(--ring));
-  box-shadow: 0 0 0 1px hsl(var(--ring) / 0.2);
-  outline: none;
+/* Glassmorphism utility */
+.glass {
+  backdrop-filter: blur(16px) saturate(180%);
+  background-color: hsl(var(--background) / 0.75);
+  border: 1px solid hsl(var(--border) / 0.3);
 }
 
-/* Progress indicators */
-.progress-enhanced {
-  overflow: hidden;
-  position: relative;
+/* Gradient text utility */
+.gradient-text {
+  background: linear-gradient(135deg, hsl(var(--primary)), hsl(var(--ring)), hsl(var(--primary)));
+  background-clip: text;
+  -webkit-background-clip: text;
+  -webkit-text-fill-color: transparent;
+  background-size: 200% 200%;
+  animation: gradientText 3s ease infinite;
 }
 
-.progress-enhanced::after {
-  content: '';
-  position: absolute;
-  top: 0;
-  left: -100%;
-  width: 100%;
-  height: 100%;
-  background: linear-gradient(90deg, transparent, rgba(255, 255, 255, 0.2), transparent);
-  animation: progressShine 2s infinite;
-}
-
-@keyframes progressShine {
-  0% { left: -100%; }
-  100% { left: 100%; }
+@keyframes gradientText {
+  0%, 100% { background-position: 0% 50%; }
+  50% { background-position: 100% 50%; }
 }

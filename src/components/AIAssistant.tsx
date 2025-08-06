@@ -47,26 +47,26 @@ const AIAssistant: React.FC<AIAssistantProps> = ({ isOpen, onClose }) => {
         className={`${
           isFullscreen 
             ? "max-w-[100vw] h-[100vh] w-full m-0 rounded-none" 
-            : "max-w-4xl w-full h-[80vh]"
-        } p-0 transition-all duration-300 ease-in-out overflow-hidden`}
+            : "max-w-5xl w-full h-[85vh]"
+        } p-0 transition-all duration-300 ease-in-out overflow-hidden bg-background/95 backdrop-blur-md border border-border/50 shadow-2xl`}
         hideCloseButton={true}
       >
-        <DialogHeader className="p-4 border-b bg-background/95 backdrop-blur-sm">
+        <DialogHeader className="p-4 border-b bg-gradient-to-r from-primary/10 to-blue-500/10 backdrop-blur-sm">
           <div className="flex items-center justify-between">
-            <div className="flex items-center space-x-2">
+            <div className="flex items-center space-x-3">
               <motion.div
                 animate={{ 
-                  rotate: isLoading ? 360 : 0,
+                  rotate: isLoading ? [0, 360] : 0,
                   scale: isLoading ? [1, 1.1, 1] : 1
                 }}
                 transition={{ 
                   rotate: { duration: 2, repeat: isLoading ? Infinity : 0, ease: "linear" },
-                  scale: { duration: 0.5, repeat: isLoading ? Infinity : 0 }
+                  scale: { duration: 0.8, repeat: isLoading ? Infinity : 0 }
                 }}
               >
-                <Bot className="h-6 w-6 text-primary" />
+                <Bot className="h-7 w-7 text-primary" />
               </motion.div>
-              <DialogTitle className="text-lg font-semibold">
+              <DialogTitle className="text-xl font-semibold bg-gradient-to-r from-primary to-blue-600 bg-clip-text text-transparent">
                 Assistant IA - Aide aux études
               </DialogTitle>
             </div>
@@ -75,7 +75,7 @@ const AIAssistant: React.FC<AIAssistantProps> = ({ isOpen, onClose }) => {
                 variant="ghost"
                 size="sm"
                 onClick={toggleFullscreen}
-                className="h-8 w-8 p-0"
+                className="h-9 w-9 p-0 hover:bg-primary/10 transition-all duration-200 hover:scale-110"
               >
                 {isFullscreen ? (
                   <Minimize2 className="h-4 w-4" />
@@ -87,7 +87,7 @@ const AIAssistant: React.FC<AIAssistantProps> = ({ isOpen, onClose }) => {
                 variant="ghost"
                 size="sm"
                 onClick={onClose}
-                className="h-8 w-8 p-0"
+                className="h-9 w-9 p-0 hover:bg-red-100 dark:hover:bg-red-900 transition-all duration-200 hover:scale-110"
               >
                 <X className="h-4 w-4" />
               </Button>
@@ -102,44 +102,60 @@ const AIAssistant: React.FC<AIAssistantProps> = ({ isOpen, onClose }) => {
                 initial={{ opacity: 0 }}
                 animate={{ opacity: 1 }}
                 exit={{ opacity: 0 }}
-                className="absolute inset-0 bg-background/95 backdrop-blur-sm z-10 flex flex-col items-center justify-center"
+                className="absolute inset-0 bg-gradient-to-br from-background/95 to-muted/50 backdrop-blur-sm z-10 flex flex-col items-center justify-center"
               >
-                <LoadingSpinner />
+                <motion.div
+                  initial={{ scale: 0.8, opacity: 0 }}
+                  animate={{ scale: 1, opacity: 1 }}
+                  transition={{ delay: 0.1 }}
+                >
+                  <LoadingSpinner />
+                </motion.div>
+                
                 <motion.div 
-                  className="mt-6 w-64 h-2 bg-muted rounded-full overflow-hidden"
-                  initial={{ scale: 0 }}
-                  animate={{ scale: 1 }}
+                  className="mt-8 w-80 h-3 bg-muted/50 rounded-full overflow-hidden backdrop-blur-sm"
+                  initial={{ scale: 0, opacity: 0 }}
+                  animate={{ scale: 1, opacity: 1 }}
                   transition={{ delay: 0.2 }}
                 >
                   <motion.div
-                    className="h-full bg-gradient-to-r from-primary to-primary/60 rounded-full"
+                    className="h-full bg-gradient-to-r from-primary via-blue-500 to-purple-500 rounded-full"
                     initial={{ width: 0 }}
                     animate={{ width: `${loadingProgress}%` }}
-                    transition={{ duration: 0.1 }}
+                    transition={{ duration: 0.1, ease: "easeOut" }}
                   />
                 </motion.div>
-                <motion.p 
-                  className="mt-4 text-muted-foreground"
-                  initial={{ opacity: 0 }}
-                  animate={{ opacity: 1 }}
+                
+                <motion.div
+                  className="mt-6 text-center"
+                  initial={{ opacity: 0, y: 20 }}
+                  animate={{ opacity: 1, y: 0 }}
                   transition={{ delay: 0.5 }}
                 >
-                  Chargement de l'assistant IA... {loadingProgress}%
-                </motion.p>
+                  <p className="text-lg font-medium text-foreground mb-2">
+                    Chargement de l'assistant IA...
+                  </p>
+                  <p className="text-sm text-muted-foreground">
+                    {loadingProgress}% - Initialisation des modules d'apprentissage
+                  </p>
+                </motion.div>
               </motion.div>
             )}
           </AnimatePresence>
 
           <motion.div
-            initial={{ opacity: 0, scale: 0.95 }}
-            animate={{ opacity: isLoading ? 0 : 1, scale: isLoading ? 0.95 : 1 }}
+            initial={{ opacity: 0, scale: 0.98 }}
+            animate={{ 
+              opacity: isLoading ? 0.3 : 1, 
+              scale: isLoading ? 0.98 : 1 
+            }}
             transition={{ duration: 0.5, delay: isLoading ? 0 : 0.3 }}
             className="w-full h-full"
           >
             <iframe 
               src="https://studio.pickaxe.co/_embed/4EMPJ5JYJT?d=deployment-49947cc5-189a-4ecf-9af3-033927e297ef" 
-              className="w-full h-full border-0 rounded-b-lg"
-              style={{ aspectRatio: '16/9', minHeight: '500px' }}
+              className="w-full h-full border-0"
+              style={{ minHeight: '600px' }}
               frameBorder="0"
               title="Assistant IA"
               allow="microphone; camera; fullscreen"

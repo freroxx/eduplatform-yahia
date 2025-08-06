@@ -3,7 +3,7 @@ import { Dialog, DialogContent, DialogHeader, DialogTitle } from "@/components/u
 import { Badge } from "@/components/ui/badge";
 import { ScrollArea } from "@/components/ui/scroll-area";
 import { Separator } from "@/components/ui/separator";
-import { Sparkles, Bug, Settings, BookOpen, Target, Zap } from "lucide-react";
+import { Sparkles, Bug, Settings, BookOpen, Target, Zap, Image, Palette, Cpu } from "lucide-react";
 
 interface ChangelogDialogProps {
   open: boolean;
@@ -13,8 +13,39 @@ interface ChangelogDialogProps {
 const ChangelogDialog = ({ open, onOpenChange }: ChangelogDialogProps) => {
   const versions = [
     {
-      version: "4.8.0",
+      version: "5.0.0",
       date: "Janvier 2025",
+      type: "major",
+      changes: [
+        {
+          type: "feature",
+          icon: Image,
+          title: "Visionneuse d'images intégrée",
+          description: "Nouveau système de visualisation d'images avec zoom, navigation et mode plein écran"
+        },
+        {
+          type: "feature",
+          icon: BookOpen,
+          title: "Support multi-images pour les cours",
+          description: "Chaque leçon peut maintenant contenir plusieurs images avec navigation fluide"
+        },
+        {
+          type: "feature",
+          icon: Zap,
+          title: "Animations améliorées",
+          description: "Nouvelles transitions et animations pour une expérience utilisateur plus fluide"
+        },
+        {
+          type: "improvement",
+          icon: Palette,
+          title: "Interface utilisateur repensée",
+          description: "Design moderne avec de meilleures animations et transitions"
+        }
+      ]
+    },
+    {
+      version: "4.8.0",
+      date: "Août 2024",
       type: "major",
       changes: [
         {
@@ -36,28 +67,35 @@ const ChangelogDialog = ({ open, onOpenChange }: ChangelogDialogProps) => {
           description: "Chaque leçon a maintenant son propre contenu unique"
         },
         {
-          type: "fix",
-          icon: Bug,
-          title: "Correction du cours de mathématiques",
-          description: "Le premier cours de mathématiques a été entièrement refait"
-        },
-        {
           type: "feature",
           icon: Target,
           title: "Système de progression amélioré",
           description: "Suivi détaillé des progrès avec statistiques personnalisées"
-        },
-        {
-          type: "feature",
-          icon: Zap,
-          title: "Performance optimisée",
-          description: "Temps de chargement réduits et navigation plus fluide"
         }
       ]
     },
     {
-      version: "4.7.2",
-      date: "Décembre 2024",
+      version: "4.0.0",
+      date: "Août 2024",
+      type: "major",
+      changes: [
+        {
+          type: "feature",
+          icon: Cpu,
+          title: "Architecture moderne",
+          description: "Refonte complète avec React 18 et TypeScript"
+        },
+        {
+          type: "feature",
+          icon: Sparkles,
+          title: "Interface redesignée",
+          description: "Nouvelle interface utilisateur moderne et responsive"
+        }
+      ]
+    },
+    {
+      version: "3.2.1",
+      date: "Juillet 2024",
       type: "patch",
       changes: [
         {
@@ -65,18 +103,12 @@ const ChangelogDialog = ({ open, onOpenChange }: ChangelogDialogProps) => {
           icon: Bug,
           title: "Correction des erreurs de navigation",
           description: "Les liens entre les pages fonctionnent maintenant correctement"
-        },
-        {
-          type: "feature",
-          icon: Sparkles,
-          title: "Interface utilisateur améliorée",
-          description: "Nouvelles animations et transitions fluides"
         }
       ]
     },
     {
-      version: "4.7.0",
-      date: "Novembre 2024",
+      version: "3.0.0",
+      date: "Juillet 2024",
       type: "minor",
       changes: [
         {

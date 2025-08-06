@@ -1,4 +1,5 @@
-import { useState, useEffect } from 'react';
+
+import { useState, useEffect, useCallback } from 'react';
 
 interface UserSettings {
   name: string;
@@ -17,112 +18,158 @@ interface UserSettings {
   studyReminders: boolean;
 }
 
+const DEFAULT_SETTINGS: UserSettings = {
+  name: '',
+  theme: 'auto',
+  hasOnboarded: false,
+  userType: 'student',
+  country: 'Maroc',
+  subjects: [],
+  animatedBackgrounds: true,
+  fontSize: 16,
+  animationSpeed: 100,
+  soundEffects: true,
+  notifications: true,
+  autoSave: true,
+  concentrationMode: false,
+  studyReminders: true
+};
+
 export const useSettings = () => {
   const [settings, setSettings] = useState<UserSettings>(() => {
-    return {
-      name: localStorage.getItem('userName') || '',
-      theme: (localStorage.getItem('theme') as 'light' | 'dark' | 'auto') || 'auto',
-      hasOnboarded: localStorage.getItem('hasOnboarded') === 'true',
-      userType: (localStorage.getItem('userType') as 'student' | 'teacher') || 'student',
-      country: localStorage.getItem('userCountry') || 'Maroc',
-      subjects: JSON.parse(localStorage.getItem('userSubjects') || '[]'),
-      animatedBackgrounds: localStorage.getItem('animatedBackgrounds') !== 'false',
-      fontSize: parseInt(localStorage.getItem('fontSize') || '16'),
-      animationSpeed: parseInt(localStorage.getItem('animationSpeed') || '100'),
-      soundEffects: localStorage.getItem('soundEffects') !== 'false',
-      notifications: localStorage.getItem('notifications') !== 'false',
-      autoSave: localStorage.getItem('autoSave') !== 'false',
-      concentrationMode: localStorage.getItem('concentrationMode') === 'true',
-      studyReminders: localStorage.getItem('studyReminders') !== 'false'
-    };
+    try {
+      return {
+        name: localStorage.getItem('userName') || DEFAULT_SETTINGS.name,
+        theme: (localStorage.getItem('theme') as 'light' | 'dark' | 'auto') || DEFAULT_SETTINGS.theme,
+        hasOnboarded: localStorage.getItem('hasOnboarded') === 'true',
+        userType: (localStorage.getItem('userType') as 'student' | 'teacher') || DEFAULT_SETTINGS.userType,
+        country: localStorage.getItem('userCountry') || DEFAULT_SETTINGS.country,
+        subjects: JSON.parse(localStorage.getItem('userSubjects') || '[]'),
+        animatedBackgrounds: localStorage.getItem('animatedBackgrounds') !== 'false',
+        fontSize: parseInt(localStorage.getItem('fontSize') || '16'),
+        animationSpeed: parseInt(localStorage.getItem('animationSpeed') || '100'),
+        soundEffects: localStorage.getItem('soundEffects') !== 'false',
+        notifications: localStorage.getItem('notifications') !== 'false',
+        autoSave: localStorage.getItem('autoSave') !== 'false',
+        concentrationMode: localStorage.getItem('concentrationMode') === 'true',
+        studyReminders: localStorage.getItem('studyReminders') !== 'false'
+      };
+    } catch (error) {
+      console.error('Error loading settings:', error);
+      return DEFAULT_SETTINGS;
+    }
   });
 
-  useEffect(() => {
-    localStorage.setItem('userName', settings.name);
-    localStorage.setItem('theme', settings.theme);
-    localStorage.setItem('hasOnboarded', settings.hasOnboarded.toString());
-    localStorage.setItem('userType', settings.userType);
-    localStorage.setItem('userCountry', settings.country);
-    localStorage.setItem('userSubjects', JSON.stringify(settings.subjects));
-    localStorage.setItem('animatedBackgrounds', settings.animatedBackgrounds.toString());
-    localStorage.setItem('fontSize', settings.fontSize.toString());
-    localStorage.setItem('animationSpeed', settings.animationSpeed.toString());
-    localStorage.setItem('soundEffects', settings.soundEffects.toString());
-    localStorage.setItem('notifications', settings.notifications.toString());
-    localStorage.setItem('autoSave', settings.autoSave.toString());
-    localStorage.setItem('concentrationMode', settings.concentrationMode.toString());
-    localStorage.setItem('studyReminders', settings.studyReminders.toString());
-    
-    // Apply theme
-    if (settings.theme === 'dark') {
-      document.documentElement.classList.add('dark');
-    } else if (settings.theme === 'light') {
-      document.documentElement.classList.remove('dark');
-    } else {
-      const isDark = window.matchMedia('(prefers-color-scheme: dark)').matches;
-      document.documentElement.classList.toggle('dark', isDark);
+  // Apply settings immediately when they change
+  const applySettings = useCallback((newSettings: UserSettings) => {
+    try {
+      // Apply theme
+      const root = document.documentElement;
+      if (newSettings.theme === 'dark') {
+        root.classList.add('dark');
+      } else if (newSettings.theme === 'light') {
+        root.classList.remove('dark');
+      } else {
+        const isDark = window.matchMedia('(prefers-color-scheme: dark)').matches;
+        root.classList.toggle('dark', isDark);
+      }
+
+      // Apply font size
+      root.style.fontSize = `${Math.max(12, Math.min(24, newSettings.fontSize))}px`;
+
+      // Apply animations
+      root.classList.toggle('disable-animations', !newSettings.animatedBackgrounds);
+      
+      // Apply animation speed
+      root.style.setProperty('--animation-speed', `${newSettings.animationSpeed}ms`);
+
+      // Apply concentration mode
+      root.classList.toggle('concentration-mode', newSettings.concentrationMode);
+
+    } catch (error) {
+      console.error('Error applying settings:', error);
     }
+  }, []);
 
-    // Apply font size
-    document.documentElement.style.fontSize = `${settings.fontSize}px`;
+  // Save settings to localStorage and apply them
+  useEffect(() => {
+    try {
+      Object.entries(settings).forEach(([key, value]) => {
+        const storageKey = key === 'name' ? 'userName' : 
+                          key === 'country' ? 'userCountry' :
+                          key === 'subjects' ? 'userSubjects' :
+                          key === 'userType' ? 'userType' :
+                          key;
+        
+        if (key === 'subjects') {
+          localStorage.setItem(storageKey, JSON.stringify(value));
+        } else {
+          localStorage.setItem(storageKey, String(value));
+        }
+      });
 
-    // Apply animated backgrounds
-    document.documentElement.classList.toggle('disable-animations', !settings.animatedBackgrounds);
-  }, [settings]);
+      applySettings(settings);
+    } catch (error) {
+      console.error('Error saving settings:', error);
+    }
+  }, [settings, applySettings]);
 
-  const updateName = (name: string) => {
-    setSettings(prev => ({ ...prev, name }));
-  };
+  // Individual update functions with immediate persistence
+  const updateName = useCallback((name: string) => {
+    setSettings(prev => ({ ...prev, name: name.trim() }));
+  }, []);
 
-  const updateTheme = (theme: 'light' | 'dark' | 'auto') => {
+  const updateTheme = useCallback((theme: 'light' | 'dark' | 'auto') => {
     setSettings(prev => ({ ...prev, theme }));
-  };
+  }, []);
 
-  const updateUserType = (userType: 'student' | 'teacher') => {
+  const updateUserType = useCallback((userType: 'student' | 'teacher') => {
     setSettings(prev => ({ ...prev, userType }));
-  };
+  }, []);
 
-  const updateCountry = (country: string) => {
+  const updateCountry = useCallback((country: string) => {
     setSettings(prev => ({ ...prev, country }));
-  };
+  }, []);
 
-  const updateSubjects = (subjects: string[]) => {
-    setSettings(prev => ({ ...prev, subjects }));
-  };
+  const updateSubjects = useCallback((subjects: string[]) => {
+    setSettings(prev => ({ ...prev, subjects: [...subjects] }));
+  }, []);
 
-  const updateAnimatedBackgrounds = (animatedBackgrounds: boolean) => {
+  const updateAnimatedBackgrounds = useCallback((animatedBackgrounds: boolean) => {
     setSettings(prev => ({ ...prev, animatedBackgrounds }));
-  };
+  }, []);
 
-  const updateFontSize = (fontSize: number) => {
-    setSettings(prev => ({ ...prev, fontSize }));
-  };
+  const updateFontSize = useCallback((fontSize: number) => {
+    const validSize = Math.max(12, Math.min(24, fontSize));
+    setSettings(prev => ({ ...prev, fontSize: validSize }));
+  }, []);
 
-  const updateAnimationSpeed = (animationSpeed: number) => {
-    setSettings(prev => ({ ...prev, animationSpeed }));
-  };
+  const updateAnimationSpeed = useCallback((animationSpeed: number) => {
+    const validSpeed = Math.max(50, Math.min(500, animationSpeed));
+    setSettings(prev => ({ ...prev, animationSpeed: validSpeed }));
+  }, []);
 
-  const updateSoundEffects = (soundEffects: boolean) => {
+  const updateSoundEffects = useCallback((soundEffects: boolean) => {
     setSettings(prev => ({ ...prev, soundEffects }));
-  };
+  }, []);
 
-  const updateNotifications = (notifications: boolean) => {
+  const updateNotifications = useCallback((notifications: boolean) => {
     setSettings(prev => ({ ...prev, notifications }));
-  };
+  }, []);
 
-  const updateAutoSave = (autoSave: boolean) => {
+  const updateAutoSave = useCallback((autoSave: boolean) => {
     setSettings(prev => ({ ...prev, autoSave }));
-  };
+  }, []);
 
-  const updateConcentrationMode = (concentrationMode: boolean) => {
+  const updateConcentrationMode = useCallback((concentrationMode: boolean) => {
     setSettings(prev => ({ ...prev, concentrationMode }));
-  };
+  }, []);
 
-  const updateStudyReminders = (studyReminders: boolean) => {
+  const updateStudyReminders = useCallback((studyReminders: boolean) => {
     setSettings(prev => ({ ...prev, studyReminders }));
-  };
+  }, []);
 
-  const completeOnboarding = (
+  const completeOnboarding = useCallback((
     name: string, 
     theme: 'light' | 'dark' | 'auto',
     userType: 'student' | 'teacher',
@@ -131,14 +178,28 @@ export const useSettings = () => {
   ) => {
     setSettings(prev => ({
       ...prev,
-      name,
+      name: name.trim(),
       theme,
       hasOnboarded: true,
       userType,
       country,
-      subjects
+      subjects: [...subjects]
     }));
-  };
+  }, []);
+
+  const resetSettings = useCallback(() => {
+    // Clear localStorage
+    Object.keys(DEFAULT_SETTINGS).forEach(key => {
+      const storageKey = key === 'name' ? 'userName' : 
+                        key === 'country' ? 'userCountry' :
+                        key === 'subjects' ? 'userSubjects' :
+                        key === 'userType' ? 'userType' :
+                        key;
+      localStorage.removeItem(storageKey);
+    });
+    
+    setSettings(DEFAULT_SETTINGS);
+  }, []);
 
   return {
     settings,
@@ -155,6 +216,7 @@ export const useSettings = () => {
     updateAutoSave,
     updateConcentrationMode,
     updateStudyReminders,
-    completeOnboarding
+    completeOnboarding,
+    resetSettings
   };
 };

@@ -1,3 +1,4 @@
+
 import { useState } from "react";
 import { motion, AnimatePresence } from "framer-motion";
 import { Button } from "@/components/ui/button";
@@ -7,14 +8,16 @@ import { ChevronLeft, ChevronRight, BookOpen, Calculator, Home, FileText } from 
 import { Link, useParams, useNavigate } from "react-router-dom";
 import GlobalHeader from "@/components/GlobalHeader";
 import PDFViewer from "@/components/PDFViewer";
+import WorkInProgressModal from "@/components/WorkInProgressModal";
 
 const Lesson1Course = () => {
   const { id } = useParams();
   const navigate = useNavigate();
   const [currentSlide, setCurrentSlide] = useState(0);
   const [showPDF, setShowPDF] = useState(false);
+  const [showWorkInProgress, setShowWorkInProgress] = useState(false);
 
-  // Produit scalaire images
+  // Image collections for different lessons
   const produitScalaireImages = [
     "/lovable-uploads/cd4a7174-2c37-4430-9977-542863367029.png",
     "/lovable-uploads/48671fc1-0965-4d5e-95fd-46dae4cf46e6.png",
@@ -31,216 +34,223 @@ const Lesson1Course = () => {
     "1": {
       title: "Généralités sur les fonctions",
       pdfUrl: "/lovable-uploads/25ac9238-31dc-4b40-8ee2-51728f1c7a9a.png",
+      hasImages: true,
       slides: [
         {
           title: "Qu'est-ce qu'une fonction ?",
-          content: "Une fonction est une relation qui associe à chaque élément d'un ensemble de départ (domaine) au plus un élément d'un ensemble d'arrivée (codomaine).",
+          content: "Une fonction est une relation qui associe à chaque élément d'un ensemble de départ (domaine) au plus un élément d'un ensemble d'arrivée (codomaine).\n\nUne fonction f de A vers B est une règle qui associe à chaque élément x de A exactement un élément y de B. On note f : A → B.\n\nL'élément y est appelé l'image de x par f, et on écrit y = f(x).",
           formula: "f : A → B",
-          example: "Exemple : f(x) = 2x + 3"
+          example: "Exemple : f(x) = 2x + 3 associe à chaque réel x le réel 2x + 3"
         },
         {
           title: "Domaine de définition",
-          content: "Le domaine de définition d'une fonction f est l'ensemble de toutes les valeurs pour lesquelles f(x) est définie.",
+          content: "Le domaine de définition d'une fonction f est l'ensemble de toutes les valeurs pour lesquelles f(x) est définie.\n\nIl faut exclure les valeurs qui rendent l'expression impossible :\n- Division par zéro\n- Racine carrée d'un nombre négatif\n- Logarithme d'un nombre négatif ou nul",
           formula: "Df = {x ∈ ℝ | f(x) existe}",
-          example: "Pour f(x) = 1/x, Df = ℝ* (tous les réels sauf 0)"
+          example: "Pour f(x) = 1/x, Df = ℝ* (tous les réels sauf 0)\nPour g(x) = √x, Dg = ℝ+ (tous les réels positifs)"
         },
         {
           title: "Image d'une fonction",
-          content: "L'image d'une fonction est l'ensemble de toutes les valeurs que peut prendre f(x).",
+          content: "L'image d'une fonction est l'ensemble de toutes les valeurs que peut prendre f(x) quand x parcourt le domaine de définition.\n\nC'est l'ensemble des ordonnées des points de la courbe représentative de f.",
           formula: "Im(f) = {y ∈ ℝ | ∃x ∈ Df, f(x) = y}",
-          example: "Pour f(x) = x², Im(f) = ℝ+ (tous les réels positifs)"
+          example: "Pour f(x) = x², Im(f) = ℝ+ (tous les réels positifs)\nPour f(x) = sin(x), Im(f) = [-1, 1]"
         },
         {
           title: "Représentation graphique",
-          content: "Le graphique d'une fonction f est l'ensemble des points (x, f(x)) dans le plan cartésien.",
+          content: "Le graphique d'une fonction f est l'ensemble des points (x, f(x)) dans le plan cartésien.\n\nLa courbe représentative permet de visualiser :\n- Le domaine de définition (projection sur l'axe des x)\n- L'image (projection sur l'axe des y)\n- Le comportement de la fonction",
           formula: "Gf = {(x, y) | x ∈ Df et y = f(x)}",
-          example: "La courbe représentative permet de visualiser le comportement de la fonction"
+          example: "Chaque point de la courbe a pour coordonnées (x, f(x))"
         }
       ]
     },
     "2": {
       title: "Fonctions de référence",
       pdfUrl: "/lovable-uploads/25ac9238-31dc-4b40-8ee2-51728f1c7a9a.png",
+      hasImages: false,
       slides: [
         {
           title: "Fonction linéaire",
-          content: "Une fonction linéaire est de la forme f(x) = ax où a est une constante non nulle.",
+          content: "Une fonction linéaire est de la forme f(x) = ax où a est une constante non nulle.\n\nCaractéristiques :\n- Sa courbe est une droite passant par l'origine\n- a est le coefficient directeur (pente)\n- Elle est définie sur ℝ tout entier",
           formula: "f(x) = ax",
-          example: "f(x) = 3x passe par l'origine avec une pente de 3"
+          example: "f(x) = 3x passe par l'origine avec une pente de 3\nf(x) = -2x a une pente négative de -2"
         },
         {
           title: "Fonction affine",
-          content: "Une fonction affine est de la forme f(x) = ax + b où a et b sont des constantes.",
+          content: "Une fonction affine est de la forme f(x) = ax + b où a et b sont des constantes.\n\nCaractéristiques :\n- Sa courbe est une droite\n- a est le coefficient directeur\n- b est l'ordonnée à l'origine",
           formula: "f(x) = ax + b",
-          example: "f(x) = 2x - 1 a une pente de 2 et une ordonnée à l'origine de -1"
+          example: "f(x) = 2x - 1 a une pente de 2 et coupe l'axe y en -1\nf(x) = -x + 3 a une pente de -1 et coupe l'axe y en 3"
         },
         {
           title: "Fonction carrée",
-          content: "La fonction carrée est définie par f(x) = x².",
+          content: "La fonction carrée est définie par f(x) = x².\n\nCaractéristiques :\n- Sa courbe est une parabole\n- Elle est paire : f(-x) = f(x)\n- Son sommet est à l'origine\n- Elle est décroissante sur ]-∞, 0] et croissante sur [0, +∞[",
           formula: "f(x) = x²",
-          example: "Sa courbe est une parabole avec sommet à l'origine"
+          example: "f(2) = 4, f(-2) = 4\nLe minimum est atteint en x = 0"
         },
         {
           title: "Fonction inverse",
-          content: "La fonction inverse est définie par f(x) = 1/x pour x ≠ 0.",
+          content: "La fonction inverse est définie par f(x) = 1/x pour x ≠ 0.\n\nCaractéristiques :\n- Elle n'est pas définie en 0\n- Sa courbe est une hyperbole\n- Elle a deux branches symétriques\n- Les axes sont asymptotes",
           formula: "f(x) = 1/x",
-          example: "Sa courbe est une hyperbole avec asymptotes aux axes"
+          example: "f(2) = 1/2 = 0,5\nf(-1) = -1\nQuand x tend vers 0, f(x) tend vers ±∞"
         }
       ]
     },
     "3": {
       title: "Équations et inéquations",
       pdfUrl: "/lovable-uploads/25ac9238-31dc-4b40-8ee2-51728f1c7a9a.png",
+      hasImages: false,
       slides: [
         {
           title: "Équations du premier degré",
-          content: "Une équation du premier degré est de la forme ax + b = 0 où a ≠ 0.",
+          content: "Une équation du premier degré est de la forme ax + b = 0 où a ≠ 0.\n\nMéthode de résolution :\n1. Isoler les termes en x d'un côté\n2. Diviser par le coefficient de x\n3. Vérifier la solution",
           formula: "ax + b = 0 ⟹ x = -b/a",
-          example: "3x - 6 = 0 ⟹ x = 2"
+          example: "3x - 6 = 0\n3x = 6\nx = 6/3 = 2\nVérification : 3(2) - 6 = 0 ✓"
         },
         {
           title: "Équations du second degré",
-          content: "Une équation du second degré est de la forme ax² + bx + c = 0 où a ≠ 0.",
+          content: "Une équation du second degré est de la forme ax² + bx + c = 0 où a ≠ 0.\n\nLe discriminant Δ = b² - 4ac détermine le nombre de solutions :\n- Si Δ > 0 : deux solutions distinctes\n- Si Δ = 0 : une solution double\n- Si Δ < 0 : aucune solution réelle",
           formula: "x = (-b ± √(b² - 4ac)) / 2a",
-          example: "x² - 5x + 6 = 0 ⟹ x = 2 ou x = 3"
+          example: "x² - 5x + 6 = 0\nΔ = 25 - 24 = 1 > 0\nx = (5 ± 1)/2\nx = 3 ou x = 2"
         },
         {
           title: "Inéquations du premier degré",
-          content: "Une inéquation du premier degré se résout comme une équation en conservant le sens des inégalités.",
+          content: "Une inéquation du premier degré se résout comme une équation en conservant le sens des inégalités.\n\nAttention : quand on multiplie ou divise par un nombre négatif, le sens de l'inégalité change !",
           formula: "ax + b > 0 ⟹ x > -b/a (si a > 0)",
-          example: "2x - 4 > 0 ⟹ x > 2"
+          example: "2x - 4 > 0\n2x > 4\nx > 2\nSolution : ]2, +∞["
         },
         {
           title: "Tableaux de signes",
-          content: "Les tableaux de signes permettent de résoudre les inéquations plus complexes.",
-          formula: "Étudier le signe de chaque facteur",
-          example: "(x-1)(x+2) > 0 ⟹ x ∈ ]-∞,-2[ ∪ ]1,+∞["
+          content: "Les tableaux de signes permettent de résoudre les inéquations plus complexes impliquant des produits ou quotients.\n\nMéthode :\n1. Factoriser l'expression\n2. Trouver les zéros de chaque facteur\n3. Étudier le signe sur chaque intervalle",
+          formula: "Étudier le signe de chaque facteur séparément",
+          example: "(x-1)(x+2) > 0\nZéros : x = 1 et x = -2\nSolution : x ∈ ]-∞,-2[ ∪ ]1,+∞["
         }
       ]
     },
     "4": {
       title: "Statistiques descriptives",
       pdfUrl: "/lovable-uploads/25ac9238-31dc-4b40-8ee2-51728f1c7a9a.png",
+      hasImages: false,
       slides: [
         {
           title: "Mesures de tendance centrale",
-          content: "La moyenne, la médiane et le mode sont les principales mesures de tendance centrale.",
-          formula: "Moyenne = Σxi/n",
-          example: "Pour {2, 4, 6, 8}, moyenne = 5"
+          content: "Les mesures de tendance centrale résument les données par une valeur représentative :\n\n• Moyenne : somme des valeurs divisée par leur nombre\n• Médiane : valeur centrale qui partage les données en deux groupes égaux\n• Mode : valeur la plus fréquente",
+          formula: "Moyenne = (Σxi)/n",
+          example: "Pour {2, 4, 6, 8} :\nMoyenne = (2+4+6+8)/4 = 5\nMédiane = (4+6)/2 = 5"
         },
         {
           title: "Mesures de dispersion",
-          content: "L'étendue, la variance et l'écart-type mesurent la dispersion des données.",
+          content: "Les mesures de dispersion indiquent comment les données sont réparties :\n\n• Étendue : différence entre max et min\n• Variance : moyenne des carrés des écarts à la moyenne\n• Écart-type : racine carrée de la variance",
           formula: "σ = √(Σ(xi - μ)²/n)",
-          example: "Plus σ est grand, plus les données sont dispersées"
+          example: "Plus σ est grand, plus les données sont dispersées autour de la moyenne"
         },
         {
           title: "Représentations graphiques",
-          content: "Histogrammes, diagrammes circulaires et boîtes à moustaches visualisent les données.",
-          formula: "Choisir selon le type de données",
-          example: "Histogramme pour données quantitatives continues"
+          content: "Différents graphiques selon le type de données :\n\n• Histogramme : données quantitatives continues\n• Diagramme circulaire : données qualitatives\n• Diagramme en barres : données quantitatives discrètes\n• Boîte à moustaches : résumé des quartiles",
+          formula: "Choisir le graphique adapté au type de données",
+          example: "Histogramme pour les notes d'un examen\nDiagramme circulaire pour les matières préférées"
         },
         {
           title: "Quartiles et centiles",
-          content: "Les quartiles divisent les données en 4 parties égales.",
+          content: "Les quartiles divisent les données ordonnées en 4 parties égales :\n\n• Q1 : 25% des données sont inférieures\n• Q2 : médiane (50%)\n• Q3 : 75% des données sont inférieures\n• Écart interquartile : Q3 - Q1",
           formula: "Q1, Q2 (médiane), Q3",
-          example: "25% des données sont inférieures à Q1"
+          example: "Pour 100 élèves, Q1 est la note du 25e élève dans l'ordre croissant"
         }
       ]
     },
     "5": {
       title: "Géométrie dans l'espace",
       pdfUrl: "/lovable-uploads/25ac9238-31dc-4b40-8ee2-51728f1c7a9a.png",
+      hasImages: false,
       slides: [
         {
           title: "Solides usuels",
-          content: "Cube, parallélépipède, cylindre, cône, sphère sont les solides de base.",
-          formula: "Chaque solide a ses formules de volume",
-          example: "Volume cube = a³"
+          content: "Les principaux solides et leurs propriétés :\n\n• Cube : 6 faces carrées identiques\n• Parallélépipède : 6 faces rectangulaires\n• Cylindre : 2 bases circulaires, surface latérale courbe\n• Cône : 1 base circulaire, sommet\n• Sphère : surface courbe, tous les points à égale distance du centre",
+          formula: "Chaque solide a ses formules spécifiques",
+          example: "Un dé est un cube parfait\nUne boîte de conserve est un cylindre"
         },
         {
           title: "Calculs de volumes",
-          content: "Les formules de volume permettent de calculer l'espace occupé par un solide.",
-          formula: "V = aire_base × hauteur (prismes)",
-          example: "Volume cylindre = πr²h"
+          content: "Formules des volumes principaux :\n\n• Cube : a³\n• Parallélépipède : L × l × h\n• Cylindre : π × r² × h\n• Cône : (1/3) × π × r² × h\n• Sphère : (4/3) × π × r³",
+          formula: "V = aire_base × hauteur (pour les prismes)",
+          example: "Volume d'un cylindre de rayon 3 et hauteur 5 :\nV = π × 3² × 5 = 45π cm³"
         },
         {
           title: "Calculs d'aires",
-          content: "L'aire totale d'un solide comprend toutes ses faces.",
+          content: "L'aire totale comprend toutes les surfaces externes :\n\n• Cube : 6a²\n• Cylindre : 2πr² + 2πrh (bases + latérale)\n• Cône : πr² + πrl (base + latérale)\n• Sphère : 4πr²",
           formula: "Aire totale = aire latérale + aires des bases",
-          example: "Aire sphère = 4πr²"
+          example: "Aire d'un cube d'arête 4 cm :\nA = 6 × 4² = 96 cm²"
         },
         {
           title: "Transformations géométriques",
-          content: "Translation, rotation, symétrie conservent certaines propriétés.",
-          formula: "Isométries conservent distances et angles",
-          example: "La rotation conserve les longueurs"
+          content: "Les transformations conservent certaines propriétés :\n\n• Translation : déplacement sans rotation\n• Rotation : pivot autour d'un point\n• Symétrie : reflexion par rapport à un axe ou point\n• Homothétie : agrandissement/réduction",
+          formula: "Les isométries conservent distances et angles",
+          example: "Une rotation de 90° transforme un carré en carré identique"
         }
       ]
     },
     "6": {
       title: "Trigonométrie",
       pdfUrl: "/lovable-uploads/25ac9238-31dc-4b40-8ee2-51728f1c7a9a.png",
+      hasImages: false,
       slides: [
         {
           title: "Relations trigonométriques",
-          content: "Dans un triangle rectangle, les rapports trigonométriques relient angles et côtés.",
+          content: "Dans un triangle rectangle, les rapports trigonométriques relient un angle aigu aux longueurs des côtés :\n\n• Sinus : rapport du côté opposé à l'hypoténuse\n• Cosinus : rapport du côté adjacent à l'hypoténuse\n• Tangente : rapport du côté opposé au côté adjacent",
           formula: "sin θ = opposé/hypoténuse",
-          example: "cos θ = adjacent/hypoténuse, tan θ = opposé/adjacent"
+          example: "cos θ = adjacent/hypoténuse\ntan θ = opposé/adjacent\ntan θ = sin θ / cos θ"
         },
         {
           title: "Cercle trigonométrique",
-          content: "Le cercle trigonométrique généralise les fonctions sin et cos à tous les angles.",
-          formula: "sin²θ + cos²θ = 1",
-          example: "Les angles sont mesurés en radians : π rad = 180°"
+          content: "Le cercle trigonométrique généralise les fonctions sin et cos à tous les angles :\n\n• Rayon = 1\n• Centre à l'origine\n• Angles mesurés depuis l'axe positif des x\n• Sens trigonométrique (anti-horaire)",
+          formula: "sin²θ + cos²θ = 1 (relation fondamentale)",
+          example: "π radians = 180°\nsin(π/2) = 1, cos(π/2) = 0"
         },
         {
           title: "Résolution de triangles",
-          content: "La trigonométrie permet de calculer côtés et angles d'un triangle.",
+          content: "La trigonométrie permet de calculer tous les éléments d'un triangle connaissant :\n\n• 2 côtés et l'angle entre eux\n• 1 côté et 2 angles\n• 3 côtés (loi des cosinus)\n\nLoi des sinus : dans tout triangle, les rapports côté/sinus de l'angle opposé sont égaux.",
           formula: "Loi des sinus : a/sin A = b/sin B = c/sin C",
-          example: "Si on connaît 2 côtés et l'angle entre eux"
+          example: "Triangle avec a = 5, b = 7, angle C = 60°\nOn peut calculer c avec la loi des cosinus"
         },
         {
           title: "Applications pratiques",
-          content: "La trigonométrie s'applique en physique, navigation, architecture.",
-          formula: "Calculs de hauteurs, distances, angles",
-          example: "Mesurer la hauteur d'un bâtiment avec un théodolite"
+          content: "La trigonométrie a de nombreuses applications :\n\n• Navigation : calcul de cap et distances\n• Architecture : calcul de pentes et hauteurs\n• Physique : analyse des forces, ondes\n• Astronomie : positions des astres",
+          formula: "Utilisation des rapports trigonométriques",
+          example: "Mesurer la hauteur d'un bâtiment :\nSi angle = 30° et distance = 50m\nHauteur = 50 × tan(30°) ≈ 29m"
         }
       ]
     },
     "7": {
       title: "Produit scalaire",
       pdfUrl: produitScalaireImages,
+      hasImages: true,
       slides: [
         {
           title: "Introduction au produit scalaire",
-          content: "Le produit scalaire est une notion fondamentale en mathématiques, particulièrement en géométrie vectorielle. Il a été introduit au milieu du XIXe siècle par le mathématicien allemand Hermann Grassmann.",
-          formula: "Pour deux vecteurs u⃗ et v⃗, le produit scalaire est noté u⃗·v⃗",
-          example: "Le produit scalaire permet de calculer des angles, des distances et des projections orthogonales."
+          content: "Le produit scalaire est une opération fondamentale en géométrie vectorielle, introduite au XIXe siècle par Hermann Grassmann.\n\nC'est un outil puissant qui permet de :\n• Calculer des angles entre vecteurs\n• Déterminer l'orthogonalité\n• Calculer des projections\n• Résoudre des problèmes géométriques complexes",
+          formula: "u⃗ · v⃗ (produit scalaire de u⃗ par v⃗)",
+          example: "Applications : physique (travail d'une force), géométrie (angles), informatique (graphisme 3D)"
         },
         {
           title: "Définition du produit scalaire",
-          content: "Soient u⃗ et v⃗ deux vecteurs du plan. Le produit scalaire de u⃗ par v⃗, noté u⃗·v⃗, est le nombre réel défini par plusieurs méthodes équivalentes.",
-          formula: "u⃗·v⃗ = ||u⃗|| × ||v⃗|| × cos(u⃗,v⃗)",
-          example: "Si u⃗ = 0⃗ ou v⃗ = 0⃗ alors u⃗·v⃗ = 0"
+          content: "Pour deux vecteurs u⃗ et v⃗ non nuls, le produit scalaire est le nombre réel défini par :\n\nu⃗ · v⃗ = ||u⃗|| × ||v⃗|| × cos(θ)\n\noù θ est l'angle entre les deux vecteurs.\n\nCas particuliers :\n• Si u⃗ = 0⃗ ou v⃗ = 0⃗, alors u⃗ · v⃗ = 0\n• Si θ = 90°, alors u⃗ · v⃗ = 0 (vecteurs orthogonaux)",
+          formula: "u⃗ · v⃗ = ||u⃗|| × ||v⃗|| × cos(u⃗, v⃗)",
+          example: "Deux vecteurs de normes 3 et 4 avec un angle de 60° :\nu⃗ · v⃗ = 3 × 4 × cos(60°) = 12 × 0,5 = 6"
         },
         {
           title: "Propriétés du produit scalaire",
-          content: "Le produit scalaire possède plusieurs propriétés importantes : commutativité, distributivité, et relation avec la norme d'un vecteur.",
-          formula: "u⃗·v⃗ = v⃗·u⃗ (commutativité)",
-          example: "u⃗·u⃗ = ||u⃗||² (carré scalaire)"
+          content: "Le produit scalaire possède plusieurs propriétés importantes :\n\n• Commutativité : u⃗ · v⃗ = v⃗ · u⃗\n• Distributivité : u⃗ · (v⃗ + w⃗) = u⃗ · v⃗ + u⃗ · w⃗\n• Associativité avec un scalaire : (ku⃗) · v⃗ = k(u⃗ · v⃗)\n• Carré scalaire : u⃗ · u⃗ = ||u⃗||²",
+          formula: "u⃗ · v⃗ = v⃗ · u⃗ (commutativité)",
+          example: "Si u⃗ · v⃗ = 5, alors v⃗ · u⃗ = 5\nSi ||u⃗|| = 3, alors u⃗ · u⃗ = 9"
         },
         {
           title: "Applications géométriques",
-          content: "Le produit scalaire permet de résoudre de nombreux problèmes géométriques : calcul d'angles, vérification d'orthogonalité, calcul de projections.",
-          formula: "Deux vecteurs sont orthogonaux ⟺ u⃗·v⃗ = 0",
-          example: "Dans un triangle rectangle ABC, AB⃗·AC⃗ = 0"
+          content: "Le produit scalaire permet de résoudre de nombreux problèmes :\n\n• Test d'orthogonalité : u⃗ · v⃗ = 0 ⟺ u⃗ ⊥ v⃗\n• Calcul d'angles : cos θ = (u⃗ · v⃗)/(||u⃗|| × ||v⃗||)\n• Projection orthogonale d'un vecteur sur un autre\n• Théorème de Pythagore généralisé",
+          formula: "u⃗ ⊥ v⃗ ⟺ u⃗ · v⃗ = 0",
+          example: "Dans un carré ABCD :\nAB⃗ · BC⃗ = 0 (côtés perpendiculaires)\nAB⃗ · AD⃗ = 0 (côtés perpendiculaires)"
         },
         {
           title: "Théorème d'Al-Kashi",
-          content: "Le théorème d'Al-Kashi (ou loi des cosinus) généralise le théorème de Pythagore aux triangles quelconques.",
+          content: "Le théorème d'Al-Kashi (ou loi des cosinus) généralise le théorème de Pythagore aux triangles quelconques :\n\nDans un triangle ABC :\nBC² = AB² + AC² - 2 × AB × AC × cos(Â)\n\nCe théorème permet de :\n• Calculer un côté connaissant deux côtés et l'angle entre eux\n• Calculer un angle connaissant les trois côtés",
           formula: "BC² = AB² + AC² - 2AB × AC × cos(Â)",
-          example: "Si Â = 90°, on retrouve le théorème de Pythagore : BC² = AB² + AC²"
+          example: "Triangle rectangle : si Â = 90°, cos(90°) = 0\nDonc BC² = AB² + AC² (Pythagore)\n\nTriangle avec AB = 3, AC = 4, Â = 60° :\nBC² = 9 + 16 - 24 × 0,5 = 13"
         }
       ]
     }
@@ -260,11 +270,19 @@ const Lesson1Course = () => {
   const progress = ((currentSlide + 1) / totalSlides) * 100;
 
   const handleBackToLessons = () => {
-    navigate('/lessons/math');
+    navigate("/lessons/math");
   };
 
   const handleBackToHome = () => {
-    navigate('/');
+    navigate("/");
+  };
+
+  const handlePDFClick = () => {
+    if (lesson.hasImages) {
+      setShowPDF(!showPDF);
+    } else {
+      setShowWorkInProgress(true);
+    }
   };
 
   return (
@@ -317,7 +335,7 @@ const Lesson1Course = () => {
               {lesson.title}
             </h1>
             <p className="text-muted-foreground">
-              Chapitre {id} - Cours interactif avec support PDF
+              Chapitre {id} - Cours interactif avec support visuel
             </p>
           </motion.div>
 
@@ -336,17 +354,18 @@ const Lesson1Course = () => {
                 <span className="text-sm text-muted-foreground">
                   {Math.round(progress)}% terminé
                 </span>
-                {lesson.pdfUrl && (
-                  <Button
-                    variant="outline"
-                    size="sm"
-                    onClick={() => setShowPDF(!showPDF)}
-                    className="hover:scale-105 transition-transform shadow-md"
-                  >
-                    <FileText className="h-4 w-4 mr-2" />
-                    PDF {Array.isArray(lesson.pdfUrl) && `(${lesson.pdfUrl.length} pages)`}
-                  </Button>
-                )}
+                <Button
+                  variant="outline"
+                  size="sm"
+                  onClick={handlePDFClick}
+                  className={`hover:scale-105 transition-transform shadow-md ${
+                    !lesson.hasImages ? 'opacity-75' : ''
+                  }`}
+                >
+                  <FileText className="h-4 w-4 mr-2" />
+                  Images {Array.isArray(lesson.pdfUrl) && `(${lesson.pdfUrl.length})`}
+                  {!lesson.hasImages && " - Bientôt"}
+                </Button>
               </div>
             </div>
             <Progress value={progress} className="w-full h-3 rounded-full" />
@@ -379,7 +398,7 @@ const Lesson1Course = () => {
                     </CardHeader>
                     <CardContent className="space-y-6 p-8">
                       <motion.div 
-                        className="text-lg leading-relaxed text-card-foreground"
+                        className="text-lg leading-relaxed text-card-foreground whitespace-pre-line"
                         initial={{ opacity: 0 }}
                         animate={{ opacity: 1 }}
                         transition={{ delay: 0.3 }}
@@ -413,7 +432,7 @@ const Lesson1Course = () => {
                           <h4 className="font-semibold text-green-800 dark:text-green-200 mb-3 text-lg">
                             📝 Exemple :
                           </h4>
-                          <div className="text-green-700 dark:text-green-300 bg-white/50 dark:bg-black/20 p-3 rounded-lg">
+                          <div className="text-green-700 dark:text-green-300 bg-white/50 dark:bg-black/20 p-3 rounded-lg whitespace-pre-line">
                             {lesson.slides[currentSlide].example}
                           </div>
                         </motion.div>
@@ -472,6 +491,12 @@ const Lesson1Course = () => {
           )}
         </motion.div>
       </div>
+
+      <WorkInProgressModal
+        open={showWorkInProgress}
+        onOpenChange={setShowWorkInProgress}
+        lessonTitle={lesson.title}
+      />
     </div>
   );
 };

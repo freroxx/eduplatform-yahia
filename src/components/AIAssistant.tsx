@@ -1,7 +1,8 @@
+
 import React, { useState, useEffect } from 'react';
 import { Dialog, DialogContent, DialogHeader, DialogTitle } from "@/components/ui/dialog";
 import { Button } from "@/components/ui/button";
-import { Bot, X, Maximize2, Minimize2, Loader2 } from "lucide-react";
+import { Bot, X, Maximize2, Minimize2 } from "lucide-react";
 import { motion, AnimatePresence } from "framer-motion";
 import LoadingSpinner from "./LoadingSpinner";
 
@@ -48,6 +49,7 @@ const AIAssistant: React.FC<AIAssistantProps> = ({ isOpen, onClose }) => {
             ? "max-w-[100vw] h-[100vh] w-full m-0 rounded-none" 
             : "max-w-4xl w-full h-[80vh]"
         } p-0 transition-all duration-300 ease-in-out overflow-hidden`}
+        hideCloseButton={true}
       >
         <DialogHeader className="p-4 border-b bg-background/95 backdrop-blur-sm">
           <div className="flex items-center justify-between">

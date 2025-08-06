@@ -2,7 +2,7 @@
 import { useState, useEffect } from "react";
 import { Button } from "@/components/ui/button";
 import { Dialog, DialogContent, DialogHeader, DialogTitle } from "@/components/ui/dialog";
-import { Music, Volume2, Maximize, Minimize } from "lucide-react";
+import { Music, Volume2, Maximize, Minimize, X } from "lucide-react";
 import { motion } from "framer-motion";
 
 interface EduMusicProps {
@@ -51,7 +51,7 @@ const EduMusic = ({ isOpen, onClose }: EduMusicProps) => {
     <Dialog open={isOpen} onOpenChange={onClose}>
       <DialogContent 
         className={`${isFullscreen ? 'max-w-full h-full w-full' : 'max-w-2xl'} transition-all duration-300`}
-        hideCloseButton={isFullscreen}
+        hideCloseButton={true}
       >
         <DialogHeader>
           <div className="flex items-center justify-between">
@@ -77,16 +77,14 @@ const EduMusic = ({ isOpen, onClose }: EduMusicProps) => {
                   <Maximize className="h-4 w-4" />
                 )}
               </Button>
-              {isFullscreen && (
-                <Button
-                  variant="outline"
-                  size="sm"
-                  onClick={onClose}
-                  className="hover:bg-destructive hover:text-destructive-foreground"
-                >
-                  ✕
-                </Button>
-              )}
+              <Button
+                variant="outline"
+                size="sm"
+                onClick={onClose}
+                className="hover:bg-destructive hover:text-destructive-foreground"
+              >
+                <X className="h-4 w-4" />
+              </Button>
             </div>
           </div>
         </DialogHeader>

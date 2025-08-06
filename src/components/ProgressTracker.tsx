@@ -3,7 +3,8 @@ import React, { useState, useEffect } from 'react';
 import { Card, CardContent, CardHeader, CardTitle } from '@/components/ui/card';
 import { Progress } from '@/components/ui/progress';
 import { Badge } from '@/components/ui/badge';
-import { Clock, Target, Trophy, TrendingUp } from 'lucide-react';
+import { Clock, Target, Trophy, TrendingUp, Flame, Calendar, Award } from 'lucide-react';
+import { motion } from 'framer-motion';
 
 interface ProgressTrackerProps {
   subject?: string;
@@ -24,17 +25,26 @@ const ProgressTracker = ({
 }: ProgressTrackerProps) => {
   const [animatedProgress, setAnimatedProgress] = useState(0);
   const [animatedPoints, setAnimatedPoints] = useState(0);
+  const [streak, setStreak] = useState(0);
 
   const progress = Math.round((completedLessons / totalLessons) * 100);
   const pointsProgress = Math.round((earnedPoints / totalPoints) * 100);
 
   useEffect(() => {
+    // Load streak from localStorage
+    const savedStreak = localStorage.getItem(`streak-${subject.toLowerCase()}`);
+    if (savedStreak) {
+      setStreak(parseInt(savedStreak, 10));
+    }
+
+    // Animate progress bars
     const timer = setTimeout(() => {
       setAnimatedProgress(progress);
       setAnimatedPoints(pointsProgress);
     }, 500);
+    
     return () => clearTimeout(timer);
-  }, [progress, pointsProgress]);
+  }, [progress, pointsProgress, subject]);
 
   const getSubjectColor = (subjectName: string) => {
     if (!subjectName || typeof subjectName !== 'string') {
@@ -61,107 +71,180 @@ const ProgressTracker = ({
     if (normalizedSubject.includes('histoire') || normalizedSubject.includes('géographie')) {
       return 'text-purple-600 border-purple-200 bg-purple-50 dark:bg-purple-900/20';
     }
+    if (normalizedSubject.includes('english')) {
+      return 'text-purple-600 border-purple-200 bg-purple-50 dark:bg-purple-900/20';
+    }
     
     return 'text-gray-600 border-gray-200 bg-gray-50 dark:bg-gray-900/20';
   };
 
   const getProgressColor = (progressValue: number) => {
-    if (progressValue >= 80) return 'bg-green-500';
-    if (progressValue >= 60) return 'bg-yellow-500';
-    if (progressValue >= 40) return 'bg-orange-500';
-    return 'bg-red-500';
+    if (progressValue >= 80) return 'from-green-500 to-green-600';
+    if (progressValue >= 60) return 'from-yellow-500 to-yellow-600';
+    if (progressValue >= 40) return 'from-orange-500 to-orange-600';
+    return 'from-red-500 to-red-600';
   };
 
+  const getMotivationMessage = (progressValue: number) => {
+    if (progressValue < 25) {
+      return { message: "🚀 Excellent début ! Continuez ainsi !", color: "blue" };
+    }
+    if (progressValue >= 25 && progressValue < 50) {
+      return { message: "⭐ Bon rythme ! Vous êtes sur la bonne voie !", color: "yellow" };
+    }
+    if (progressValue >= 50 && progressValue < 75) {
+      return { message: "🔥 Plus que la moitié ! Vous y êtes presque !", color: "orange" };
+    }
+    return { message: "🎉 Fantastique ! Vous maîtrisez le sujet !", color: "green" };
+  };
+
+  const motivation = getMotivationMessage(progress);
+
   return (
-    <Card className={`glass-effect hover-lift border ${getSubjectColor(subject)}`}>
-      <CardHeader className="pb-3">
-        <CardTitle className="text-lg font-bold flex items-center gap-2">
-          <TrendingUp className="h-5 w-5" />
-          Progression - {subject}
-        </CardTitle>
-      </CardHeader>
-      <CardContent className="space-y-6">
-        {/* Lessons Progress */}
-        <div className="space-y-3">
-          <div className="flex items-center justify-between text-sm">
-            <span className="font-medium flex items-center gap-1">
-              <Target className="h-4 w-4" />
-              Leçons
-            </span>
-            <span className="text-muted-foreground">{completedLessons}/{totalLessons}</span>
+    <motion.div
+      initial={{ opacity: 0, y: 20 }}
+      animate={{ opacity: 1, y: 0 }}
+      transition={{ duration: 0.5 }}
+    >
+      <Card className={`glass-effect hover-lift border ${getSubjectColor(subject)}`}>
+        <CardHeader className="pb-3">
+          <CardTitle className="text-lg font-bold flex items-center gap-2">
+            <TrendingUp className="h-5 w-5" />
+            Progression - {subject}
+          </CardTitle>
+        </CardHeader>
+        <CardContent className="space-y-6">
+          {/* Quick Stats */}
+          <div className="grid grid-cols-2 gap-4">
+            <motion.div
+              initial={{ scale: 0 }}
+              animate={{ scale: 1 }}
+              transition={{ delay: 0.2 }}
+              className="text-center p-3 bg-accent/50 rounded-lg"
+            >
+              <div className="text-2xl font-bold text-primary">{animatedProgress}%</div>
+              <p className="text-xs text-muted-foreground">Leçons</p>
+            </motion.div>
+            <motion.div
+              initial={{ scale: 0 }}
+              animate={{ scale: 1 }}
+              transition={{ delay: 0.3 }}
+              className="text-center p-3 bg-accent/50 rounded-lg"
+            >
+              <div className="text-2xl font-bold text-primary">{earnedPoints}</div>
+              <p className="text-xs text-muted-foreground">Points</p>
+            </motion.div>
           </div>
-          <Progress 
-            value={animatedProgress} 
-            className="h-3 bg-gray-200 dark:bg-gray-700"
-          />
-          <div className="flex justify-between items-center">
+
+          {/* Lessons Progress */}
+          <motion.div
+            initial={{ opacity: 0 }}
+            animate={{ opacity: 1 }}
+            transition={{ delay: 0.4 }}
+            className="space-y-3"
+          >
+            <div className="flex items-center justify-between text-sm">
+              <span className="font-medium flex items-center gap-1">
+                <Target className="h-4 w-4" />
+                Leçons
+              </span>
+              <span className="text-muted-foreground">{completedLessons}/{totalLessons}</span>
+            </div>
+            <div className="relative">
+              <Progress 
+                value={animatedProgress} 
+                className="h-3 bg-gray-200 dark:bg-gray-700 overflow-hidden"
+              />
+              <div 
+                className={`absolute top-0 left-0 h-full bg-gradient-to-r ${getProgressColor(animatedProgress)} rounded-full transition-all duration-1000 shadow-sm`}
+                style={{ width: `${animatedProgress}%` }}
+              />
+            </div>
+            <div className="flex justify-between items-center">
+              <Badge variant="outline" className="text-xs">
+                {animatedProgress}% complété
+              </Badge>
+              <span className="text-xs text-muted-foreground">
+                {totalLessons - completedLessons} restantes
+              </span>
+            </div>
+          </motion.div>
+
+          {/* Points Progress */}
+          <motion.div
+            initial={{ opacity: 0 }}
+            animate={{ opacity: 1 }}
+            transition={{ delay: 0.6 }}
+            className="space-y-3"
+          >
+            <div className="flex items-center justify-between text-sm">
+              <span className="font-medium flex items-center gap-1">
+                <Trophy className="h-4 w-4" />
+                Points
+              </span>
+              <span className="text-muted-foreground">{earnedPoints}/{totalPoints}</span>
+            </div>
+            <Progress 
+              value={animatedPoints} 
+              className="h-3 bg-gray-200 dark:bg-gray-700"
+            />
             <Badge variant="outline" className="text-xs">
-              {animatedProgress}% complété
+              {animatedPoints}% des points
             </Badge>
-            <span className="text-xs text-muted-foreground">
-              {totalLessons - completedLessons} restantes
-            </span>
-          </div>
-        </div>
+          </motion.div>
 
-        {/* Points Progress */}
-        <div className="space-y-3">
-          <div className="flex items-center justify-between text-sm">
-            <span className="font-medium flex items-center gap-1">
-              <Trophy className="h-4 w-4" />
-              Points
-            </span>
-            <span className="text-muted-foreground">{earnedPoints}/{totalPoints}</span>
-          </div>
-          <Progress 
-            value={animatedPoints} 
-            className="h-3 bg-gray-200 dark:bg-gray-700"
-          />
-          <Badge variant="outline" className="text-xs">
-            {animatedPoints}% des points
-          </Badge>
-        </div>
+          {/* Additional Stats */}
+          <motion.div
+            initial={{ opacity: 0 }}
+            animate={{ opacity: 1 }}
+            transition={{ delay: 0.8 }}
+            className="grid grid-cols-2 gap-3"
+          >
+            <div className="flex items-center justify-between p-3 bg-accent/50 rounded-lg">
+              <div className="flex items-center gap-2">
+                <Clock className="h-4 w-4 text-muted-foreground" />
+                <span className="text-sm font-medium">Temps</span>
+              </div>
+              <Badge variant="secondary">{studyTime}</Badge>
+            </div>
+            
+            <div className="flex items-center justify-between p-3 bg-accent/50 rounded-lg">
+              <div className="flex items-center gap-2">
+                <Flame className="h-4 w-4 text-orange-500" />
+                <span className="text-sm font-medium">Série</span>
+              </div>
+              <Badge variant="secondary">{streak} jours</Badge>
+            </div>
+          </motion.div>
 
-        {/* Study Time */}
-        <div className="flex items-center justify-between p-3 bg-accent/50 rounded-lg">
-          <div className="flex items-center gap-2">
-            <Clock className="h-4 w-4 text-muted-foreground" />
-            <span className="text-sm font-medium">Temps d'étude</span>
-          </div>
-          <Badge variant="secondary">{studyTime}</Badge>
-        </div>
+          {/* Motivation Message */}
+          <motion.div
+            initial={{ opacity: 0, scale: 0.9 }}
+            animate={{ opacity: 1, scale: 1 }}
+            transition={{ delay: 1.0 }}
+            className={`text-center p-3 bg-${motivation.color}-50 dark:bg-${motivation.color}-900/20 rounded-lg border border-${motivation.color}-200 dark:border-${motivation.color}-800`}
+          >
+            <p className={`text-sm text-${motivation.color}-700 dark:text-${motivation.color}-300 font-medium`}>
+              {motivation.message}
+            </p>
+          </motion.div>
 
-        {/* Motivation Message */}
-        {progress < 25 && (
-          <div className="text-center p-3 bg-blue-50 dark:bg-blue-900/20 rounded-lg border border-blue-200 dark:border-blue-800">
-            <p className="text-sm text-blue-700 dark:text-blue-300 font-medium">
-              🚀 Excellent début ! Continuez ainsi !
-            </p>
-          </div>
-        )}
-        {progress >= 25 && progress < 50 && (
-          <div className="text-center p-3 bg-yellow-50 dark:bg-yellow-900/20 rounded-lg border border-yellow-200 dark:border-yellow-800">
-            <p className="text-sm text-yellow-700 dark:text-yellow-300 font-medium">
-              ⭐ Bon rythme ! Vous êtes sur la bonne voie !
-            </p>
-          </div>
-        )}
-        {progress >= 50 && progress < 75 && (
-          <div className="text-center p-3 bg-orange-50 dark:bg-orange-900/20 rounded-lg border border-orange-200 dark:border-orange-800">
-            <p className="text-sm text-orange-700 dark:text-orange-300 font-medium">
-              🔥 Plus que la moitié ! Vous y êtes presque !
-            </p>
-          </div>
-        )}
-        {progress >= 75 && (
-          <div className="text-center p-3 bg-green-50 dark:bg-green-900/20 rounded-lg border border-green-200 dark:border-green-800">
-            <p className="text-sm text-green-700 dark:text-green-300 font-medium">
-              🎉 Fantastique ! Vous maîtrisez le sujet !
-            </p>
-          </div>
-        )}
-      </CardContent>
-    </Card>
+          {/* Achievement Badge */}
+          {progress === 100 && (
+            <motion.div
+              initial={{ scale: 0, rotate: -180 }}
+              animate={{ scale: 1, rotate: 0 }}
+              transition={{ delay: 1.2, type: "spring" }}
+              className="text-center p-4 bg-gradient-to-r from-yellow-400 to-orange-500 rounded-lg text-white"
+            >
+              <Award className="h-6 w-6 mx-auto mb-2" />
+              <p className="font-bold">Matière Maîtrisée !</p>
+              <p className="text-xs opacity-90">Félicitations pour vos efforts !</p>
+            </motion.div>
+          )}
+        </CardContent>
+      </Card>
+    </motion.div>
   );
 };
 

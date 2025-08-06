@@ -10,23 +10,38 @@ import { Select, SelectContent, SelectItem, SelectTrigger, SelectValue } from "@
 import { Separator } from "@/components/ui/separator";
 import { Badge } from "@/components/ui/badge";
 import { Slider } from "@/components/ui/slider";
-import { ArrowLeft, User, Palette, Bell, Book, Shield, Download, Trash2, Moon, Sun, Monitor, Volume2 } from "lucide-react";
+import { ArrowLeft, User, Palette, Bell, Book, Shield, Download, Trash2, Moon, Sun, Monitor, Volume2, Quote, Sparkles, Clock } from "lucide-react";
 import { Link } from "react-router-dom";
 import { useSettings } from "@/hooks/useSettings";
 import { useToast } from "@/hooks/use-toast";
 import GlobalHeader from "@/components/GlobalHeader";
 
 const Settings = () => {
-  const { settings, updateName, updateTheme, updateCountry, updateSubjects } = useSettings();
+  const { 
+    settings, 
+    updateName, 
+    updateTheme, 
+    updateCountry, 
+    updateSubjects,
+    updateAnimatedBackgrounds,
+    updateAnimatedBackgroundsLight,
+    updateAnimatedBackgroundsDark,
+    updateFontSize,
+    updateAnimationSpeed,
+    updateSoundEffects,
+    updateNotifications,
+    updateAutoSave,
+    updateConcentrationMode,
+    updateStudyReminders,
+    updateMotivationalQuotes,
+    updateReminderInterval,
+    resetSettings
+  } = useSettings();
+  
   const { toast } = useToast();
   const [name, setName] = useState(settings.name);
-  const [notifications, setNotifications] = useState(true);
-  const [soundEffects, setSoundEffects] = useState(true);
-  const [autoSave, setAutoSave] = useState(true);
-  const [concentrationMode, setConcentrationMode] = useState(false);
-  const [studyReminders, setStudyReminders] = useState(true);
-  const [fontSize, setFontSize] = useState([16]);
-  const [animationSpeed, setAnimationSpeed] = useState([100]);
+  const [fontSize, setFontSize] = useState([settings.fontSize]);
+  const [animationSpeed, setAnimationSpeed] = useState([settings.animationSpeed]);
 
   const countries = [
     "Maroc", "Algérie", "Tunisie", "France", "Canada", "Sénégal", "Côte d'Ivoire", "Mali"
@@ -39,6 +54,8 @@ const Settings = () => {
 
   const handleSave = () => {
     updateName(name);
+    updateFontSize(fontSize[0]);
+    updateAnimationSpeed(animationSpeed[0]);
     toast({
       title: "Paramètres sauvegardés",
       description: "Vos préférences ont été mises à jour avec succès.",
@@ -67,8 +84,20 @@ const Settings = () => {
 
   const handleResetSettings = () => {
     if (confirm("Êtes-vous sûr de vouloir réinitialiser tous vos paramètres ?")) {
-      localStorage.clear();
+      resetSettings();
       window.location.reload();
+    }
+  };
+
+  const requestNotificationPermission = async () => {
+    if ('Notification' in window) {
+      const permission = await Notification.requestPermission();
+      if (permission === 'granted') {
+        toast({
+          title: "Notifications activées",
+          description: "Vous recevrez maintenant des rappels d'étude.",
+        });
+      }
     }
   };
 
@@ -146,7 +175,7 @@ const Settings = () => {
                       <Badge
                         key={subject}
                         variant={settings.subjects.includes(subject) ? "default" : "outline"}
-                        className="cursor-pointer"
+                        className="cursor-pointer hover:scale-105 transition-transform"
                         onClick={() => {
                           const newSubjects = settings.subjects.includes(subject)
                             ? settings.subjects.filter(s => s !== subject)
@@ -184,7 +213,7 @@ const Settings = () => {
                         <Button
                           key={theme.value}
                           variant={settings.theme === theme.value ? "default" : "outline"}
-                          className="flex flex-col gap-2 h-16"
+                          className="flex flex-col gap-2 h-16 hover:scale-105 transition-all duration-200"
                           onClick={() => updateTheme(theme.value as any)}
                         >
                           <IconComponent className="h-4 w-4" />
@@ -208,14 +237,93 @@ const Settings = () => {
                 </div>
 
                 <div className="space-y-3">
-                  <Label>Vitesse d'animation: {animationSpeed[0]}%</Label>
+                  <Label>Vitesse d'animation: {animationSpeed[0]}ms</Label>
                   <Slider
                     value={animationSpeed}
                     onValueChange={setAnimationSpeed}
-                    max={150}
+                    max={500}
                     min={50}
                     step={10}
                     className="w-full"
+                  />
+                </div>
+              </CardContent>
+            </Card>
+
+            {/* Animation Settings */}
+            <Card className="bg-card/90 backdrop-blur-sm border-0 shadow-lg">
+              <CardHeader>
+                <CardTitle className="flex items-center gap-2">
+                  <Sparkles className="h-5 w-5 text-yellow-600" />
+                  Animations & Effets
+                </CardTitle>
+              </CardHeader>
+              <CardContent className="space-y-4">
+                <div className="flex items-center justify-between">
+                  <div>
+                    <Label>Arrière-plans animés</Label>
+                    <p className="text-sm text-muted-foreground">Contrôle global des animations</p>
+                  </div>
+                  <Switch
+                    checked={settings.animatedBackgrounds}
+                    onCheckedChange={updateAnimatedBackgrounds}
+                  />
+                </div>
+
+                <div className="flex items-center justify-between">
+                  <div>
+                    <Label>Animations (thème clair)</Label>
+                    <p className="text-sm text-muted-foreground">Animations en mode clair</p>
+                  </div>
+                  <Switch
+                    checked={settings.animatedBackgroundsLight}
+                    onCheckedChange={updateAnimatedBackgroundsLight}
+                    disabled={!settings.animatedBackgrounds}
+                  />
+                </div>
+
+                <div className="flex items-center justify-between">
+                  <div>
+                    <Label>Animations (thème sombre)</Label>
+                    <p className="text-sm text-muted-foreground">Animations en mode sombre</p>
+                  </div>
+                  <Switch
+                    checked={settings.animatedBackgroundsDark}
+                    onCheckedChange={updateAnimatedBackgroundsDark}
+                    disabled={!settings.animatedBackgrounds}
+                  />
+                </div>
+
+                <div className="flex items-center justify-between">
+                  <div className="flex items-center gap-2">
+                    <Volume2 className="h-4 w-4" />
+                    <Label>Effets sonores</Label>
+                  </div>
+                  <Switch
+                    checked={settings.soundEffects}
+                    onCheckedChange={updateSoundEffects}
+                  />
+                </div>
+              </CardContent>
+            </Card>
+
+            {/* Motivational Features */}
+            <Card className="bg-card/90 backdrop-blur-sm border-0 shadow-lg">
+              <CardHeader>
+                <CardTitle className="flex items-center gap-2">
+                  <Quote className="h-5 w-5 text-pink-600" />
+                  Citations & Motivation
+                </CardTitle>
+              </CardHeader>
+              <CardContent className="space-y-4">
+                <div className="flex items-center justify-between">
+                  <div>
+                    <Label>Citations motivationnelles</Label>
+                    <p className="text-sm text-muted-foreground">Barre de citation en haut de page</p>
+                  </div>
+                  <Switch
+                    checked={settings.motivationalQuotes}
+                    onCheckedChange={updateMotivationalQuotes}
                   />
                 </div>
               </CardContent>
@@ -236,8 +344,8 @@ const Settings = () => {
                     <p className="text-sm text-muted-foreground">Masque les distractions</p>
                   </div>
                   <Switch
-                    checked={concentrationMode}
-                    onCheckedChange={setConcentrationMode}
+                    checked={settings.concentrationMode}
+                    onCheckedChange={updateConcentrationMode}
                   />
                 </div>
 
@@ -247,30 +355,19 @@ const Settings = () => {
                     <p className="text-sm text-muted-foreground">Sauvegarde votre progression</p>
                   </div>
                   <Switch
-                    checked={autoSave}
-                    onCheckedChange={setAutoSave}
-                  />
-                </div>
-
-                <div className="flex items-center justify-between">
-                  <div>
-                    <Label>Rappels d'étude</Label>
-                    <p className="text-sm text-muted-foreground">Notifications quotidiennes</p>
-                  </div>
-                  <Switch
-                    checked={studyReminders}
-                    onCheckedChange={setStudyReminders}
+                    checked={settings.autoSave}
+                    onCheckedChange={updateAutoSave}
                   />
                 </div>
               </CardContent>
             </Card>
 
-            {/* Notifications & Audio */}
+            {/* Notifications & Reminders */}
             <Card className="bg-card/90 backdrop-blur-sm border-0 shadow-lg">
               <CardHeader>
                 <CardTitle className="flex items-center gap-2">
                   <Bell className="h-5 w-5 text-orange-600" />
-                  Notifications & Audio
+                  Notifications & Rappels
                 </CardTitle>
               </CardHeader>
               <CardContent className="space-y-4">
@@ -280,21 +377,51 @@ const Settings = () => {
                     <p className="text-sm text-muted-foreground">Nouveaux cours et exercices</p>
                   </div>
                   <Switch
-                    checked={notifications}
-                    onCheckedChange={setNotifications}
+                    checked={settings.notifications}
+                    onCheckedChange={updateNotifications}
                   />
                 </div>
 
                 <div className="flex items-center justify-between">
-                  <div className="flex items-center gap-2">
-                    <Volume2 className="h-4 w-4" />
-                    <Label>Effets sonores</Label>
+                  <div>
+                    <Label>Rappels d'étude</Label>
+                    <p className="text-sm text-muted-foreground">Notifications de rappel</p>
                   </div>
                   <Switch
-                    checked={soundEffects}
-                    onCheckedChange={setSoundEffects}
+                    checked={settings.studyReminders}
+                    onCheckedChange={updateStudyReminders}
                   />
                 </div>
+
+                {settings.studyReminders && (
+                  <div className="space-y-2">
+                    <Label className="flex items-center gap-2">
+                      <Clock className="h-4 w-4" />
+                      Fréquence des rappels
+                    </Label>
+                    <Select value={settings.reminderInterval} onValueChange={updateReminderInterval}>
+                      <SelectTrigger>
+                        <SelectValue />
+                      </SelectTrigger>
+                      <SelectContent>
+                        <SelectItem value="1day">Quotidien</SelectItem>
+                        <SelectItem value="2days">Tous les 2 jours</SelectItem>
+                        <SelectItem value="1week">Hebdomadaire</SelectItem>
+                      </SelectContent>
+                    </Select>
+                  </div>
+                )}
+
+                {'Notification' in window && (
+                  <Button
+                    onClick={requestNotificationPermission}
+                    variant="outline"
+                    className="w-full hover:scale-105 transition-all duration-200"
+                    disabled={Notification.permission === 'granted'}
+                  >
+                    {Notification.permission === 'granted' ? 'Notifications autorisées' : 'Autoriser les notifications'}
+                  </Button>
+                )}
               </CardContent>
             </Card>
 
@@ -310,7 +437,7 @@ const Settings = () => {
                 <div className="grid grid-cols-1 sm:grid-cols-3 gap-4">
                   <Button
                     onClick={handleSave}
-                    className="flex items-center gap-2"
+                    className="flex items-center gap-2 hover:scale-105 transition-all duration-200"
                   >
                     <User className="h-4 w-4" />
                     Sauvegarder
@@ -319,7 +446,7 @@ const Settings = () => {
                   <Button
                     onClick={handleExportData}
                     variant="outline"
-                    className="flex items-center gap-2"
+                    className="flex items-center gap-2 hover:scale-105 transition-all duration-200"
                   >
                     <Download className="h-4 w-4" />
                     Exporter mes données
@@ -328,7 +455,7 @@ const Settings = () => {
                   <Button
                     onClick={handleResetSettings}
                     variant="destructive"
-                    className="flex items-center gap-2"
+                    className="flex items-center gap-2 hover:scale-105 transition-all duration-200"
                   >
                     <Trash2 className="h-4 w-4" />
                     Réinitialiser

@@ -1,4 +1,3 @@
-
 import React, { useState, useEffect } from "react";
 import { Card, CardContent, CardDescription, CardHeader, CardTitle } from "@/components/ui/card";
 import { Button } from "@/components/ui/button";
@@ -14,9 +13,11 @@ import Footer from "@/components/Footer";
 import EnhancedProgressTracker from "@/components/EnhancedProgressTracker";
 import EnhancedLoadingBar from "@/components/EnhancedLoadingBar";
 import { useSettings } from "@/hooks/useSettings";
+import { useExerciseStats } from "@/hooks/useExerciseStats";
 
 const Index = () => {
   const { settings } = useSettings();
+  const { getTotalStats } = useExerciseStats();
   const [isLoading, setIsLoading] = useState(true);
   const [loadingProgress, setLoadingProgress] = useState(0);
 
@@ -35,6 +36,8 @@ const Index = () => {
 
     return () => clearInterval(interval);
   }, []);
+
+  const totalStats = getTotalStats();
 
   const subjects = [
     {
@@ -174,7 +177,14 @@ const Index = () => {
                 animate={{ opacity: 1, y: 0 }}
                 transition={{ delay: 0.3 }}
               >
-                <QuickStats />
+                <QuickStats
+                  totalLessons={totalStats.totalLessons}
+                  completedLessons={totalStats.coursesCompleted}
+                  totalStudyTime={totalStats.totalStudyTime}
+                  currentStreak={totalStats.streak}
+                  averageScore={totalStats.averageScore}
+                  weeklyGoal={totalStats.weeklyGoal}
+                />
               </motion.div>
 
               {/* Progress Tracker */}

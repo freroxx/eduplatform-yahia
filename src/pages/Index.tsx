@@ -1,15 +1,15 @@
+
 import React, { useState, useEffect } from "react";
 import { Card, CardContent, CardDescription, CardHeader, CardTitle } from "@/components/ui/card";
 import { Button } from "@/components/ui/button";
-import { BookOpen, Calculator, Atom, Leaf, Languages, MessageSquare, Globe, Trophy, TrendingUp } from "lucide-react";
+import { Badge } from "@/components/ui/badge";
+import { BookOpen, Calculator, Zap, Leaf, PenTool, Globe, MapPin, Users, Target, Star, TrendingUp } from "lucide-react";
 import { Link } from "react-router-dom";
-import { motion, AnimatePresence } from "framer-motion";
-import EnhancedSubjectCard from "@/components/EnhancedSubjectCard";
-import WelcomeBanner from "@/components/WelcomeBanner";
-import StatsOverview from "@/components/StatsOverview";
-import QuickStats from "@/components/QuickStats";
+import { motion } from "framer-motion";
 import GlobalHeader from "@/components/GlobalHeader";
-import Footer from "@/components/Footer";
+import QuickStats from "@/components/QuickStats";
+import ProgressTracker from "@/components/ProgressTracker";
+import EnhancedSubjectCard from "@/components/EnhancedSubjectCard";
 import EnhancedProgressTracker from "@/components/EnhancedProgressTracker";
 import EnhancedLoadingBar from "@/components/EnhancedLoadingBar";
 import { useSettings } from "@/hooks/useSettings";
@@ -22,19 +22,27 @@ const Index = () => {
   const [loadingProgress, setLoadingProgress] = useState(0);
 
   useEffect(() => {
-    // Simulate loading with progress
     const interval = setInterval(() => {
       setLoadingProgress(prev => {
-        if (prev >= 100) {
+        const newProgress = prev + Math.random() * 15;
+        if (newProgress >= 100) {
           setIsLoading(false);
           clearInterval(interval);
           return 100;
         }
-        return prev + Math.random() * 15;
+        return newProgress;
       });
-    }, 100);
+    }, 200);
 
-    return () => clearInterval(interval);
+    const timeout = setTimeout(() => {
+      setIsLoading(false);
+      clearInterval(interval);
+    }, 3000);
+
+    return () => {
+      clearInterval(interval);
+      clearTimeout(timeout);
+    };
   }, []);
 
   const totalStats = getTotalStats();
@@ -44,44 +52,43 @@ const Index = () => {
       id: "math",
       name: "Mathématiques",
       nameArabic: "الرياضيات",
-      description: "Algèbre, géométrie, statistiques et analyse mathématique pour le tronc commun scientifique.",
+      description: "Algèbre, géométrie, analyse et statistiques pour renforcer votre logique mathématique.",
       icon: <Calculator className="text-blue-600" />,
       color: "text-blue-600",
-      bgGradient: "from-blue-500 to-blue-700",
-      lessons: 15,
-      exercises: 25,
-      duration: "6-8h",
+      bgGradient: "from-blue-500 via-blue-600 to-blue-700",
+      lessons: 12,
+      exercises: 45,
+      duration: "3h 30min",
       difficulty: "Moyen" as const,
       path: "math",
-      isNew: true,
       featured: true
     },
     {
       id: "physics",
-      name: "Physique Chimie",
-      nameArabic: "الفيزياء والكيمياء",
-      description: "Mécanique, électricité, chimie générale et quantitative adaptées au programme marocain.",
-      icon: <Atom className="text-emerald-600" />,
+      name: "Physique",
+      nameArabic: "الفيزياء",
+      description: "Mécanique, électricité, optique et thermodynamique pour comprendre les lois de la nature.",
+      icon: <Zap className="text-emerald-600" />,
       color: "text-emerald-600",
-      bgGradient: "from-emerald-500 to-emerald-700",
-      lessons: 23,
-      exercises: 30,
-      duration: "8-10h",
+      bgGradient: "from-emerald-500 via-emerald-600 to-emerald-700",
+      lessons: 10,
+      exercises: 38,
+      duration: "4h 15min",
       difficulty: "Difficile" as const,
       path: "physics",
-      featured: true
+      isNew: true
     },
     {
       id: "svt",
       name: "Sciences de la Vie et de la Terre",
       nameArabic: "علوم الحياة والأرض",
-      description: "Biologie, géologie et écologie selon le curriculum du tronc commun scientifique.",
+      description: "Biologie, géologie et environnement pour explorer le monde vivant qui nous entoure.",
       icon: <Leaf className="text-green-600" />,
       color: "text-green-600",
-      bgGradient: "from-green-500 to-green-700",
-      lessons: 12,
-      exercises: 20,
-      duration: "5-7h",
+      bgGradient: "from-green-500 via-green-600 to-green-700",
+      lessons: 8,
+      exercises: 32,
+      duration: "3h 45min",
       difficulty: "Moyen" as const,
       path: "svt"
     },
@@ -89,13 +96,13 @@ const Index = () => {
       id: "french",
       name: "Français",
       nameArabic: "اللغة الفرنسية",
-      description: "Littérature, grammaire et expression écrite adaptées au niveau lycée.",
-      icon: <BookOpen className="text-red-600" />,
+      description: "Littérature, expression écrite et analyse de textes pour maîtriser la langue de Molière.",
+      icon: <PenTool className="text-red-600" />,
       color: "text-red-600",
-      bgGradient: "from-red-500 to-red-700",
-      lessons: 18,
-      exercises: 22,
-      duration: "6-8h",
+      bgGradient: "from-red-500 via-red-600 to-red-700",
+      lessons: 6,
+      exercises: 28,
+      duration: "2h 50min",
       difficulty: "Moyen" as const,
       path: "french"
     },
@@ -103,156 +110,162 @@ const Index = () => {
       id: "english",
       name: "English",
       nameArabic: "اللغة الإنجليزية",
-      description: "Grammar, vocabulary, reading comprehension and communication skills.",
-      icon: <Languages className="text-purple-600" />,
-      color: "text-purple-600",
-      bgGradient: "from-purple-500 to-purple-700",
-      lessons: 16,
-      exercises: 24,
-      duration: "5-6h",
+      description: "Grammar, vocabulary, and communication skills for global opportunities.",
+      icon: <Globe className="text-blue-500" />,
+      color: "text-blue-500",
+      bgGradient: "from-blue-400 via-cyan-500 to-teal-600",
+      lessons: 8,
+      exercises: 35,
+      duration: "3h 20min",
       difficulty: "Facile" as const,
       path: "english"
     },
     {
       id: "arabic",
-      name: "اللغة العربية",
+      name: "العربية",
       nameArabic: "اللغة العربية",
-      description: "النصوص الأدبية، القواعد النحوية والتعبير والإنشاء حسب المنهاج المغربي.",
-      icon: <MessageSquare className="text-amber-600" />,
-      color: "text-amber-600",
-      bgGradient: "from-amber-500 to-amber-700",
-      lessons: 14,
-      exercises: 18,
-      duration: "6-7h",
+      description: "البلاغة والنحو والأدب العربي لتعميق فهم لغة الضاد.",
+      icon: <BookOpen className="text-orange-600" />,
+      color: "text-orange-600",
+      bgGradient: "from-orange-500 via-amber-600 to-yellow-600",
+      lessons: 7,
+      exercises: 30,
+      duration: "3h 10min",
       difficulty: "Moyen" as const,
       path: "arabic"
     },
     {
       id: "histoire-geo",
-      name: "التاريخ والجغرافيا",
+      name: "Histoire-Géographie",
       nameArabic: "التاريخ والجغرافيا",
-      description: "تاريخ المغرب والعالم، الجغرافيا البشرية والطبيعية وفق المقرر الدراسي.",
-      icon: <Globe className="text-orange-600" />,
-      color: "text-orange-600",
-      bgGradient: "from-orange-500 to-orange-700",
-      lessons: 26,
-      exercises: 20,
-      duration: "7-9h",
-      difficulty: "Difficile" as const,
+      description: "Histoire du monde et géographie physique et humaine pour comprendre notre planète.",
+      icon: <MapPin className="text-purple-600" />,
+      color: "text-purple-600",
+      bgGradient: "from-purple-500 via-indigo-600 to-blue-600",
+      lessons: 9,
+      exercises: 33,
+      duration: "4h 00min",
+      difficulty: "Moyen" as const,
       path: "histoire-geo"
     }
   ];
 
+  if (isLoading) {
+    return (
+      <div className="min-h-screen bg-gradient-to-br from-background via-secondary/30 to-accent/20 flex items-center justify-center">
+        <EnhancedLoadingBar progress={loadingProgress} />
+      </div>
+    );
+  }
+
   return (
-    <div className="min-h-screen bg-gradient-to-br from-background via-secondary/20 to-accent/10">
-      <EnhancedLoadingBar 
-        isLoading={isLoading} 
-        progress={loadingProgress}
-        message="Chargement de la plateforme éducative..."
-        color="blue"
-      />
-      
+    <motion.div 
+      initial={{ opacity: 0 }}
+      animate={{ opacity: 1 }}
+      transition={{ duration: 0.5 }}
+      className={`min-h-screen transition-all duration-500 ${
+        settings?.animatedBackground ? 'animated-bg' : 'bg-gradient-to-br from-background via-secondary/30 to-accent/20'
+      }`}
+    >
       <GlobalHeader />
       
-      <AnimatePresence>
-        {!isLoading && (
-          <motion.div
-            initial={{ opacity: 0 }}
-            animate={{ opacity: 1 }}
-            transition={{ duration: 0.5 }}
-          >
-            <div className="container mx-auto px-4 py-8 space-y-12">
-              {/* Welcome Section */}
-              <motion.div
-                initial={{ opacity: 0, y: 20 }}
-                animate={{ opacity: 1, y: 0 }}
-                transition={{ delay: 0.2 }}
-              >
-                <WelcomeBanner />
-              </motion.div>
-
-              {/* Quick Stats */}
-              <motion.div
-                initial={{ opacity: 0, y: 20 }}
-                animate={{ opacity: 1, y: 0 }}
-                transition={{ delay: 0.3 }}
-              >
-                <QuickStats
-                  totalLessons={totalStats.totalLessons}
-                  completedLessons={totalStats.coursesCompleted}
-                  totalStudyTime={totalStats.totalStudyTime}
-                  currentStreak={totalStats.streak}
-                  averageScore={totalStats.averageScore}
-                  weeklyGoal={totalStats.weeklyGoal}
-                />
-              </motion.div>
-
-              {/* Progress Tracker */}
-              <motion.div
-                initial={{ opacity: 0, y: 20 }}
-                animate={{ opacity: 1, y: 0 }}
-                transition={{ delay: 0.4 }}
-              >
-                <div className="mb-6">
-                  <h2 className="text-2xl font-bold text-foreground mb-2 flex items-center gap-2">
-                    <Trophy className="h-6 w-6 text-yellow-600" />
-                    Votre Progression
-                  </h2>
-                  <p className="text-muted-foreground">
-                    Suivez vos progrès dans toutes les matières
-                  </p>
-                </div>
-                <EnhancedProgressTracker />
-              </motion.div>
-
-              {/* Subjects Grid */}
-              <motion.div
-                initial={{ opacity: 0, y: 20 }}
-                animate={{ opacity: 1, y: 0 }}
-                transition={{ delay: 0.5 }}
-              >
-                <div className="mb-6">
-                  <h2 className="text-2xl font-bold text-foreground mb-2 flex items-center gap-2">
-                    <BookOpen className="h-6 w-6 text-blue-600" />
-                    Matières Disponibles
-                  </h2>
-                  <p className="text-muted-foreground">
-                    Explorez toutes les matières du programme du tronc commun scientifique
-                  </p>
-                </div>
-                
-                <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-6">
-                  {subjects.map((subject, index) => (
-                    <motion.div
-                      key={subject.id}
-                      initial={{ opacity: 0, scale: 0.9 }}
-                      animate={{ opacity: 1, scale: 1 }}
-                      transition={{ delay: 0.6 + index * 0.1 }}
-                    >
-                      <EnhancedSubjectCard 
-                        subject={subject} 
-                        index={index}
-                      />
-                    </motion.div>
-                  ))}
-                </div>
-              </motion.div>
-
-              {/* Stats Overview */}
-              <motion.div
-                initial={{ opacity: 0, y: 20 }}
-                animate={{ opacity: 1, y: 0 }}
-                transition={{ delay: 1.0 }}
-              >
-                <StatsOverview />
-              </motion.div>
+      <div className="container mx-auto px-4 py-8 space-y-8">
+        {/* Hero Section */}
+        <motion.div
+          initial={{ y: 50, opacity: 0 }}
+          animate={{ y: 0, opacity: 1 }}
+          transition={{ delay: 0.1 }}
+          className="text-center mb-12"
+        >
+          <div className="inline-flex items-center gap-2 bg-primary/10 px-4 py-2 rounded-full mb-4 animate-pulse-subtle">
+            <Star className="h-4 w-4 text-primary animate-spin-slow" />
+            <span className="text-sm font-medium text-primary">Plateforme éducative avancée</span>
+          </div>
+          <h1 className="text-4xl md:text-6xl font-bold mb-6 bg-gradient-to-r from-primary via-purple-600 to-blue-600 bg-clip-text text-transparent animate-gradient">
+            EduLearn Pro
+          </h1>
+          <p className="text-xl text-muted-foreground max-w-2xl mx-auto mb-8">
+            Votre parcours d'apprentissage personnalisé pour exceller dans toutes les matières du Tronc Commun Sciences
+          </p>
+          <div className="flex flex-wrap justify-center gap-4 text-sm">
+            <div className="flex items-center gap-2 bg-card/80 backdrop-blur-sm px-4 py-2 rounded-lg shadow-sm hover:shadow-md transition-all duration-200">
+              <Target className="h-4 w-4 text-green-600" />
+              <span>+1000 exercices</span>
             </div>
-            
-            <Footer />
-          </motion.div>
-        )}
-      </AnimatePresence>
-    </div>
+            <div className="flex items-center gap-2 bg-card/80 backdrop-blur-sm px-4 py-2 rounded-lg shadow-sm hover:shadow-md transition-all duration-200">
+              <Users className="h-4 w-4 text-blue-600" />
+              <span>+5000 étudiants</span>
+            </div>
+            <div className="flex items-center gap-2 bg-card/80 backdrop-blur-sm px-4 py-2 rounded-lg shadow-sm hover:shadow-md transition-all duration-200">
+              <TrendingUp className="h-4 w-4 text-purple-600" />
+              <span>Progression garantie</span>
+            </div>
+          </div>
+        </motion.div>
+
+        <div className="grid lg:grid-cols-4 gap-6">
+          {/* Main Content */}
+          <div className="lg:col-span-3 space-y-8">
+            {/* Quick Stats */}
+            <motion.div
+              initial={{ opacity: 0, y: 20 }}
+              animate={{ opacity: 1, y: 0 }}
+              transition={{ delay: 0.3 }}
+            >
+              <QuickStats
+                totalLessons={totalStats.totalLessons}
+                completedLessons={totalStats.coursesCompleted}
+                totalStudyTime={totalStats.totalStudyTime}
+                currentStreak={totalStats.streak}
+                averageScore={totalStats.averageScore}
+                weeklyGoal={totalStats.weeklyGoal}
+              />
+            </motion.div>
+
+            {/* Subjects Grid */}
+            <motion.div
+              initial={{ opacity: 0, y: 20 }}
+              animate={{ opacity: 1, y: 0 }}
+              transition={{ delay: 0.4 }}
+            >
+              <div className="flex items-center justify-between mb-6">
+                <h2 className="text-2xl font-bold text-foreground">Matières disponibles</h2>
+                <Badge variant="outline" className="bg-card/80 backdrop-blur-sm">
+                  {subjects.length} matières
+                </Badge>
+              </div>
+              
+              <div className="grid md:grid-cols-2 xl:grid-cols-2 gap-6">
+                {subjects.map((subject, index) => (
+                  <EnhancedSubjectCard key={subject.id} subject={subject} index={index} />
+                ))}
+              </div>
+            </motion.div>
+          </div>
+
+          {/* Sidebar */}
+          <div className="space-y-6">
+            {/* Progress Tracker */}
+            <motion.div
+              initial={{ opacity: 0, x: 20 }}
+              animate={{ opacity: 1, x: 0 }}
+              transition={{ delay: 0.5 }}
+            >
+              <EnhancedProgressTracker />
+            </motion.div>
+
+            {/* Legacy Progress Tracker */}
+            <motion.div
+              initial={{ opacity: 0, x: 20 }}
+              animate={{ opacity: 1, x: 0 }}
+              transition={{ delay: 0.6 }}
+            >
+              <ProgressTracker />
+            </motion.div>
+          </div>
+        </div>
+      </div>
+    </motion.div>
   );
 };
 

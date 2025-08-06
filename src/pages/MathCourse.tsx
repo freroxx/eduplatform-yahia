@@ -1,256 +1,206 @@
-import { useState, useEffect } from "react";
+
+import { useState } from "react";
 import { motion } from "framer-motion";
-import EnhancedCourseSlide from "@/components/EnhancedCourseSlide";
-import LoadingSpinner from "@/components/LoadingSpinner";
+import { Card, CardContent, CardHeader, CardTitle } from "@/components/ui/card";
+import { Button } from "@/components/ui/button";
+import { Badge } from "@/components/ui/badge";
+import { ArrowLeft, BookOpen, Calculator, Clock, Target } from "lucide-react";
+import { Link } from "react-router-dom";
+import GlobalHeader from "@/components/GlobalHeader";
+import EnhancedLoadingBar from "@/components/EnhancedLoadingBar";
 
 const MathCourse = () => {
-  const [isLoading, setIsLoading] = useState(true);
-  const [progress, setProgress] = useState(0);
+  const [isLoading, setIsLoading] = useState(false);
 
-  useEffect(() => {
-    const timer = setInterval(() => {
-      setProgress((prev) => {
-        if (prev >= 100) {
-          setIsLoading(false);
-          clearInterval(timer);
-          return 100;
-        }
-        return prev + 15;
-      });
-    }, 400);
-
-    return () => clearInterval(timer);
-  }, []);
-
-  const slides = [
+  const mathTopics = [
     {
-      title: "Module 1: Fonctions linéaires et affines",
-      content: `🎯 Les fonctions linéaires et affines constituent les bases de l'analyse mathématique moderne.
+      id: 1,
+      title: "Équations et inéquations",
+      description: "Résolution d'équations du premier et second degré, systèmes d'équations",
+      duration: "45 min",
+      difficulty: "Moyen",
+      content: `
+# Équations et inéquations
 
-📚 Objectifs d'apprentissage:
-• Maîtriser les concepts fondamentaux des fonctions linéaires
-• Comprendre la représentation graphique des droites
-• Analyser les variations et propriétés
-• Résoudre des problèmes concrets d'application
-• Développer une intuition géométrique solide
+## Équations du premier degré
+Une équation du premier degré est de la forme : ax + b = 0
 
-💡 Applications pratiques:
-Ces fonctions sont omniprésentes dans la vie quotidienne : tarifs, conversions d'unités, calculs de proportionnalité, modélisation de phénomènes linéaires.
+### Méthode de résolution :
+1. Isoler le terme en x
+2. Diviser par le coefficient de x
 
-🎓 Prérequis:
-Connaissances de base en calcul algébrique et géométrie du plan.`,
-      type: "intro" as const
+**Exemple :** 
+3x + 5 = 14
+3x = 14 - 5
+3x = 9
+x = 3
+
+## Équations du second degré
+Une équation du second degré est de la forme : ax² + bx + c = 0
+
+### Discriminant :
+Δ = b² - 4ac
+
+- Si Δ > 0 : deux solutions réelles
+- Si Δ = 0 : une solution double
+- Si Δ < 0 : pas de solution réelle
+
+### Solutions :
+x₁ = (-b + √Δ) / (2a)
+x₂ = (-b - √Δ) / (2a)
+      `
     },
     {
-      title: "Fonctions linéaires - Fondements",
-      content: `📐 Définition rigoureuse
-      
-Une fonction linéaire f est définie sur ℝ par:
-f(x) = ax (où a ∈ ℝ)
+      id: 2,
+      title: "Fonctions numériques",
+      description: "Étude des fonctions, domaine de définition, variations",
+      duration: "50 min",
+      difficulty: "Difficile",
+      content: `
+# Fonctions numériques
 
-🔍 Propriétés caractéristiques:
-• Graphique: droite passant par l'origine O(0,0)
-• Coefficient directeur: a détermine l'inclinaison
-• Variation: strictement monotone si a ≠ 0
-• Proportionnalité: f(kx) = k·f(x) pour tout k ∈ ℝ
+## Définition
+Une fonction f est une relation qui associe à chaque élément x d'un ensemble E au plus un élément y d'un ensemble F.
 
-⚖️ Analyse des variations:
-• Si a > 0: fonction strictement croissante
-• Si a < 0: fonction strictement décroissante  
-• Si a = 0: fonction constante nulle
+## Domaine de définition
+Le domaine de définition Df d'une fonction f est l'ensemble des valeurs pour lesquelles f(x) est définie.
 
-🎯 Cas particuliers remarquables:
-• f(x) = x (fonction identité, bisectrice du 1er quadrant)
-• f(x) = -x (symétrie par rapport à l'origine)`,
-      type: "definition" as const
+## Variations d'une fonction
+- Fonction croissante : si x₁ < x₂ alors f(x₁) ≤ f(x₂)
+- Fonction décroissante : si x₁ < x₂ alors f(x₁) ≥ f(x₂)
+
+## Fonctions usuelles
+1. **Fonction affine** : f(x) = ax + b
+2. **Fonction carré** : f(x) = x²
+3. **Fonction inverse** : f(x) = 1/x
+4. **Fonction racine carrée** : f(x) = √x
+      `
     },
     {
-      title: "Fonctions affines - Extension naturelle",
-      content: `📊 Définition générale
-      
-Une fonction affine f est définie sur ℝ par:
-f(x) = ax + b (avec a, b ∈ ℝ)
+      id: 3,
+      title: "Statistiques descriptives",
+      description: "Calculs de moyennes, médiane, écart-type, représentations graphiques",
+      duration: "40 min",
+      difficulty: "Facile",
+      content: `
+# Statistiques descriptives
 
-🎯 Paramètres essentiels:
-• a: coefficient directeur (pente de la droite)
-• b: ordonnée à l'origine (point d'intersection avec l'axe y)
+## Vocabulaire
+- **Population** : ensemble des individus étudiés
+- **Caractère** : propriété étudiée sur la population
+- **Modalité** : valeur prise par le caractère
 
-🔧 Classification:
-• Si b = 0: fonction linéaire (cas particulier)
-• Si a = 0: fonction constante f(x) = b
-• Si a ≠ 0: fonction affine proprement dite
+## Paramètres de position
+### Moyenne arithmétique
+x̄ = (Σ xi × ni) / N
 
-📈 Représentation graphique:
-• Droite non verticale dans le plan cartésien
-• Passe par le point (0, b)
-• Pente constante égale à a
+### Médiane
+Valeur qui partage la série en deux parties égales
 
-💫 Propriétés remarquables:
-• Translation de la fonction linéaire f(x) = ax
-• Conservation des accroissements proportionnels
-• Bijectivité si a ≠ 0`,
-      type: "definition" as const
-    },
-    {
-      title: "Calcul du coefficient directeur",
-      content: `📏 Formule du coefficient directeur
+### Mode
+Modalité qui a la plus grande fréquence
 
-Pour deux points A(x₁, y₁) et B(x₂, y₂) avec x₁ ≠ x₂:
+## Paramètres de dispersion
+### Étendue
+E = Max - Min
 
-a = (y₂ - y₁)/(x₂ - x₁)
+### Écart-type
+σ = √(Variance)
 
-🧮 Exemple pratique:
-Soit A(1, 2) et B(4, 8)
-
-a = (8 - 2)/(4 - 1) = 6/3 = 2
-
-📈 Interprétation:
-• Si a > 0: la droite "monte" (fonction croissante)
-• Si a < 0: la droite "descend" (fonction décroissante)
-• Plus |a| est grand, plus la droite est "pentue"
-• a représente la variation de y quand x augmente de 1`,
-      type: "example" as const
-    },
-    {
-      title: "Détermination d'une équation de droite",
-      content: `🎯 Méthodes pour trouver l'équation f(x) = ax + b
-
-**Méthode 1: Avec deux points A(x₁, y₁) et B(x₂, y₂)**
-1. Calculer a = (y₂ - y₁)/(x₂ - x₁)
-2. Utiliser un des points pour trouver b: y₁ = ax₁ + b donc b = y₁ - ax₁
-
-**Méthode 2: Avec un point et le coefficient directeur**
-1. On connaît a
-2. Utiliser le point pour trouver b
-
-**Méthode 3: Avec l'ordonnée à l'origine et un autre point**
-1. On connaît b (ordonnée à l'origine)
-2. Utiliser l'autre point pour trouver a
-
-🔍 Vérification: Substituer les coordonnées des points dans l'équation trouvée`,
-      type: "definition" as const
-    },
-    {
-      title: "Exemple détaillé",
-      content: `📝 Exercice résolu
-
-**Énoncé:** Déterminer l'équation de la droite passant par A(2, 5) et B(6, 13)
-
-**Étape 1:** Calcul du coefficient directeur
-a = (13 - 5)/(6 - 2) = 8/4 = 2
-
-**Étape 2:** Calcul de l'ordonnée à l'origine
-En utilisant le point A(2, 5):
-5 = 2×2 + b
-5 = 4 + b
-b = 1
-
-**Étape 3:** Équation de la droite
-f(x) = 2x + 1
-
-**Vérification:** 
-• Pour A(2, 5): f(2) = 2×2 + 1 = 5 ✓
-• Pour B(6, 13): f(6) = 2×6 + 1 = 13 ✓`,
-      type: "example" as const
-    },
-    {
-      title: "Applications et problèmes",
-      content: `🌍 Situations de la vie courante
-
-**Exemple 1: Tarification**
-Un taxi applique un tarif de 2€ prise en charge + 1,50€/km
-Coût = 1,50×distance + 2
-
-**Exemple 2: Conversion de température**
-°F = 9/5 × °C + 32
-Fonction affine avec a = 9/5 et b = 32
-
-**Exemple 3: Évolution d'une quantité**
-Une citerne contient 500L d'eau. On la vide à raison de 25L/min
-Volume(t) = 500 - 25t (fonction affine décroissante)
-
-🎯 Méthode de résolution:
-1. Identifier les variables
-2. Repérer la relation affine
-3. Déterminer les coefficients
-4. Interpréter les résultats`,
-      type: "example" as const
-    },
-    {
-      title: "Positions relatives de droites",
-      content: `📐 Étude de deux droites
-
-Soient d₁: y = a₁x + b₁ et d₂: y = a₂x + b₂
-
-**Droites parallèles:**
-• a₁ = a₂ et b₁ ≠ b₂
-• Elles ont la même pente mais ne se croisent jamais
-
-**Droites confondues:**
-• a₁ = a₂ et b₁ = b₂
-• C'est la même droite
-
-**Droites sécantes:**
-• a₁ ≠ a₂
-• Elles se coupent en un point unique
-
-🔍 Point d'intersection:
-Résoudre a₁x + b₁ = a₂x + b₂
-x = (b₂ - b₁)/(a₁ - a₂)`,
-      type: "definition" as const
-    },
-    {
-      title: "Récapitulatif et méthodes",
-      content: `✅ Points clés à retenir:
-
-🎯 Définitions:
-• Fonction linéaire: f(x) = ax (droite par l'origine)
-• Fonction affine: f(x) = ax + b (droite quelconque)
-
-🔧 Méthodes essentielles:
-• Coefficient directeur: a = (y₂ - y₁)/(x₂ - x₁)
-• Équation avec 2 points: calculer a puis b
-• Interprétation graphique des paramètres a et b
-
-📈 Applications pratiques:
-• Problèmes de proportionnalité
-• Tarifications et coûts
-• Évolutions linéaires
-• Conversions d'unités
-
-🎓 Prochaine étape:
-Nous aborderons les systèmes d'équations linéaires et leurs méthodes de résolution.`,
-      type: "summary" as const
+### Variance
+V = Σ(xi - x̄)² × ni / N
+      `
     }
   ];
 
-  // Enhanced PDF URL with better organization
-  const mathPDFUrl = "/lovable-uploads/25ac9238-31dc-4b40-8ee2-51728f1c7a9a.png";
-
   if (isLoading) {
     return (
-      <div className="min-h-screen animated-bg flex items-center justify-center">
-        <LoadingSpinner 
-          text="Chargement du cours de mathématiques avancé..." 
-          progress={progress} 
-          type="progress" 
-        />
+      <div className="min-h-screen bg-gradient-to-br from-background via-secondary/30 to-accent/20 flex items-center justify-center">
+        <EnhancedLoadingBar progress={75} />
       </div>
     );
   }
 
   return (
-    <motion.div
-      initial={{ opacity: 0 }}
-      animate={{ opacity: 1 }}
-      transition={{ duration: 0.5 }}
-    >
-      <EnhancedCourseSlide 
-        lessonTitle="Module 1: Fonctions linéaires et affines - EduPlatform 5.0" 
-        slides={slides}
-        pdfUrl={mathPDFUrl}
-      />
-    </motion.div>
+    <div className="min-h-screen bg-gradient-to-br from-blue-50 via-indigo-50 to-purple-50 dark:from-gray-900 dark:via-gray-800 dark:to-gray-900">
+      <GlobalHeader />
+      
+      <div className="container mx-auto px-4 py-8">
+        <motion.div
+          initial={{ opacity: 0, y: 20 }}
+          animate={{ opacity: 1, y: 0 }}
+          className="max-w-6xl mx-auto"
+        >
+          {/* Header */}
+          <div className="flex items-center justify-between mb-8">
+            <Link to="/lessons/math">
+              <Button variant="outline" size="sm">
+                <ArrowLeft className="h-4 w-4 mr-2" />
+                Retour aux leçons
+              </Button>
+            </Link>
+            <div className="text-center">
+              <h1 className="text-3xl font-bold text-foreground flex items-center gap-2 justify-center">
+                <Calculator className="h-8 w-8 text-blue-600" />
+                Cours de Mathématiques
+              </h1>
+              <p className="text-muted-foreground">Tronc Commun Sciences</p>
+            </div>
+            <Badge variant="outline" className="flex items-center gap-1">
+              <BookOpen className="h-4 w-4" />
+              {mathTopics.length} chapitres
+            </Badge>
+          </div>
+
+          {/* Topics */}
+          <div className="space-y-8">
+            {mathTopics.map((topic, index) => (
+              <motion.div
+                key={topic.id}
+                initial={{ opacity: 0, y: 20 }}
+                animate={{ opacity: 1, y: 0 }}
+                transition={{ delay: index * 0.1 }}
+              >
+                <Card className="bg-card/80 backdrop-blur-sm border-0 shadow-lg hover:shadow-xl transition-all duration-300">
+                  <CardHeader>
+                    <div className="flex items-start justify-between">
+                      <div className="flex-1">
+                        <div className="flex items-center space-x-3 mb-3">
+                          <Badge className={`
+                            ${topic.difficulty === 'Facile' ? 'bg-green-100 text-green-800 border-green-200' : 
+                              topic.difficulty === 'Moyen' ? 'bg-yellow-100 text-yellow-800 border-yellow-200' : 
+                              'bg-red-100 text-red-800 border-red-200'}
+                            font-medium border
+                          `}>
+                            <Target className="h-3 w-3 mr-1" />
+                            {topic.difficulty}
+                          </Badge>
+                          <Badge variant="outline">
+                            <Clock className="h-3 w-3 mr-1" />
+                            {topic.duration}
+                          </Badge>
+                        </div>
+                        <CardTitle className="text-2xl font-bold text-card-foreground mb-2">
+                          {topic.title}
+                        </CardTitle>
+                        <p className="text-muted-foreground">{topic.description}</p>
+                      </div>
+                    </div>
+                  </CardHeader>
+                  <CardContent>
+                    <div className="prose prose-sm max-w-none dark:prose-invert">
+                      <pre className="whitespace-pre-wrap font-sans text-sm leading-relaxed">
+                        {topic.content}
+                      </pre>
+                    </div>
+                  </CardContent>
+                </Card>
+              </motion.div>
+            ))}
+          </div>
+        </motion.div>
+      </div>
+    </div>
   );
 };
 

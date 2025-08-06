@@ -14,6 +14,9 @@ import MathExercises from "./pages/MathExercises";
 import Settings from "./pages/Settings";
 import MotivationalQuoteBar from "./components/MotivationalQuoteBar";
 
+// Math imports
+import MathLessons from "./pages/math/MathLessons";
+
 // Physics imports
 import PhysicsLessons from "./pages/physics/PhysicsLessons";
 import PhysicsCourse from "./pages/physics/PhysicsCourse";
@@ -71,6 +74,11 @@ function App() {
             <Route path="/math/transformations" element={<TransformationsCourse />} />
             <Route path="/settings" element={<Settings />} />
             
+            {/* Math Routes */}
+            <Route path="/lessons/math" element={<MathLessons />} />
+            <Route path="/math/lesson/:id/course" element={<MathCourse />} />
+            <Route path="/math/lesson/:id/exercises" element={<MathExercises />} />
+            
             {/* Physics Routes */}
             <Route path="/lessons/physics" element={<PhysicsLessons />} />
             <Route path="/physics/lesson/:id/course" element={<PhysicsCourse />} />
@@ -79,9 +87,9 @@ function App() {
             
             {/* SVT Routes */}
             <Route path="/lessons/svt" element={<SVTLessons />} />
-            <Route path="/svt/lesson-:id" element={<SVTCourse />} />
-            <Route path="/svt/lesson-:id/exercises" element={<SVTExercises />} />
-            <Route path="/svt/lesson-:id/videos" element={<SVTVideos />} />
+            <Route path="/svt/lesson/:id/course" element={<SVTCourse />} />
+            <Route path="/svt/lesson/:id/exercises" element={<SVTExercises />} />
+            <Route path="/svt/lesson/:id/videos" element={<SVTVideos />} />
             
             {/* French Routes */}
             <Route path="/lessons/french" element={<FrenchLessons />} />

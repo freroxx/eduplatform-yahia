@@ -1,5 +1,5 @@
 
-import { useState } from 'react';
+import { useState, useEffect } from 'react';
 import { motion, AnimatePresence } from 'framer-motion';
 import { Dialog, DialogContent, DialogHeader, DialogTitle } from '@/components/ui/dialog';
 import { Button } from '@/components/ui/button';
@@ -57,7 +57,6 @@ const UserOnboarding = ({ isOpen, onComplete }: UserOnboardingProps) => {
     if (currentStep < steps.length - 1) {
       setCurrentStep(currentStep + 1);
     } else {
-      localStorage.setItem('hasSeenOnboarding', 'true');
       onComplete();
     }
   };
@@ -84,9 +83,19 @@ const UserOnboarding = ({ isOpen, onComplete }: UserOnboardingProps) => {
     })
   };
 
+  // Debug logging
+  useEffect(() => {
+    console.log('UserOnboarding component mounted, isOpen:', isOpen);
+  }, [isOpen]);
+
+  if (!isOpen) {
+    console.log('UserOnboarding not showing because isOpen is false');
+    return null;
+  }
+
   return (
-    <Dialog open={isOpen} onOpenChange={() => {}}>
-      <DialogContent className="max-w-2xl border-0 bg-gradient-to-br from-background to-secondary/30" hideCloseButton>
+    <Dialog open={isOpen} onOpenChange={() => {}} modal>
+      <DialogContent className="max-w-2xl border-0 glass-effect backdrop-blur-strong" hideCloseButton>
         <DialogHeader>
           <div className="text-center mb-8">
             <motion.div
@@ -96,7 +105,7 @@ const UserOnboarding = ({ isOpen, onComplete }: UserOnboardingProps) => {
               transition={{ type: "spring", stiffness: 200, damping: 15 }}
               className="flex justify-center mb-6"
             >
-              <div className={`bg-gradient-to-r ${currentStepData.gradient} text-white p-4 rounded-full shadow-lg`}>
+              <div className={`bg-gradient-to-r ${currentStepData.gradient} text-white p-4 rounded-full shadow-xl animate-glow`}>
                 <currentStepData.icon className="h-8 w-8" />
               </div>
             </motion.div>
@@ -142,7 +151,7 @@ const UserOnboarding = ({ isOpen, onComplete }: UserOnboardingProps) => {
               opacity: { duration: 0.2 }
             }}
           >
-            <Card className="mb-8 border-0 bg-gradient-to-br from-card/50 to-card/80 backdrop-blur-sm">
+            <Card className="mb-8 border-0 glass-effect backdrop-blur-sm">
               <CardContent className="p-8">
                 <motion.p 
                   initial={{ opacity: 0 }}
@@ -160,9 +169,9 @@ const UserOnboarding = ({ isOpen, onComplete }: UserOnboardingProps) => {
                       initial={{ opacity: 0, y: 20 }}
                       animate={{ opacity: 1, y: 0 }}
                       transition={{ delay: 0.7 + index * 0.1 }}
-                      className="flex items-center gap-3 p-3 bg-background/50 rounded-lg border border-border/50"
+                      className="flex items-center gap-3 p-3 glass-effect rounded-lg border border-border/50 hover-glow"
                     >
-                      <div className={`bg-gradient-to-r ${currentStepData.gradient} text-white p-2 rounded-lg`}>
+                      <div className={`bg-gradient-to-r ${currentStepData.gradient} text-white p-2 rounded-lg animate-float`}>
                         <feature.icon className="h-4 w-4" />
                       </div>
                       <span className="text-sm font-medium">{feature.text}</span>
@@ -183,7 +192,7 @@ const UserOnboarding = ({ isOpen, onComplete }: UserOnboardingProps) => {
           <Button 
             onClick={handleNext}
             size="lg"
-            className={`bg-gradient-to-r ${currentStepData.gradient} text-white border-0 hover:shadow-lg transition-all duration-300 px-8`}
+            className={`bg-gradient-to-r ${currentStepData.gradient} text-white border-0 hover:shadow-xl transition-all duration-300 px-8 hover:scale-105`}
           >
             {currentStep === steps.length - 1 ? 'Commencer l\'aventure' : 'Continuer'}
             <motion.div

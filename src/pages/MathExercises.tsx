@@ -16,7 +16,7 @@ const MathExercises = () => {
   const [completedExercises, setCompletedExercises] = useState<number[]>([]);
   const [openSolutions, setOpenSolutions] = useState<number[]>([]);
 
-  const currentExercises = mathExercisesData[id || "101"];
+  const currentExercises = mathExercisesData[id || "1"];
 
   const toggleExercise = (exerciseId: number) => {
     const isCompleted = completedExercises.includes(exerciseId);

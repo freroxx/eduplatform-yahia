@@ -34,7 +34,7 @@ const MathCourse = () => {
     };
   }, []);
 
-  const currentCourse = mathLessonsData[id || "101"];
+  const currentCourse = mathLessonsData[id || "1"];
 
   if (isLoading) {
     return (
@@ -53,7 +53,6 @@ const MathCourse = () => {
     <CourseSlide 
       lessonTitle={currentCourse?.title || "Cours de Mathématiques"}
       slides={currentCourse?.slides || []}
-      images={currentCourse?.images}
     />
   );
 };

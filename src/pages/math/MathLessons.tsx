@@ -56,7 +56,7 @@ const MathLessons = () => {
             <div className="flex-1">
               <div className="flex items-center space-x-3 mb-3">
                 <span className="bg-blue-600 rounded-full w-10 h-10 flex items-center justify-center text-sm font-bold text-white">
-                  {lesson.id > 109 ? lesson.id - 109 : lesson.id - 100}
+                  {lesson.id > 9 ? lesson.id - 9 : lesson.id}
                 </span>
                 <Badge className={`${getDifficultyColor(lesson.difficulty)} font-medium border`}>
                   <Target className="h-3 w-3 mr-1" />

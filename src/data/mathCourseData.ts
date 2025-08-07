@@ -1,1103 +1,1194 @@
-
-export const mathLessonsData = {
-  // SEMESTRE 1
-  "101": {
+export const mathLessonsData: Record<string, {
+  title: string;
+  semester: number;
+  slides: { id: number; title: string; content: string; }[];
+  videos?: { title: string; url: string; }[];
+  images?: string[];
+}> = {
+  "1": {
     title: "Les ensembles de nombres N, Z, Q, D et R",
     semester: 1,
     slides: [
       {
         id: 1,
         title: "Introduction aux ensembles de nombres",
-        content: `# Les ensembles de nombres
+        content: `# Les ensembles de nombres N, Z, Q, D et R
+
+## Introduction
+
+Les nombres sont fondamentaux en mathématiques. Ils nous permettent de compter, mesurer et résoudre des problèmes. En mathématiques, nous classons les nombres en différents ensembles selon leurs propriétés.
 
 ## Les différents ensembles
-### ℕ (Nombres naturels)
-ℕ = {0, 1, 2, 3, 4, 5, ...}
-- Utilisés pour **compter**
-- **Addition** et **multiplication** toujours possibles
-- **Soustraction** pas toujours possible dans ℕ
 
-### ℤ (Nombres entiers)
-ℤ = {..., -3, -2, -1, 0, 1, 2, 3, ...}
-- Extension de ℕ avec les **nombres négatifs**
-- **Soustraction** toujours possible
-- **Division** pas toujours possible dans ℤ
+### L'ensemble N (Nombres naturels)
+- N = {0, 1, 2, 3, 4, 5, ...}
+- Ce sont les nombres que nous utilisons pour compter
+- Ils commencent à 0 et continuent indéfiniment
 
-### ℚ (Nombres rationnels)
-ℚ = {a/b | a ∈ ℤ, b ∈ ℤ, b ≠ 0}
-- **Fractions** de nombres entiers
-- **Division** possible (sauf par 0)
-- Écriture **décimale limitée** ou **périodique**
+### L'ensemble Z (Nombres entiers relatifs)  
+- Z = {..., -3, -2, -1, 0, 1, 2, 3, ...}
+- Inclut tous les nombres naturels et leurs opposés
+- Z contient N : N ⊂ Z
 
-### 𝔻 (Nombres décimaux)
-𝔻 = {a/10ⁿ | a ∈ ℤ, n ∈ ℕ}
-- **Sous-ensemble** de ℚ
-- Écriture décimale **limitée**
+### L'ensemble Q (Nombres rationnels)
+- Q = {a/b | a ∈ Z, b ∈ Z*}
+- Tous les nombres qui peuvent s'écrire sous forme de fraction
+- Exemples : 1/2, -3/4, 5 = 5/1
+- Q contient Z : Z ⊂ Q
 
-### ℝ (Nombres réels)
-- **Tous** les nombres de la droite numérique
-- Inclut les nombres **irrationnels** (π, √2, e, ...)
-- **Continuum** des nombres`
-      },
-      {
-        id: 2,
-        title: "Relations d'inclusion et propriétés",
-        content: `# Relations entre les ensembles
+### L'ensemble D (Nombres décimaux)
+- Nombres qui ont un nombre fini de chiffres après la virgule
+- Exemples : 0,5 ; -2,34 ; 7,0
+- D ⊂ Q
 
-## Inclusions
-**ℕ ⊂ ℤ ⊂ 𝔻 ⊂ ℚ ⊂ ℝ**
+### L'ensemble R (Nombres réels)
+- Contient tous les nombres rationnels et irrationnels
+- Exemples de nombres irrationnels : π, √2, e
+- R contient tous les ensembles précédents
 
-### Exemples
-- 5 ∈ ℕ donc 5 ∈ ℤ, ℚ, 𝔻, ℝ
-- -3 ∈ ℤ donc -3 ∈ ℚ, ℝ mais -3 ∉ ℕ
-- 1/3 ∈ ℚ donc 1/3 ∈ ℝ mais 1/3 ∉ 𝔻
-- √2 ∈ ℝ mais √2 ∉ ℚ
+## Relations d'inclusion
 
-## Propriétés opératoires
-### Dans ℕ
-- **Fermé** pour + et ×
-- **Non fermé** pour - et ÷
+N ⊂ Z ⊂ D ⊂ Q ⊂ R
 
-### Dans ℤ  
-- **Fermé** pour +, -, ×
-- **Non fermé** pour ÷
-
-### Dans ℚ et ℝ
-- **Fermés** pour +, -, ×, ÷ (÷ ≠ 0)
-
-## Applications pratiques
-- **ℕ** : comptage, dénombrement
-- **ℤ** : températures, altitudes
-- **ℚ** : fractions, proportions
-- **ℝ** : mesures physiques, géométrie`
+Cette chaîne d'inclusion montre que chaque ensemble est contenu dans le suivant.`
       }
     ],
     videos: [
-      { title: "Cours en arabe", url: "https://www.youtube.com/watch?v=NOV6FpGLBZ8" },
-      { title: "Cours en français", url: "https://www.youtube.com/watch?v=WWJ8hoPSBAo" }
+      { title: "Les ensembles de nombres (Arabe)", url: "https://www.youtube.com/watch?v=NOV6FpGLBZ8" },
+      { title: "Les ensembles de nombres (Français)", url: "https://www.youtube.com/watch?v=WWJ8hoPSBAo" }
     ]
   },
-  "102": {
-    title: "Arithmétique dans ℕ",
+
+  "2": {
+    title: "Arithmétique dans IN",
     semester: 1,
     slides: [
       {
         id: 1,
-        title: "Divisibilité et division euclidienne",
-        content: `# Arithmétique dans ℕ
+        title: "Arithmétique dans IN",
+        content: `# Arithmétique dans IN
 
-## Division euclidienne
-Pour tout couple (a,b) avec a ∈ ℕ et b ∈ ℕ*, il existe un unique couple (q,r) tel que :
-**a = bq + r** avec **0 ≤ r < b**
+## Introduction
 
-- **a** : dividende
-- **b** : diviseur  
-- **q** : quotient
-- **r** : reste
+L'arithmétique dans N étudie les propriétés des nombres naturels, particulièrement la divisibilité, les nombres premiers et le calcul du PGCD et PPCM.
 
 ## Divisibilité
-**a divise b** (noté a|b) si **∃k ∈ ℕ, b = ka**
 
-### Propriétés
-- Si a|b et b|c alors a|c (transitivité)
-- Si a|b et a|c alors a|(b+c) et a|(b-c)
-- Si a|b alors a|bc pour tout c ∈ ℕ
+### Définition
+Un nombre a divise un nombre b (noté a|b) si il existe un nombre naturel k tel que b = a × k.
 
-## Multiples et diviseurs
-### Multiples de a
-M(a) = {0, a, 2a, 3a, ...}
+### Propriétés de la divisibilité
+- Si a|b et b|c, alors a|c (transitivité)
+- Si a|b et a|c, alors a|(b+c) et a|(b-c)
+- Si a|b, alors a|kb pour tout k ∈ N
 
-### Diviseurs de a
-D(a) = {d ∈ ℕ* | d|a}
+## Nombres premiers
 
-**Exemple** : D(12) = {1, 2, 3, 4, 6, 12}`
-      },
-      {
-        id: 2,
-        title: "PGCD et PPCM",
-        content: `# PGCD et PPCM
+### Définition
+Un nombre premier est un nombre naturel supérieur à 1 qui n'admet que deux diviseurs : 1 et lui-même.
 
-## Plus Grand Commun Diviseur (PGCD)
-**PGCD(a,b)** = le plus grand entier qui divise à la fois a et b
+### Exemples
+Les premiers nombres premiers sont : 2, 3, 5, 7, 11, 13, 17, 19, 23, ...
 
-### Algorithme d'Euclide
-Pour calculer PGCD(a,b) avec a ≥ b :
-1. Effectuer la division : a = bq₁ + r₁
-2. Si r₁ = 0, alors PGCD(a,b) = b
-3. Sinon, calculer PGCD(b,r₁)
-4. Répéter jusqu'à reste nul
+### Théorème fondamental de l'arithmétique
+Tout nombre naturel supérieur à 1 peut s'écrire de manière unique comme produit de nombres premiers.
 
-### Exemple
-PGCD(48, 18) :
-- 48 = 18 × 2 + 12
-- 18 = 12 × 1 + 6  
-- 12 = 6 × 2 + 0
-Donc PGCD(48, 18) = 6
+## PGCD et PPCM
 
-## Plus Petit Commun Multiple (PPCM)
-**PPCM(a,b)** = le plus petit entier positif divisible par a et b
+### PGCD (Plus Grand Commun Diviseur)
+Le PGCD de deux nombres est le plus grand nombre qui divise les deux.
 
-### Relation fondamentale
-**PGCD(a,b) × PPCM(a,b) = a × b**
+### PPCM (Plus Petit Commun Multiple)
+Le PPCM de deux nombres est le plus petit multiple commun aux deux nombres.
 
-## Nombres premiers entre eux
-a et b sont **premiers entre eux** si PGCD(a,b) = 1
-
-### Théorème de Bézout
-a et b premiers entre eux ⟺ ∃u,v ∈ ℤ, au + bv = 1`
+### Relation importante
+Pour deux nombres a et b : PGCD(a,b) × PPCM(a,b) = a × b`
       }
     ],
     videos: [
-      { title: "Cours en arabe", url: "https://www.youtube.com/watch?v=-cmV1kRllWw" },
-      { title: "Cours en français", url: "https://www.youtube.com/watch?v=L_hVwt3qQpk" }
+      { title: "Arithmétique dans IN (Arabe)", url: "https://www.youtube.com/watch?v=-cmV1kRllWw" },
+      { title: "Arithmétique dans IN (Français)", url: "https://www.youtube.com/watch?v=L_hVwt3qQpk" }
     ]
   },
-  "103": {
+
+  "3": {
     title: "Calcul vectoriel dans le plan",
     semester: 1,
     slides: [
       {
         id: 1,
-        title: "Notion de vecteur",
+        title: "Introduction aux vecteurs",
         content: `# Calcul vectoriel dans le plan
 
-## Définition d'un vecteur
-Un vecteur est défini par :
-- Une **direction** (droite support)
-- Un **sens** (orientation)
-- Une **longueur** (norme)
+## Qu'est-ce qu'un vecteur ?
 
-## Notation
-**AB⃗** : vecteur d'origine A et d'extrémité B
+Un vecteur est un objet mathématique caractérisé par :
+- Une direction
+- Un sens  
+- Une norme (longueur)
 
-## Égalité de vecteurs
-**AB⃗ = CD⃗** si et seulement si :
-- Même direction
-- Même sens  
-- Même longueur
+## Notation et représentation
 
-⟺ ABDC est un **parallélogramme**
+Un vecteur est noté avec une flèche au-dessus : u⃗ ou AB⃗
 
-## Vecteur nul
-**O⃗ = AA⃗** pour tout point A
-- Direction indéterminée
-- Longueur nulle
+### Vecteur nul
+Le vecteur nul 0⃗ a une norme nulle et n'a pas de direction définie.
 
-## Vecteurs opposés
-**AB⃗ = -BA⃗**
-- Même direction et longueur
-- Sens opposé
+## Opérations sur les vecteurs
 
-## Norme d'un vecteur
-**||AB⃗|| = AB** (distance entre A et B)
+### Addition de vecteurs
+Pour additionner deux vecteurs u⃗ et v⃗ :
+- Méthode du parallélogramme
+- Relation de Chasles : AB⃗ + BC⃗ = AC⃗
 
-Dans un repère orthonormé :
-**||u⃗|| = √(x² + y²)** si u⃗(x, y)`
-      },
-      {
-        id: 2,
-        title: "Opérations sur les vecteurs",
-        content: `# Opérations vectorielles
+### Multiplication par un scalaire
+Si k est un nombre réel et u⃗ un vecteur :
+- ku⃗ a la même direction que u⃗
+- Sa norme est |k| fois celle de u⃗
+- Son sens dépend du signe de k
 
-## Addition de vecteurs
-### Relation de Chasles
-**AB⃗ + BC⃗ = AC⃗**
+## Coordonnées d'un vecteur
 
-### Règle du parallélogramme
-Si ABCD est un parallélogramme :
-**AB⃗ + AD⃗ = AC⃗**
+Dans un repère (O, i⃗, j⃗), un vecteur u⃗ a des coordonnées (x, y) :
+u⃗ = xi⃗ + yj⃗
 
-### Propriétés
-- **Commutativité** : u⃗ + v⃗ = v⃗ + u⃗
-- **Associativité** : (u⃗ + v⃗) + w⃗ = u⃗ + (v⃗ + w⃗)
-- **Élément neutre** : u⃗ + 0⃗ = u⃗
+### Opérations avec les coordonnées
+- u⃗(x₁, y₁) + v⃗(x₂, y₂) = (x₁+x₂, y₁+y₂)
+- ku⃗(x, y) = (kx, ky)
+- ||u⃗|| = √(x² + y²)
 
-## Multiplication par un scalaire
-**ku⃗** avec k ∈ ℝ :
-- Si k > 0 : même direction et sens
-- Si k < 0 : même direction, sens opposé
-- Si k = 0 : vecteur nul
-- **||ku⃗|| = |k| × ||u⃗||**
+## Applications
 
-## Coordonnées dans un repère
-Si u⃗(x, y) et v⃗(x', y') :
-- **u⃗ + v⃗** : (x + x', y + y')
-- **ku⃗** : (kx, ky)
+### Vecteurs colinéaires
+Deux vecteurs u⃗ et v⃗ sont colinéaires s'il existe k tel que u⃗ = kv⃗
 
-## Vecteurs colinéaires
-u⃗ et v⃗ sont colinéaires ⟺ ∃k ∈ ℝ, u⃗ = kv⃗
-Dans un repère : **xy' - x'y = 0**`
+### Point défini par un vecteur
+Si M a pour vecteur position OM⃗ = u⃗, alors M est défini par ce vecteur.`
       }
     ],
     videos: [
-      { title: "Cours en arabe", url: "https://www.youtube.com/watch?v=DCce28tAa70" },
-      { title: "Cours en français", url: "https://www.youtube.com/watch?v=AwzchpN8S9g" }
+      { title: "Calcul vectoriel (Arabe)", url: "https://www.youtube.com/watch?v=DCce28tAa70" },
+      { title: "Calcul vectoriel (Français)", url: "https://www.youtube.com/watch?v=AwzchpN8S9g" }
     ]
   },
-  "104": {
+
+  "4": {
     title: "La projection dans le plan",
     semester: 1,
     slides: [
       {
         id: 1,
-        title: "Projection orthogonale",
+        title: "La projection dans le plan",
         content: `# La projection dans le plan
 
-## Définition
-La **projection orthogonale** d'un point M sur une droite (d) est le point H tel que :
-- H ∈ (d)
-- MH ⊥ (d)
+## Définition de la projection
 
-## Propriétés de la projection
-- **H est le point de (d) le plus proche de M**
-- MH est la **distance de M à la droite (d)**
-- Si M ∈ (d), alors la projection de M est M lui-même
+La projection d'un point sur une droite est le pied de la perpendiculaire menée de ce point à la droite.
 
-## Projection d'un vecteur
-La projection du vecteur **AB⃗** sur la droite (d) de vecteur directeur **u⃗** est :
-**proj_u⃗(AB⃗) = (AB⃗ · u⃗/||u⃗||²) × u⃗**
+## Types de projections
 
-## Applications
-### Calcul de distances
-- Distance d'un point à une droite
-- Distance entre deux droites parallèles
+### Projection orthogonale sur une droite
+Soit M un point et d une droite. La projection orthogonale de M sur d est le point H tel que MH ⊥ d.
 
-### Résolution de problèmes géométriques
-- Calculs d'aires
-- Démonstrations de propriétés`
-      },
-      {
-        id: 2,
-        title: "Projection dans un repère orthonormé",
-        content: `# Projection dans un repère
+### Projection orthogonale sur un axe
+Dans un repère orthonormé, la projection d'un point M(x, y) :
+- Sur l'axe des abscisses : H(x, 0)
+- Sur l'axe des ordonnées : K(0, y)
 
-## Équation d'une droite
-### Forme générale
-**ax + by + c = 0** avec (a,b) ≠ (0,0)
+## Propriétés importantes
 
-### Vecteur normal
-**n⃗(a, b)** est un vecteur normal à la droite
+### Conservation de l'alignement
+Si trois points A, B, C sont alignés, leurs projections A', B', C' sont aussi alignées.
 
-## Distance d'un point à une droite
-Si M(x₀, y₀) et droite (d) : ax + by + c = 0
-**d(M, (d)) = |ax₀ + by₀ + c|/√(a² + b²)**
+### Conservation du rapport
+Si B est entre A et C, alors AB'/A'C' = AB/AC où A', B', C' sont les projections.
 
-## Projection orthogonale dans un repère
-Pour projeter M(x₀, y₀) sur (d) : ax + by + c = 0
+## Applications géométriques
 
-### Méthode
-1. Écrire l'équation de la perpendiculaire à (d) passant par M
-2. Résoudre le système pour trouver l'intersection H
-3. H est la projection de M sur (d)
+### Distance d'un point à une droite
+La distance d'un point M à une droite d est la longueur MH où H est la projection de M sur d.
 
-## Exemples d'applications
-- **Symétrie orthogonale** : M' = 2H - M
-- **Réflexion** d'un rayon lumineux
-- **Optimisation** de distances`
+### Théorème de Pythagore généralisé
+Dans un triangle rectangle, la projection du côté opposé à l'angle droit sur l'hypoténuse divise celle-ci en segments proportionnels aux carrés des côtés adjacents.
+
+## Calcul de projections
+
+### Avec les coordonnées
+Pour projeter M(x₀, y₀) sur la droite d : ax + by + c = 0 :
+H = M - ((ax₀ + by₀ + c)/(a² + b²)) × (a, b)
+
+### Cas particuliers
+- Projection sur Ox : (x, 0)
+- Projection sur Oy : (0, y)
+- Projection sur y = x : ((x+y)/2, (x+y)/2)`
       }
     ],
     videos: [
-      { title: "Cours en arabe - Partie 1", url: "https://www.youtube.com/watch?v=34qrpUz1vCc" },
-      { title: "Cours en arabe - Partie 2", url: "https://www.youtube.com/watch?v=F7vz_Az_72U" }
+      { title: "Projection dans le plan - Partie 1 (Arabe)", url: "https://www.youtube.com/watch?v=34qrpUz1vCc" },
+      { title: "Projection dans le plan - Partie 2 (Arabe)", url: "https://www.youtube.com/watch?v=F7vz_Az_72U" }
     ]
   },
-  "105": {
-    title: "L'ordre dans ℝ",
+
+  "5": {
+    title: "L'ordre dans IR",
     semester: 1,
     slides: [
       {
         id: 1,
-        title: "Relation d'ordre dans ℝ",
-        content: `# L'ordre dans ℝ
+        title: "L'ordre dans IR",
+        content: `# L'ordre dans IR
 
-## Définition de l'ordre
-La relation **≤** sur ℝ vérifie :
-- **Réflexivité** : ∀a ∈ ℝ, a ≤ a
-- **Antisymétrie** : a ≤ b et b ≤ a ⟹ a = b
-- **Transitivité** : a ≤ b et b ≤ c ⟹ a ≤ c
-- **Ordre total** : ∀a,b ∈ ℝ, a ≤ b ou b ≤ a
+## Relation d'ordre dans R
+
+L'ensemble des nombres réels R est muni d'une relation d'ordre total ≤.
+
+### Propriétés de l'ordre
+1. **Réflexivité** : a ≤ a pour tout a ∈ R
+2. **Antisymétrie** : si a ≤ b et b ≤ a, alors a = b
+3. **Transitivité** : si a ≤ b et b ≤ c, alors a ≤ c
+4. **Ordre total** : pour tous a, b ∈ R, soit a ≤ b, soit b ≤ a
 
 ## Compatibilité avec les opérations
+
 ### Addition
-**a ≤ b ⟹ a + c ≤ b + c** pour tout c ∈ ℝ
+Si a ≤ b, alors a + c ≤ b + c pour tout c ∈ R
 
 ### Multiplication
-- Si c ≥ 0 : **a ≤ b ⟹ ac ≤ bc**
-- Si c ≤ 0 : **a ≤ b ⟹ ac ≥ bc**
+- Si a ≤ b et c ≥ 0, alors ac ≤ bc
+- Si a ≤ b et c ≤ 0, alors ac ≥ bc (l'inégalité change de sens)
 
 ## Valeur absolue
-**|a| = max(a, -a)**
+
+### Définition
+|a| = a si a ≥ 0, |a| = -a si a < 0
 
 ### Propriétés
-- |a| ≥ 0 et |a| = 0 ⟺ a = 0
-- |ab| = |a||b|
-- **Inégalité triangulaire** : |a + b| ≤ |a| + |b|
+- |a| ≥ 0 pour tout a ∈ R
+- |a| = 0 si et seulement si a = 0
+- |ab| = |a| × |b|
+- |a + b| ≤ |a| + |b| (inégalité triangulaire)
 
-## Intervalles de ℝ
-- **[a, b]** : fermé
-- **]a, b[** : ouvert  
-- **[a, b[** et **]a, b]** : semi-ouverts
-- **]-∞, a]**, **[a, +∞[** : non bornés`
-      },
-      {
-        id: 2,
-        title: "Inéquations dans ℝ",
-        content: `# Résolution d'inéquations
+## Intervalles
 
-## Inéquations du premier degré
-**ax + b ≤ 0** avec a ≠ 0
+### Types d'intervalles
+- [a, b] = {x ∈ R | a ≤ x ≤ b} (fermé)
+- ]a, b[ = {x ∈ R | a < x < b} (ouvert)
+- [a, b[ = {x ∈ R | a ≤ x < b} (fermé à gauche)
+- ]a, b] = {x ∈ R | a < x ≤ b} (fermé à droite)
 
-### Méthode
-1. Isoler x : x ≤ -b/a (si a > 0) ou x ≥ -b/a (si a < 0)
-2. Représenter sur la droite numérique
+### Intervalles non bornés
+- [a, +∞[ = {x ∈ R | x ≥ a}
+- ]-∞, b] = {x ∈ R | x ≤ b}
+- ]-∞, +∞[ = R
 
-## Inéquations avec valeurs absolues
-### |x| ≤ a (a > 0)
-**-a ≤ x ≤ a** soit x ∈ [-a, a]
+## Opérations sur les intervalles
 
-### |x| ≥ a (a > 0)  
-**x ≤ -a ou x ≥ a** soit x ∈ ]-∞, -a] ∪ [a, +∞[
+### Intersection
+I ∩ J est l'ensemble des éléments appartenant à I et à J
 
-### |f(x)| ≤ g(x)
-- g(x) ≥ 0 ET -g(x) ≤ f(x) ≤ g(x)
+### Réunion
+I ∪ J est l'ensemble des éléments appartenant à I ou à J
 
-## Inéquations du second degré
-**ax² + bx + c ≤ 0** avec a ≠ 0
+## Applications
 
-### Méthode
-1. Calculer Δ = b² - 4ac
-2. Étudier le signe selon les racines
-3. Utiliser le tableau de signes
+### Résolution d'inéquations
+Les inéquations se résolvent en utilisant les propriétés de l'ordre et se représentent par des intervalles.
 
-## Systèmes d'inéquations
-Résoudre plusieurs inéquations simultanément
-**Solution = intersection des solutions individuelles**`
+### Distance sur la droite réelle
+La distance entre deux points a et b est |a - b|.`
       }
     ],
     videos: [
-      { title: "Cours en arabe", url: "https://www.youtube.com/watch?v=vDXWhuLUTUg" },
-      { title: "Cours en français", url: "https://www.youtube.com/watch?v=9MtAK7Xzrls" }
+      { title: "L'ordre dans IR (Arabe)", url: "https://www.youtube.com/watch?v=vDXWhuLUTUg" },
+      { title: "L'ordre dans IR (Français)", url: "https://www.youtube.com/watch?v=9MtAK7Xzrls" }
     ]
   },
-  "106": {
+
+  "6": {
     title: "La droite dans le plan",
     semester: 1,
     slides: [
       {
         id: 1,
-        title: "Équations de droite",
+        title: "La droite dans le plan",
         content: `# La droite dans le plan
 
 ## Équations d'une droite
+
 ### Équation cartésienne
-**ax + by + c = 0** avec (a,b) ≠ (0,0)
-- Vecteur normal : **n⃗(a, b)**
-- Vecteur directeur : **u⃗(-b, a)**
+Une droite dans le plan a une équation de la forme : ax + by + c = 0
+où a et b ne sont pas tous les deux nuls.
 
 ### Équation réduite
-**y = mx + p**
-- **m** : coefficient directeur (pente)
-- **p** : ordonnée à l'origine
+Si b ≠ 0, on peut écrire : y = mx + p
+- m est le coefficient directeur (pente)
+- p est l'ordonnée à l'origine
 
-### Équation paramétrique
-**{x = x₀ + tu ; y = y₀ + tv}** avec u⃗(u, v) vecteur directeur
+### Cas particuliers
+- Droite verticale (parallèle à Oy) : x = k
+- Droite horizontale (parallèle à Ox) : y = k
+- Droite passant par l'origine : y = mx
 
-## Détermination d'une droite
-Une droite est déterminée par :
-- **Deux points distincts** A et B
-- **Un point et un vecteur directeur**
-- **Un point et la pente**
+## Vecteur directeur
 
-## Positions relatives de deux droites
+### Définition
+Un vecteur u⃗ est directeur d'une droite d si u⃗ ≠ 0⃗ et si u⃗ est colinéaire à tout vecteur AB⃗ où A et B sont sur d.
+
+### Relation avec l'équation
+Si la droite a pour équation ax + by + c = 0, alors u⃗(-b, a) est un vecteur directeur.
+
+## Position relative de deux droites
+
 ### Droites parallèles
-- Mêmes coefficients directeurs
-- (d₁) : y = m₁x + p₁ et (d₂) : y = m₂x + p₂
-- Parallèles ⟺ m₁ = m₂ et p₁ ≠ p₂
+Deux droites d₁ et d₂ sont parallèles si elles ont le même vecteur directeur (aux proportionnalités près).
 
 ### Droites sécantes
-- Coefficients directeurs différents
-- Point d'intersection unique
+Deux droites non parallèles se coupent en un point unique.
 
-### Droites perpendiculaires
-- **m₁ × m₂ = -1**`
-      },
-      {
-        id: 2,
-        title: "Applications géométriques",
-        content: `# Applications des équations de droites
+### Condition de parallélisme
+d₁ : a₁x + b₁y + c₁ = 0 et d₂ : a₂x + b₂y + c₂ = 0 sont parallèles si et seulement si a₁b₂ - a₂b₁ = 0.
+
+## Droites perpendiculaires
+
+### Condition de perpendicularité
+Deux droites sont perpendiculaires si leurs vecteurs directeurs sont orthogonaux.
+
+Si u⃗₁(x₁, y₁) et u⃗₂(x₂, y₂) sont les vecteurs directeurs, alors :
+d₁ ⊥ d₂ ⟺ x₁x₂ + y₁y₂ = 0
 
 ## Distance d'un point à une droite
-Si M(x₀, y₀) et (d) : ax + by + c = 0
-**d(M, (d)) = |ax₀ + by₀ + c|/√(a² + b²)**
 
-## Angle entre deux droites
-Si (d₁) : y = m₁x + p₁ et (d₂) : y = m₂x + p₂
-**tan(θ) = |(m₂ - m₁)/(1 + m₁m₂)|**
+### Formule
+La distance du point M(x₀, y₀) à la droite d : ax + by + c = 0 est :
+d(M, d) = |ax₀ + by₀ + c| / √(a² + b²)
 
-## Médiatrice d'un segment
-**Médiatrice de [AB]** : ensemble des points équidistants de A et B
-- Perpendiculaire à AB
-- Passe par le milieu de AB
+## Applications
 
-## Bissectrices
-**Bissectrices de deux droites sécantes** :
-Lieux des points équidistants des deux droites
+### Équation d'une droite passant par deux points
+Si A(x₁, y₁) et B(x₂, y₂), l'équation de (AB) est :
+(y - y₁)/(y₂ - y₁) = (x - x₁)/(x₂ - x₁) si x₁ ≠ x₂
 
-Si (d₁) : a₁x + b₁y + c₁ = 0 et (d₂) : a₂x + b₂y + c₂ = 0
-**Bissectrices** : 
-(a₁x + b₁y + c₁)/√(a₁² + b₁²) = ±(a₂x + b₂y + c₂)/√(a₂² + b₂²)
-
-## Transformations du plan
-- **Translation** : conservation du parallélisme
-- **Rotation** : conservation des angles
-- **Symétrie axiale** : (d) → (d') symétrique par rapport à l'axe`
+### Intersection de deux droites
+Pour trouver l'intersection, on résout le système des deux équations.`
       }
     ],
     videos: [
-      { title: "Cours en arabe", url: "https://www.youtube.com/watch?v=nIeyaxowOjw" },
-      { title: "Cours en français", url: "https://www.youtube.com/watch?v=zH5vSPaSsHI" }
+      { title: "La droite dans le plan (Arabe)", url: "https://www.youtube.com/watch?v=nIeyaxowOjw" },
+      { title: "La droite dans le plan (Français)", url: "https://www.youtube.com/watch?v=zH5vSPaSsHI" }
     ]
   },
-  "107": {
+
+  "7": {
     title: "Les polynômes",
     semester: 1,
     slides: [
       {
         id: 1,
-        title: "Définitions et opérations",
+        title: "Les polynômes",
         content: `# Les polynômes
 
 ## Définition
-Un **polynôme** à une variable x est une expression de la forme :
-**P(x) = aₙxⁿ + aₙ₋₁xⁿ⁻¹ + ... + a₁x + a₀**
 
-où aᵢ ∈ ℝ sont les **coefficients**
+Un polynôme P(x) est une expression de la forme :
+P(x) = aₙxⁿ + aₙ₋₁xⁿ⁻¹ + ... + a₁x + a₀
 
-## Vocabulaire
-- **Degré** : plus haute puissance de x (si aₙ ≠ 0)
-- **Terme dominant** : aₙxⁿ
-- **Coefficient dominant** : aₙ
-- **Terme constant** : a₀
+où :
+- aᵢ sont les coefficients (nombres réels)
+- n est le degré du polynôme si aₙ ≠ 0
+- a₀ est le terme constant
 
-## Types particuliers
-- **Polynôme nul** : tous les coefficients sont nuls
-- **Polynôme constant** : P(x) = a₀
-- **Monôme** : P(x) = axⁿ
-- **Binôme** : somme de deux monômes
-- **Trinôme** : somme de trois monômes
+## Degré d'un polynôme
+
+### Définition
+Le degré d'un polynôme non nul est le plus grand exposant de x ayant un coefficient non nul.
+
+### Conventions
+- Le polynôme nul n'a pas de degré (ou degré -∞)
+- Un polynôme constant non nul a le degré 0
+- deg(P) se note le degré de P
 
 ## Opérations sur les polynômes
-### Addition
-**(P + Q)(x) = P(x) + Q(x)**
-- Additionner les coefficients des termes de même degré
+
+### Addition et soustraction
+Les polynômes s'additionnent en ajoutant les coefficients de même degré.
+deg(P + Q) ≤ max(deg(P), deg(Q))
 
 ### Multiplication
-**(P × Q)(x) = P(x) × Q(x)**
-- **deg(P × Q) = deg(P) + deg(Q)**`
-      },
-      {
-        id: 2,
-        title: "Division euclidienne et factorisation",
-        content: `# Division et factorisation
+deg(P × Q) = deg(P) + deg(Q) si P et Q sont non nuls
 
-## Division euclidienne
-Pour tous polynômes A et B (B ≠ 0), il existe des polynômes uniques Q et R tels que :
-**A = BQ + R** avec **deg(R) < deg(B)** ou R = 0
+### Division euclidienne
+Pour tout polynôme A et B ≠ 0, il existe des polynômes uniques Q et R tels que :
+A = BQ + R avec deg(R) < deg(B)
 
 ## Racines d'un polynôme
-**a est racine de P** ⟺ P(a) = 0
+
+### Définition
+a est racine de P(x) si P(a) = 0
 
 ### Théorème
-Si a est racine de P, alors P(x) = (x - a)Q(x)
+Si a est racine de P(x), alors P(x) = (x - a)Q(x) où Q(x) est un polynôme.
 
-### Multiplicity
-- **Racine simple** : P(a) = 0 et P'(a) ≠ 0
-- **Racine double** : P(a) = P'(a) = 0 et P''(a) ≠ 0
+### Multiplicité
+Si P(x) = (x - a)ᵏQ(x) avec Q(a) ≠ 0, alors a est racine de multiplicité k.
 
 ## Factorisation
+
 ### Identités remarquables
-- **a² - b² = (a-b)(a+b)**
-- **a² + 2ab + b² = (a+b)²**
-- **a² - 2ab + b² = (a-b)²**
-- **a³ + b³ = (a+b)(a² - ab + b²)**
-- **a³ - b³ = (a-b)(a² + ab + b²)**
+- a² - b² = (a - b)(a + b)
+- a² + 2ab + b² = (a + b)²
+- a² - 2ab + b² = (a - b)²
+- a³ - b³ = (a - b)(a² + ab + b²)
+- a³ + b³ = (a + b)(a² - ab + b²)
+
+### Méthodes de factorisation
+1. Factorisation par mise en évidence
+2. Utilisation des identités remarquables
+3. Recherche de racines évidentes
+4. Méthode de Horner
+
+## Polynômes particuliers
 
 ### Polynômes du second degré
-**ax² + bx + c = a(x - x₁)(x - x₂)**
-si Δ ≥ 0 avec x₁ et x₂ les racines
+P(x) = ax² + bx + c avec a ≠ 0
 
-## Applications
-- **Résolution d'équations**
-- **Étude de fonctions**
-- **Calculs algébriques**`
+Discriminant : Δ = b² - 4ac
+- Si Δ > 0 : deux racines réelles distinctes
+- Si Δ = 0 : une racine double
+- Si Δ < 0 : pas de racines réelles`
       }
     ],
     videos: [
-      { title: "Cours en arabe - Partie 1", url: "https://www.youtube.com/watch?v=msAZWl8lepI" },
-      { title: "Cours en arabe - Partie 2", url: "https://www.youtube.com/watch?v=_s9crOAALgk" },
-      { title: "Cours en arabe - Partie 3", url: "https://www.youtube.com/watch?v=EscYeHISkYw" }
+      { title: "Les polynômes - Partie 1 (Arabe)", url: "https://www.youtube.com/watch?v=msAZWl8lepI" },
+      { title: "Les polynômes - Partie 2 (Arabe)", url: "https://www.youtube.com/watch?v=_s9crOAALgk" },
+      { title: "Les polynômes - Partie 3 (Arabe)", url: "https://www.youtube.com/watch?v=EscYeHISkYw" }
     ]
   },
-  "108": {
+
+  "8": {
     title: "Équations, inéquations et systèmes",
     semester: 1,
     slides: [
       {
         id: 1,
-        title: "Équations polynomiales",
+        title: "Équations, inéquations et systèmes",
         content: `# Équations, inéquations et systèmes
 
 ## Équations du premier degré
-**ax + b = 0** avec a ≠ 0
-**Solution : x = -b/a**
+
+### Forme générale
+ax + b = 0 avec a ≠ 0
+Solution : x = -b/a
+
+### Méthodes de résolution
+1. Isoler l'inconnue
+2. Effectuer les mêmes opérations des deux côtés
+3. Vérifier la solution
 
 ## Équations du second degré
-**ax² + bx + c = 0** avec a ≠ 0
+
+### Forme générale
+ax² + bx + c = 0 avec a ≠ 0
 
 ### Discriminant
-**Δ = b² - 4ac**
+Δ = b² - 4ac
 
 ### Solutions
-- Si Δ > 0 : **x₁ = (-b - √Δ)/(2a)** et **x₂ = (-b + √Δ)/(2a)**
-- Si Δ = 0 : **x₀ = -b/(2a)** (racine double)
-- Si Δ < 0 : **Pas de solution réelle**
+- Si Δ > 0 : x₁ = (-b - √Δ)/(2a) et x₂ = (-b + √Δ)/(2a)
+- Si Δ = 0 : x = -b/(2a) (racine double)
+- Si Δ < 0 : pas de solution réelle
 
-### Relations de Vieta
-- **x₁ + x₂ = -b/a**
-- **x₁ × x₂ = c/a**
+### Relations entre coefficients et racines
+Si x₁ et x₂ sont les racines :
+- x₁ + x₂ = -b/a
+- x₁ × x₂ = c/a
 
-## Équations factorisées
-**P(x) = 0 ⟺ au moins un facteur est nul**
+## Inéquations
 
-### Exemple
-(x - 2)(x + 3)(2x - 1) = 0
-Solutions : x = 2, x = -3, x = 1/2
+### Inéquations du premier degré
+ax + b > 0 (ou <, ≤, ≥)
 
-## Équations avec racines
-**√(f(x)) = g(x)**
-- Condition : f(x) ≥ 0 et g(x) ≥ 0
-- Élever au carré : f(x) = [g(x)]²
-- **Vérifier** les solutions trouvées`
-      },
-      {
-        id: 2,
-        title: "Systèmes d'équations et inéquations",
-        content: `# Systèmes et inéquations
+Résolution : x > -b/a si a > 0, x < -b/a si a < 0
+
+### Inéquations du second degré
+ax² + bx + c > 0
+
+La résolution dépend du signe de a et du discriminant Δ.
+
+### Tableau de signes
+Méthode efficace pour résoudre les inéquations polynomiales et rationnelles.
 
 ## Systèmes d'équations linéaires
-**{ax + by = c ; dx + ey = f}**
 
-### Méthode par substitution
-1. Exprimer une variable en fonction de l'autre
+### Système 2×2
+{ax + by = c
+{dx + ey = f
+
+### Méthodes de résolution
+
+#### Substitution
+1. Exprimer une inconnue en fonction de l'autre
 2. Substituer dans la deuxième équation
-3. Résoudre et calculer l'autre variable
+3. Résoudre et remonter
 
-### Méthode par élimination
-1. Multiplier pour éliminer une variable
-2. Additionner ou soustraire les équations
-3. Résoudre le système obtenu
+#### Combinaison linéaire
+1. Multiplier les équations par des constantes
+2. Additionner pour éliminer une inconnue
+3. Résoudre le système simplifié
 
-### Méthode de Cramer
-Si Δ = ae - bd ≠ 0 :
-**x = (ce - bf)/Δ** et **y = (af - cd)/Δ**
-
-## Inéquations polynomiales
-### Méthode du tableau de signes
-1. Factoriser le polynôme
-2. Trouver les racines  
-3. Dresser le tableau de signes
-4. Conclure selon l'inéquation
-
-### Exemple
-x² - 3x + 2 ≤ 0
-- Factorisation : (x - 1)(x - 2)
-- Racines : 1 et 2
-- Solution : x ∈ [1, 2]
+#### Méthode de Cramer
+Δ = ae - bd (déterminant)
+- Si Δ ≠ 0 : solution unique
+- Si Δ = 0 : soit pas de solution, soit infinité de solutions
 
 ## Systèmes d'inéquations
-**Intersection** des solutions de chaque inéquation`
+
+### Résolution graphique
+Représenter les demi-plans correspondant à chaque inéquation et trouver l'intersection.
+
+### Résolution algébrique
+Résoudre chaque inéquation séparément puis faire l'intersection des ensembles solutions.
+
+## Applications pratiques
+
+### Problèmes de géométrie
+Utilisation d'équations pour exprimer des conditions géométriques.
+
+### Problèmes d'optimisation
+Utilisation de systèmes d'inéquations pour définir un domaine admissible.`
       }
     ],
     videos: [
-      { title: "Cours en arabe", url: "https://www.youtube.com/watch?v=QLmDbDeZ0MU" },
-      { title: "Cours en français", url: "https://www.youtube.com/watch?v=3aQDg36Rbm0" }
+      { title: "Équations, inéquations et systèmes (Arabe)", url: "https://www.youtube.com/watch?v=QLmDbDeZ0MU" },
+      { title: "Équations, inéquations et systèmes (Français)", url: "https://www.youtube.com/watch?v=3aQDg36Rbm0" }
     ]
   },
-  "109": {
+
+  "9": {
     title: "Trigonométrie 1 (Règles du calcul trigonométrique)",
     semester: 1,
     slides: [
       {
         id: 1,
-        title: "Cercle trigonométrique et fonctions",
-        content: `# Trigonométrie - Règles de calcul
+        title: "Trigonométrie 1 - Règles du calcul trigonométrique",
+        content: `# Trigonométrie 1 - Règles du calcul trigonométrique
 
-## Cercle trigonométrique
-- **Rayon = 1**
-- **Sens direct** (anti-horaire) : positif
-- **Mesure principale** : angle ∈ ]-π, π]
+## Le cercle trigonométrique
+
+### Définition
+Le cercle trigonométrique est le cercle de centre O et de rayon 1, orienté dans le sens direct (trigonométrique).
+
+### Enroulement de la droite réelle
+Chaque nombre réel x correspond à un point M sur le cercle, obtenu en parcourant un arc de longueur |x| depuis le point I(1,0).
 
 ## Fonctions trigonométriques
-Pour un angle θ dans le cercle unité :
-- **cos θ = abscisse** du point
-- **sin θ = ordonnée** du point  
-- **tan θ = sin θ / cos θ** (si cos θ ≠ 0)
 
-## Valeurs remarquables
-| θ     | 0 | π/6 | π/4 | π/3 | π/2 |
-|-------|---|-----|-----|-----|-----|
-| cos θ | 1 | √3/2| √2/2| 1/2 | 0   |
-| sin θ | 0 | 1/2 | √2/2| √3/2| 1   |
-| tan θ | 0 | √3/3| 1   | √3  | ∄   |
+### Définitions
+Pour un angle x (en radians) :
+- cos(x) = abscisse du point M
+- sin(x) = ordonnée du point M
+- tan(x) = sin(x)/cos(x) si cos(x) ≠ 0
 
-## Propriétés fondamentales
-- **cos²θ + sin²θ = 1** (identité fondamentale)
-- **-1 ≤ cos θ ≤ 1**
-- **-1 ≤ sin θ ≤ 1**
+### Propriétés fondamentales
+- -1 ≤ cos(x) ≤ 1
+- -1 ≤ sin(x) ≤ 1
+- cos²(x) + sin²(x) = 1 (relation fondamentale)
+
+## Angles remarquables
+
+### Valeurs principales
+- cos(0) = 1, sin(0) = 0
+- cos(π/6) = √3/2, sin(π/6) = 1/2
+- cos(π/4) = √2/2, sin(π/4) = √2/2
+- cos(π/3) = 1/2, sin(π/3) = √3/2
+- cos(π/2) = 0, sin(π/2) = 1
 
 ## Périodicité
-- **cos(θ + 2π) = cos θ**
-- **sin(θ + 2π) = sin θ**  
-- **tan(θ + π) = tan θ**`
-      },
-      {
-        id: 2,
-        title: "Formules trigonométriques",
-        content: `# Formules trigonométriques
 
-## Angles associés
-### Angles opposés
-- **cos(-θ) = cos θ**
-- **sin(-θ) = -sin θ**
-- **tan(-θ) = -tan θ**
+### Périodes
+- cos(x + 2π) = cos(x)
+- sin(x + 2π) = sin(x)
+- tan(x + π) = tan(x)
 
-### Angles supplémentaires  
-- **cos(π - θ) = -cos θ**
-- **sin(π - θ) = sin θ**
-- **tan(π - θ) = -tan θ**
+Les fonctions cosinus et sinus sont périodiques de période 2π.
+La fonction tangente est périodique de période π.
 
-### Angles complémentaires
-- **cos(π/2 - θ) = sin θ**
-- **sin(π/2 - θ) = cos θ**
+## Parité
 
-## Formules d'addition
-### cos(a ± b)
-**cos(a + b) = cos a cos b - sin a sin b**
-**cos(a - b) = cos a cos b + sin a sin b**
+### Fonctions paires et impaires
+- cos(-x) = cos(x) (fonction paire)
+- sin(-x) = -sin(x) (fonction impaire)
+- tan(-x) = -tan(x) (fonction impaire)
 
-### sin(a ± b)  
-**sin(a + b) = sin a cos b + cos a sin b**
-**sin(a - b) = sin a cos b - cos a sin b**
+## Formules de transformation
 
-### tan(a ± b)
-**tan(a ± b) = (tan a ± tan b)/(1 ∓ tan a tan b)**
+### Angles associés
+- cos(π - x) = -cos(x), sin(π - x) = sin(x)
+- cos(π + x) = -cos(x), sin(π + x) = -sin(x)
+- cos(π/2 - x) = sin(x), sin(π/2 - x) = cos(x)
+- cos(π/2 + x) = -sin(x), sin(π/2 + x) = cos(x)
 
-## Formules de duplication
-- **cos(2θ) = cos²θ - sin²θ = 2cos²θ - 1 = 1 - 2sin²θ**
-- **sin(2θ) = 2sin θ cos θ**
-- **tan(2θ) = 2tan θ/(1 - tan²θ)**`
+### Formules d'addition
+- cos(a + b) = cos(a)cos(b) - sin(a)sin(b)
+- cos(a - b) = cos(a)cos(b) + sin(a)sin(b)
+- sin(a + b) = sin(a)cos(b) + cos(a)sin(b)
+- sin(a - b) = sin(a)cos(b) - cos(a)sin(b)
+
+### Formules de duplication
+- cos(2x) = cos²(x) - sin²(x) = 2cos²(x) - 1 = 1 - 2sin²(x)
+- sin(2x) = 2sin(x)cos(x)
+
+## Applications géométriques
+
+### Dans le triangle rectangle
+Si A est un angle aigu d'un triangle rectangle :
+- cos(A) = côté adjacent / hypoténuse
+- sin(A) = côté opposé / hypoténuse
+- tan(A) = côté opposé / côté adjacent`
       }
     ]
   },
 
-  // SEMESTRE 2
-  "110": {
+  "10": {
     title: "Trigonométrie 2 (Équations et inéquations trigonométriques)",
     semester: 2,
     slides: [
       {
         id: 1,
-        title: "Équations trigonométriques de base",
-        content: `# Équations trigonométriques
+        title: "Trigonométrie 2 - Équations et inéquations trigonométriques",
+        content: `# Trigonométrie 2 - Équations et inéquations trigonométriques
 
-## Équations élémentaires
-### cos x = a
-- Si |a| > 1 : **pas de solution**
-- Si |a| ≤ 1 : **x = ±arccos(a) + 2kπ**, k ∈ ℤ
+## Équations trigonométriques de base
 
-### sin x = a  
-- Si |a| > 1 : **pas de solution**
-- Si |a| ≤ 1 : **x = arcsin(a) + 2kπ** ou **x = π - arcsin(a) + 2kπ**
+### Équation cos(x) = a
+- Si |a| > 1 : pas de solution
+- Si |a| ≤ 1 : x = ±arccos(a) + 2kπ, k ∈ Z
 
-### tan x = a
-**x = arctan(a) + kπ**, k ∈ ℤ
+### Équation sin(x) = a
+- Si |a| > 1 : pas de solution
+- Si |a| ≤ 1 : x = arcsin(a) + 2kπ ou x = π - arcsin(a) + 2kπ, k ∈ Z
 
-## Équations avec valeurs particulières
-### cos x = 1/2
-**x = ±π/3 + 2kπ**
+### Équation tan(x) = a
+x = arctan(a) + kπ, k ∈ Z
 
-### sin x = √2/2  
-**x = π/4 + 2kπ** ou **x = 3π/4 + 2kπ**
+## Équations trigonométriques particulières
 
-### tan x = 1
-**x = π/4 + kπ**
+### cos(x) = cos(α)
+x = α + 2kπ ou x = -α + 2kπ, k ∈ Z
 
-## Méthodes de résolution
-1. **Simplifier** l'équation
-2. **Utiliser les identités** trigonométriques
-3. **Ramener** aux équations élémentaires
-4. **Donner toutes les solutions**`
-      },
-      {
-        id: 2,
-        title: "Inéquations trigonométriques",
-        content: `# Inéquations trigonométriques
+### sin(x) = sin(α)
+x = α + 2kπ ou x = π - α + 2kπ, k ∈ Z
 
-## Principe général
-1. **Résoudre l'équation** associée
-2. **Étudier le signe** sur le cercle trigonométrique
-3. **Donner les intervalles** solutions
+### tan(x) = tan(α)
+x = α + kπ, k ∈ Z
 
-## Exemples types
-### cos x ≥ 1/2
-- Équation : cos x = 1/2 ⟹ x = ±π/3 + 2kπ
-- Sur [0, 2π] : cos x ≥ 1/2 pour x ∈ [0, π/3] ∪ [5π/3, 2π]
-- **Solution générale** : x ∈ [-π/3 + 2kπ, π/3 + 2kπ]
+## Résolution d'équations plus complexes
 
-### sin x < √2/2
-- Équation : sin x = √2/2 ⟹ x = π/4 + 2kπ ou x = 3π/4 + 2kπ  
-- **Solution** : x ∈ ]-π + 2kπ, π/4 + 2kπ[ ∪ ]3π/4 + 2kπ, π + 2kπ[
+### Méthode par factorisation
+Exemple : sin(x)cos(x) = 0
+Solutions : sin(x) = 0 ou cos(x) = 0
 
-## Équations du second degré
-### 2cos²x - cos x - 1 = 0
-Poser u = cos x :
-- 2u² - u - 1 = 0
-- Solutions : u = 1 ou u = -1/2
-- cos x = 1 : x = 2kπ
-- cos x = -1/2 : x = ±2π/3 + 2kπ
+### Méthode par changement de variable
+Exemple : 2cos²(x) - 3cos(x) + 1 = 0
+Poser u = cos(x) et résoudre 2u² - 3u + 1 = 0
 
-## Systèmes trigonométriques
-Combiner plusieurs équations/inéquations
-**Intersection** des ensembles solutions`
+### Utilisation des formules
+Transformer l'équation à l'aide des formules trigonométriques.
+
+## Inéquations trigonométriques
+
+### Méthode générale
+1. Résoudre l'équation associée
+2. Étudier le signe de l'expression trigonométrique
+3. Utiliser le cercle trigonométrique pour visualiser
+
+### Exemples types
+
+#### cos(x) ≥ 1/2
+Sur [0, 2π] : x ∈ [0, π/3] ∪ [5π/3, 2π]
+Solution générale : x ∈ [-π/3 + 2kπ, π/3 + 2kπ], k ∈ Z
+
+#### sin(x) > √2/2
+Sur [0, 2π] : x ∈ ]π/4, 3π/4[
+Solution générale : x ∈ ]π/4 + 2kπ, 3π/4 + 2kπ[, k ∈ Z
+
+## Systèmes d'équations trigonométriques
+
+### Exemple
+{cos(x) + sin(x) = 1
+{cos(x) - sin(x) = 0
+
+Méthode : addition/soustraction des équations ou substitution.
+
+## Applications pratiques
+
+### Oscillations harmoniques
+Les équations trigonométriques modélisent de nombreux phénomènes périodiques.
+
+### Problèmes géométriques
+Calcul d'angles dans des figures géométriques complexes.
+
+## Conseils de résolution
+
+1. Ramener l'équation à une forme standard
+2. Utiliser les formules trigonométriques appropriées
+3. Résoudre les équations de base
+4. Vérifier les solutions dans l'intervalle demandé
+5. Utiliser le cercle trigonométrique pour visualiser`
       }
     ]
   },
-  "111": {
+
+  "11": {
     title: "Généralités sur les fonctions",
     semester: 2,
     slides: [
       {
         id: 1,
-        title: "Notion de fonction",
+        title: "Généralités sur les fonctions",
         content: `# Généralités sur les fonctions
 
-## Définition
-Une **fonction f** de A vers B associe à chaque élément x ∈ A au plus un élément y ∈ B.
-**f : A → B, x ↦ f(x)**
+## Définition d'une fonction
 
-## Vocabulaire
-- **Domaine de définition Df** : ensemble des x où f(x) existe
-- **Image de f** : {f(x) | x ∈ Df} 
-- **Antécédent de y** : x tel que f(x) = y
+### Notion de fonction
+Une fonction f de E vers F est une relation qui associe à chaque élément x de E au plus un élément y de F.
+On note f : E → F et y = f(x).
+
+### Vocabulaire
+- E est l'ensemble de départ
+- F est l'ensemble d'arrivée
+- x est la variable (antécédent)
+- f(x) est l'image de x par f
+- Df est l'ensemble de définition de f
+
+## Ensemble de définition
+
+### Détermination de Df
+L'ensemble de définition est l'ensemble des valeurs de x pour lesquelles f(x) existe.
+
+### Cas particuliers
+- Fonction polynôme : Df = ℝ
+- Fonction rationnelle : Df = ℝ privé des valeurs annulant le dénominateur
+- Fonction racine : x ≥ 0 pour √x
+- Fonction logarithme : x > 0 pour ln(x)
 
 ## Représentation graphique
-**Courbe Cf** : ensemble des points M(x, f(x)) avec x ∈ Df
 
-## Parité
+### Courbe représentative
+Dans un repère orthonormé, la courbe Cf d'une fonction f est l'ensemble des points M(x, f(x)) où x ∈ Df.
+
+### Lecture graphique
+- Ensemble de définition : projection de la courbe sur l'axe des abscisses
+- Ensemble image : projection de la courbe sur l'axe des ordonnées
+- Variations : croissance/décroissance
+
+## Parité d'une fonction
+
 ### Fonction paire
-**f(-x) = f(x)** pour tout x ∈ Df
-- Symétrie par rapport à l'axe des ordonnées
+f est paire si pour tout x ∈ Df : -x ∈ Df et f(-x) = f(x)
+La courbe est symétrique par rapport à l'axe des ordonnées.
 
-### Fonction impaire  
-**f(-x) = -f(x)** pour tout x ∈ Df
-- Symétrie par rapport à l'origine
+### Fonction impaire
+f est impaire si pour tout x ∈ Df : -x ∈ Df et f(-x) = -f(x)
+La courbe est symétrique par rapport à l'origine.
 
 ## Périodicité
-f est **périodique de période T** si :
-**f(x + T) = f(x)** pour tout x ∈ Df
 
-### Exemples
-- cos et sin : période 2π
-- tan : période π`
-      },
-      {
-        id: 2,
-        title: "Monotonie et extremums",
-        content: `# Monotonie et extremums
+### Fonction périodique
+f est périodique de période T > 0 si pour tout x ∈ Df :
+x + T ∈ Df et f(x + T) = f(x)
 
-## Croissance et décroissance
-### Fonction croissante sur I
-**∀x₁, x₂ ∈ I, x₁ < x₂ ⟹ f(x₁) ≤ f(x₂)**
+La courbe se répète tous les T.
 
-### Fonction décroissante sur I
-**∀x₁, x₂ ∈ I, x₁ < x₂ ⟹ f(x₁) ≥ f(x₂)**
+## Monotonie
 
-### Fonction strictement monotone
-Inégalités strictes
+### Fonction croissante
+f est croissante sur I si pour tous x₁, x₂ ∈ I :
+x₁ < x₂ ⟹ f(x₁) ≤ f(x₂)
 
-## Tableau de variations
-Synthèse des variations de f :
-- **Intervalles** de monotonie
-- **Valeurs** aux bornes
-- **Extremums** locaux
+### Fonction décroissante
+f est décroissante sur I si pour tous x₁, x₂ ∈ I :
+x₁ < x₂ ⟹ f(x₁) ≥ f(x₂)
 
-## Maximum et minimum
-### Maximum global
-**f(a) est maximum ⟺ ∀x ∈ Df, f(x) ≤ f(a)**
+### Fonction monotone
+Une fonction est monotone si elle est soit croissante, soit décroissante.
 
-### Minimum global
-**f(a) est minimum ⟺ ∀x ∈ Df, f(x) ≥ f(a)**
+## Extremums
 
-### Extremums locaux
-Sur un intervalle contenant a
+### Maximum local
+f admet un maximum local en a si il existe un intervalle I contenant a tel que :
+pour tout x ∈ I ∩ Df, f(x) ≤ f(a)
 
-## Fonctions majorées/minorées
-- **f majorée** : ∃M, ∀x ∈ Df, f(x) ≤ M
-- **f minorée** : ∃m, ∀x ∈ Df, f(x) ≥ m  
-- **f bornée** : majorée et minorée`
+### Minimum local
+f admet un minimum local en a si il existe un intervalle I contenant a tel que :
+pour tout x ∈ I ∩ Df, f(x) ≥ f(a)
+
+## Opérations sur les fonctions
+
+### Addition, soustraction, multiplication
+(f + g)(x) = f(x) + g(x)
+(f - g)(x) = f(x) - g(x)
+(f × g)(x) = f(x) × g(x)
+Ensemble de définition : Df ∩ Dg
+
+### Division
+(f/g)(x) = f(x)/g(x)
+Ensemble de définition : Df ∩ Dg privé des zéros de g
+
+### Composition
+(f ∘ g)(x) = f(g(x))
+Ensemble de définition : {x ∈ Dg | g(x) ∈ Df}`
       }
     ]
   },
-  "112": {
+
+  "12": {
     title: "Transformations du plan",
     semester: 2,
     slides: [
       {
         id: 1,
-        title: "Isométries du plan",
+        title: "Transformations du plan",
         content: `# Transformations du plan
 
-## Définition
-Une **transformation** du plan est une application qui à tout point M associe un point M'.
+## Définition générale
+
+Une transformation du plan est une application qui associe à tout point M du plan un point M' du plan.
+On note T : M ↦ M' ou M' = T(M).
 
 ## Isométries
-**Transformations qui conservent les distances**
-AB = A'B' pour tous points A, B
 
-### Translation
-**t⃗ᵤ(M) = M'** tel que **MM'⃗ = u⃗**
+### Définition
+Une isométrie est une transformation qui conserve les distances.
+Si T est une isométrie : d(M,N) = d(T(M),T(N))
 
-#### Propriétés
-- Conservation des **distances** et **angles**
-- Conservation du **parallélisme**
-- **Composée** de translations = translation
+### Propriétés des isométries
+- Conservent les longueurs
+- Conservent les angles
+- Conservent les aires
+- Transforment une droite en droite
+- Transforment un cercle en cercle de même rayon
 
-### Symétrie centrale
-**Sₒ(M) = M'** tel que **O est milieu de [MM']**
+## Translation
 
-#### Propriétés  
-- **Involutive** : Sₒ ∘ Sₒ = Id
-- Conservation des distances
-- **Renversement** de l'orientation
+### Définition
+Une translation de vecteur u⃗ est la transformation qui associe à tout point M le point M' tel que MM'⃗ = u⃗.
 
-### Symétrie axiale
-**s(d)(M) = M'** tel que **(d) est médiatrice de [MM']**
+### Propriétés
+- T_u⃗(M) = M + u⃗
+- Conserve les directions
+- Pas de point fixe (sauf si u⃗ = 0⃗)
+- Commutative : T_u⃗ ∘ T_v⃗ = T_v⃗ ∘ T_u⃗ = T_{u⃗+v⃗}
 
-#### Propriétés
-- **Involutive**
-- Conservation des distances
-- **Renversement** de l'orientation
-- Points de (d) **invariants**`
-      },
-      {
-        id: 2,
-        title: "Rotations et similitudes",
-        content: `# Rotations et similitudes
+## Symétrie centrale
+
+### Définition
+La symétrie de centre O associe à tout point M le point M' tel que O soit le milieu de [MM'].
+
+### Propriétés
+- S_O(M) = 2O - M en coordonnées
+- O est point fixe
+- S_O ∘ S_O = Id (involution)
+- Conserve les directions mais change le sens
 
 ## Rotation
-**R(O,θ)(M) = M'** avec :
-- **OM' = OM**
-- **(OM⃗, OM'⃗) = θ**
+
+### Définition
+Une rotation de centre O et d'angle θ transforme tout point M en un point M' tel que :
+- OM' = OM
+- (OM⃗, OM'⃗) = θ
 
 ### Propriétés
-- Conservation des **distances** et **angles**
-- Conservation de l'**orientation**
-- **Centre O invariant**
-- **Composée** de rotations de même centre = rotation
+- O est point fixe
+- R_{O,θ} ∘ R_{O,φ} = R_{O,θ+φ}
+- R_{O,-θ} = (R_{O,θ})^{-1}
+
+### Expression complexe
+Si M a pour affixe z et O pour affixe a :
+z' = e^{iθ}(z - a) + a
+
+## Symétrie orthogonale (réflexion)
+
+### Définition
+La symétrie orthogonale par rapport à une droite d transforme tout point M en un point M' tel que d soit la médiatrice de [MM'].
+
+### Propriétés
+- Les points de d sont fixes
+- s_d ∘ s_d = Id (involution)
+- Change l'orientation
 
 ## Homothétie
-**h(O,k)(M) = M'** tel que **OM'⃗ = k·OM⃗**
+
+### Définition
+L'homothétie de centre O et de rapport k (k ≠ 0) transforme tout point M en un point M' tel que :
+OM'⃗ = k·OM⃗
 
 ### Propriétés
-- Si |k| > 1 : **agrandissement**
-- Si |k| < 1 : **réduction**
-- Si k > 0 : **même orientation**
-- Si k < 0 : **orientation opposée**
-- Conservation du **parallélisme**
+- Si k > 0 : même sens, si k < 0 : sens opposé
+- Si |k| > 1 : agrandissement, si |k| < 1 : rétrécissement
+- h_{O,k} ∘ h_{O,k'} = h_{O,kk'}
+- Conserve les directions et les angles
 
-## Similitude directe
-**Composée d'une homothétie et d'une rotation**
-ou **composée d'une rotation et d'une homothétie**
+### Cas particuliers
+- k = 1 : identité
+- k = -1 : symétrie centrale
 
-### Forme complexe
-**f(z) = az + b** avec |a| ≠ 0
+## Similitudes
 
-### Propriétés
-- Conservation des **angles orientés**
-- **Rapport de similitude** = |a|`
+### Définition
+Une similitude est la composée d'une isométrie et d'une homothétie.
+Elle multiplie toutes les distances par un même facteur k > 0.
+
+### Types de similitudes
+- Similitude directe : rotation-homothétie
+- Similitude indirecte : symétrie-homothétie
+
+## Applications
+
+### Géométrie
+- Construction de figures
+- Démonstrations géométriques
+- Étude de configurations
+
+### Art et architecture
+- Frises et pavages
+- Symétries dans l'art
+
+### Physique
+- Transformations d'espace
+- Changements de référentiel`
       }
     ]
   },
-  "113": {
+
+  "13": {
     title: "Le produit scalaire",
     semester: 2,
     slides: [
       {
         id: 1,
-        title: "Définition et propriétés du produit scalaire",
+        title: "Le produit scalaire",
         content: `# Le produit scalaire
 
-## Définitions équivalentes
-### Par les normes
-**u⃗ · v⃗ = (1/2)(||u⃗ + v⃗||² - ||u⃗||² - ||v⃗||²)**
+## Définition du produit scalaire
 
-### Par l'angle
-**u⃗ · v⃗ = ||u⃗|| × ||v⃗|| × cos(u⃗, v⃗)**
+### Définition géométrique
+Le produit scalaire de deux vecteurs u⃗ et v⃗ est le nombre réel :
+u⃗ · v⃗ = ||u⃗|| × ||v⃗|| × cos(u⃗, v⃗)
 
-### Par projection
-**u⃗ · v⃗ = ||u⃗|| × proj_u⃗(v⃗)**
+où (u⃗, v⃗) est l'angle entre les deux vecteurs.
 
-## Propriétés algébriques
-- **Commutativité** : u⃗ · v⃗ = v⃗ · u⃗
-- **Bilinéarité** : 
-  - (λu⃗ + μv⃗) · w⃗ = λ(u⃗ · w⃗) + μ(v⃗ · w⃗)
-  - u⃗ · (λv⃗ + μw⃗) = λ(u⃗ · v⃗) + μ(u⃗ · w⃗)
-- **u⃗ · u⃗ = ||u⃗||²**
+### Cas particuliers
+- Si u⃗ = 0⃗ ou v⃗ = 0⃗ : u⃗ · v⃗ = 0
+- Si u⃗ ⊥ v⃗ : u⃗ · v⃗ = 0
+- u⃗ · u⃗ = ||u⃗||² (carré scalaire)
 
-## Expression dans un repère orthonormé
-Si u⃗(x, y) et v⃗(x', y') :
-**u⃗ · v⃗ = xx' + yy'**
+## Propriétés du produit scalaire
 
-## Orthogonalité
-**u⃗ ⊥ v⃗ ⟺ u⃗ · v⃗ = 0**
+### Commutativité
+u⃗ · v⃗ = v⃗ · u⃗
 
-### Vecteurs orthonormés
-- **||e⃗₁|| = ||e⃗₂|| = 1**
-- **e⃗₁ · e⃗₂ = 0**`
-      },
-      {
-        id: 2,
-        title: "Applications du produit scalaire",
-        content: `# Applications géométriques
+### Bilinéarité
+- (λu⃗) · v⃗ = λ(u⃗ · v⃗)
+- u⃗ · (λv⃗) = λ(u⃗ · v⃗)
+- (u⃗ + v⃗) · w⃗ = u⃗ · w⃗ + v⃗ · w⃗
 
-## Calcul d'angles
-### Angle entre deux vecteurs
-**cos(u⃗, v⃗) = (u⃗ · v⃗)/(||u⃗|| × ||v⃗||)**
+### Positivité
+u⃗ · u⃗ ≥ 0 et u⃗ · u⃗ = 0 ⟺ u⃗ = 0⃗
 
-### Angle dans un triangle
-Dans le triangle ABC :
-**cos(Â) = (AB⃗ · AC⃗)/(||AB⃗|| × ||AC⃗||)**
+## Expression analytique
 
-## Théorème de la médiane
-Dans un triangle ABC, si I est le milieu de [BC] :
-**AB² + AC² = 2AI² + BC²/2**
+### Dans une base orthonormée
+Si u⃗(x₁, y₁) et v⃗(x₂, y₂) dans une base orthonormée :
+u⃗ · v⃗ = x₁x₂ + y₁y₂
 
-## Théorème d'Al-Kashi
-Dans un triangle ABC :
-**BC² = AB² + AC² - 2·AB·AC·cos(Â)**
+### Norme d'un vecteur
+||u⃗|| = √(u⃗ · u⃗) = √(x₁² + y₁²)
 
-## Distance d'un point à une droite
-Point M(x₀, y₀) et droite (d) : ax + by + c = 0
-**d(M, (d)) = |ax₀ + by₀ + c|/√(a² + b²)**
+## Applications du produit scalaire
 
-## Équation d'un cercle
-### Forme développée
-**x² + y² - 2ax - 2by + c = 0**
-avec centre Ω(a, b) et rayon r = √(a² + b² - c)
+### Calcul d'angles
+cos(u⃗, v⃗) = (u⃗ · v⃗)/(||u⃗|| × ||v⃗||)
 
-### Condition d'existence
-**a² + b² - c > 0**`
+### Test d'orthogonalité
+u⃗ ⊥ v⃗ ⟺ u⃗ · v⃗ = 0
+
+### Projection orthogonale
+La projection de u⃗ sur v⃗ est :
+proj_v⃗(u⃗) = (u⃗ · v⃗/||v⃗||²) × v⃗
+
+## Identités remarquables
+
+### Identité de polarisation
+u⃗ · v⃗ = ¼(||u⃗ + v⃗||² - ||u⃗ - v⃗||²)
+
+### Identité du parallélogramme
+||u⃗ + v⃗||² + ||u⃗ - v⃗||² = 2(||u⃗||² + ||v⃗||²)
+
+### Développement
+||u⃗ + v⃗||² = ||u⃗||² + 2u⃗ · v⃗ + ||v⃗||²
+
+## Applications géométriques
+
+### Distance d'un point à une droite
+Si d a un vecteur directeur u⃗ et passe par A, la distance de M à d est :
+d(M, d) = ||AM⃗ ∧ u⃗||/||u⃗||
+
+### Équation d'un cercle
+Un cercle de centre A et de rayon r a pour équation :
+||AM⃗||² = r² ou AM⃗ · AM⃗ = r²
+
+### Médiane d'un triangle
+Dans un triangle ABC, la longueur de la médiane issue de A est :
+m_a = ½√(2b² + 2c² - a²)
+
+## Inéqualités
+
+### Inégalité de Cauchy-Schwarz
+|u⃗ · v⃗| ≤ ||u⃗|| × ||v⃗||
+
+L'égalité a lieu si et seulement si u⃗ et v⃗ sont colinéaires.
+
+### Inégalité triangulaire
+||u⃗ + v⃗|| ≤ ||u⃗|| + ||v⃗||
+
+## Applications en physique
+
+### Travail d'une force
+W = F⃗ · d⃗ où F⃗ est la force et d⃗ le déplacement
+
+### Puissance
+P = F⃗ · v⃗ où v⃗ est la vitesse`
       }
     ]
   },
-  "114": {
+
+  "14": {
     title: "Géométrie dans l'espace",
     semester: 2,
     slides: [
       {
         id: 1,
-        title: "Axiomes et positions relatives",
+        title: "Géométrie dans l'espace",
         content: `# Géométrie dans l'espace
 
-## Axiomes fondamentaux
+## Repérage dans l'espace
 
-### I. Axiomes de base
-1. **Par 2 points distincts**, il passe une et une seule droite
-2. **Par 3 points non alignés**, il passe un et un seul plan  
-3. Si un plan contient deux points A et B, alors ce plan contient **tous les points de la droite (AB)**
-4. Si deux plans distincts ont un point en commun, alors leur intersection est **une droite** passant par ce point
-5. **Axiome d'Euclide** : par un point A donné et une droite D donnée, il ne passe qu'une seule droite parallèle à D
+### Repère orthonormé de l'espace
+Un repère orthonormé de l'espace est constitué d'un point O (origine) et de trois vecteurs unitaires i⃗, j⃗, k⃗ orthogonaux deux à deux.
 
-## II. Positions relatives de droites et plans
+### Coordonnées d'un point
+Tout point M de l'espace a des coordonnées uniques (x, y, z) telles que :
+OM⃗ = xi⃗ + yj⃗ + zk⃗
 
-### 1) Positions relatives de deux droites
-**Propriété** : Deux droites de l'espace sont soit **coplanaires** (dans un même plan) soit **non coplanaires**.
+### Coordonnées d'un vecteur
+Un vecteur u⃗ a des coordonnées (a, b, c) telles que :
+u⃗ = ai⃗ + bj⃗ + ck⃗
 
-#### d₁ et d₂ sont coplanaires
-- **Sécantes** : elles se coupent en un point
-- **Parallèles strictement** : même direction, pas de point commun
-- **Confondues** : mêmes points
+## Distance et norme
 
-#### d₁ et d₂ sont non coplanaires
-- **Gauches** : ni sécantes ni parallèles`
-      },
-      {
-        id: 2,
-        title: "Positions relatives de plans et parallélisme",
-        content: `# Positions relatives et parallélisme
+### Distance entre deux points
+La distance entre M₁(x₁, y₁, z₁) et M₂(x₂, y₂, z₂) est :
+d = √[(x₂-x₁)² + (y₂-y₁)² + (z₂-z₁)²]
 
-### 2) Positions relatives de deux plans
-**Propriété** : Deux plans de l'espace sont soit **sécants** soit **parallèles**.
+### Norme d'un vecteur
+||u⃗|| = √(a² + b² + c²)
 
-#### P₁ et P₂ sont sécants
-- Leur intersection est **une droite**
+### Point milieu
+Le milieu de [AB] a pour coordonnées :
+((xₐ+xᵦ)/2, (yₐ+yᵦ)/2, (zₐ+zᵦ)/2)
 
-#### P₁ et P₂ sont parallèles  
-- **Parallèles strictement** : aucun point commun
-- **Confondus** : mêmes points
+## Produit scalaire dans l'espace
 
-### 3) Positions relatives d'une droite et d'un plan
-**Propriété** : Une droite et un plan de l'espace sont soit **sécants** soit **parallèles**.
+### Expression analytique
+u⃗(a₁, b₁, c₁) · v⃗(a₂, b₂, c₂) = a₁a₂ + b₁b₂ + c₁c₂
 
-#### d et P sont sécants
-- **Un point d'intersection** unique
+### Applications
+- Calcul d'angles
+- Test d'orthogonalité
+- Projection orthogonale
 
-#### d et P sont parallèles
-- **d incluse dans P** : tous les points de d sont dans P
-- **d strictement parallèle à P** : aucun point commun
+## Produit vectoriel
 
-## III. Parallélisme
+### Définition
+Le produit vectoriel u⃗ ∧ v⃗ est un vecteur perpendiculaire à u⃗ et v⃗, de norme ||u⃗|| × ||v⃗|| × sin(u⃗, v⃗).
 
-### 1) Parallélisme d'une droite avec un plan
-**Propriété** : Une droite d est parallèle à un plan P s'il existe une droite d' de P parallèle à d.
+### Expression analytique
+Si u⃗(a₁, b₁, c₁) et v⃗(a₂, b₂, c₂) :
+u⃗ ∧ v⃗ = (b₁c₂ - c₁b₂, c₁a₂ - a₁c₂, a₁b₂ - b₁a₂)
 
-### 2) Parallélisme de deux plans  
-**Propriété** : Si un plan P contient deux droites sécantes d et d' parallèles à un plan P', alors **les plans P et P' sont parallèles**.`
-      },
-      {
-        id: 3,
-        title: "Orthogonalité dans l'espace",
-        content: `# IV. Orthogonalité
+### Propriétés
+- Anticommutativité : u⃗ ∧ v⃗ = -v⃗ ∧ u⃗
+- Distributivité par rapport à l'addition
+- ||u⃗ ∧ v⃗|| = aire du parallélogramme formé par u⃗ et v⃗
 
-### 1) Orthogonalité de deux droites
-**Définition** : Deux droites de l'espace sont orthogonales lorsque leurs parallèles passant par un point quelconque sont **perpendiculaires**.
+## Droites dans l'espace
 
-### 2) Orthogonalité d'une droite et d'un plan
-**Propriété** : Une droite d est orthogonale à un plan P si elle est orthogonale à **deux droites sécantes de P**.
+### Représentation paramétrique
+Une droite passant par A(x₀, y₀, z₀) et de vecteur directeur u⃗(a, b, c) a pour équations :
+x = x₀ + ta
+y = y₀ + tb
+z = z₀ + tc
+où t ∈ ℝ
 
-#### Conséquences importantes
-- Si une droite d est orthogonale à un plan P, alors elle est orthogonale à **toutes les droites de P**
-- Si une droite d est orthogonale à un plan P, alors elle est orthogonale à **toutes les droites** de P
+### Position relative de deux droites
+Deux droites peuvent être :
+- Sécantes (un point d'intersection)
+- Parallèles (même direction, pas d'intersection)
+- Gauches (non coplanaires)
 
-### 3) Orthogonalité de deux plans
-**Propriété** : Deux plans sont perpendiculaires lorsque l'un contient une droite **orthogonale de l'autre**.
+## Plans dans l'espace
 
-## Applications pratiques
-- **Constructions géométriques** dans l'espace
-- **Calculs de volumes** et d'aires
-- **Projections orthogonales**
-- **Sections de solides**
+### Équation cartésienne
+Un plan a une équation de la forme : ax + by + cz + d = 0
+Le vecteur n⃗(a, b, c) est normal au plan.
 
-## Méthodes de démonstration
-1. **Utiliser les propriétés** de parallélisme et d'orthogonalité
-2. **Se ramener à des configurations planes**
-3. **Appliquer les théorèmes** classiques
-4. **Utiliser la géométrie vectorielle** dans l'espace`
+### Équation paramétrique
+Un plan passant par A et dirigé par u⃗ et v⃗ non colinéaires :
+x = x₀ + su₁ + tv₁
+y = y₀ + su₂ + tv₂
+z = z₀ + su₃ + tv₃
+où s, t ∈ ℝ
+
+### Position relative
+- Deux plans peuvent être parallèles, sécants ou confondus
+- Une droite et un plan peuvent être parallèles, sécants ou inclus
+
+## Sphères
+
+### Équation
+Une sphère de centre A(a, b, c) et de rayon r a pour équation :
+(x-a)² + (y-b)² + (z-c)² = r²
+
+### Intersection avec un plan
+- Si d < r : cercle
+- Si d = r : point (tangence)
+- Si d > r : ensemble vide
+
+## Volumes et aires
+
+### Volume d'un parallélépipède
+V = |u⃗ · (v⃗ ∧ w⃗)| (produit mixte)
+
+### Volume d'une pyramide
+V = (1/3) × aire_base × hauteur
+
+### Aire d'un parallélogramme
+A = ||u⃗ ∧ v⃗||
+
+## Applications
+
+### Géométrie analytique
+Résolution de problèmes géométriques par le calcul.
+
+### Physique
+- Mécanique du point et du solide
+- Électromagnétisme
+- Optique géométrique`
       }
     ],
     images: [
       "/lovable-uploads/54e9514f-84af-4d63-8dfa-568532e403fb.png",
-      "/lovable-uploads/df931ac0-a8f7-4ed2-80e6-856b662fd8d6.png", 
+      "/lovable-uploads/df931ac0-a8f7-4ed2-80e6-856b662fd8d6.png",
       "/lovable-uploads/67b0b5a4-09ac-40b5-8dc5-d366924f161a.png",
       "/lovable-uploads/3c866e1c-ae39-412d-ab0c-6fc1ae7fed02.png",
       "/lovable-uploads/027b5232-2600-493c-929d-90ad770a5188.png",
@@ -1107,188 +1198,138 @@ avec centre Ω(a, b) et rayon r = √(a² + b² - c)
       "/lovable-uploads/29736d58-ac5c-4a2f-ab07-dd13a79a30d0.png"
     ]
   },
-  "115": {
+
+  "15": {
     title: "Statistiques",
     semester: 2,
     slides: [
       {
         id: 1,
-        title: "Vocabulaire et représentations",
+        title: "Statistiques",
         content: `# Statistiques
 
-## Vocabulaire de base
-### Population et échantillon
-- **Population** : ensemble étudié
-- **Échantillon** : partie de la population
+## Introduction aux statistiques
+
+### Définition
+La statistique est la science qui consiste à recueillir, organiser, analyser et interpréter des données numériques.
+
+### Vocabulaire de base
+- **Population** : ensemble d'individus étudiés
+- **Échantillon** : sous-ensemble de la population
 - **Individu** : élément de la population
-- **Caractère** : propriété étudiée
+- **Caractère** : propriété étudiée sur les individus
+- **Modalité** : valeur prise par un caractère
 
 ### Types de caractères
-#### Caractère qualitatif
-- **Modalités** non numériques
-- Ex : couleur des yeux, profession
+- **Qualitatif** : non mesurable (couleur, sexe, profession)
+- **Quantitatif** : mesurable
+  - Discret : valeurs isolées (nombre d'enfants)
+  - Continu : toutes les valeurs d'un intervalle (taille, poids)
 
-#### Caractère quantitatif
-##### Discret
-- Valeurs isolées (entiers)
-- Ex : nombre d'enfants, note sur 20
+## Organisation des données
 
-##### Continu  
-- Valeurs dans un intervalle
-- Ex : taille, poids, température
+### Tableaux statistiques
+- Effectif (nᵢ) : nombre d'individus ayant la modalité i
+- Fréquence (fᵢ) : fᵢ = nᵢ/n où n est l'effectif total
+- Effectif cumulé croissant : somme des effectifs jusqu'à la modalité i
+- Fréquence cumulée croissante
+
+### Classes
+Pour les caractères quantitatifs continus, on groupe les données en classes.
+- Amplitude d'une classe : différence entre les bornes
+- Centre d'une classe : moyenne des bornes
 
 ## Représentations graphiques
-### Variables discrètes
-- **Diagramme en bâtons**
-- **Diagramme circulaire**
 
-### Variables continues
-- **Histogramme** (classes)
-- **Polygone des effectifs**
+### Diagrammes en barres
+Pour les caractères qualitatifs ou quantitatifs discrets.
 
-## Tableaux statistiques
-- **Effectifs** nᵢ
-- **Fréquences** fᵢ = nᵢ/n
-- **Effectifs cumulés croissants**
-- **Fréquences cumulées croissantes**`
-      },
-      {
-        id: 2,
-        title: "Paramètres statistiques",
-        content: `# Paramètres statistiques
+### Histogrammes
+Pour les caractères quantitatifs continus groupés en classes.
+L'aire de chaque rectangle est proportionnelle à l'effectif.
+
+### Diagrammes circulaires
+Chaque secteur a un angle proportionnel à l'effectif.
+
+### Polygones des effectifs
+Ligne brisée joignant les points (modalité, effectif).
 
 ## Paramètres de position
+
 ### Mode
-**Valeur la plus fréquente** (effectif maximum)
+Modalité ayant le plus grand effectif.
+- Unimodal : un seul mode
+- Bimodal : deux modes
+- Multimodal : plusieurs modes
 
-### Médiane  
-**Valeur qui partage la série ordonnée en deux parties égales**
-- Si n impair : médiane = valeur centrale
-- Si n pair : médiane = moyenne des 2 valeurs centrales
+### Médiane
+Valeur qui partage la série en deux parties égales.
+- Si n est impair : valeur du rang (n+1)/2
+- Si n est pair : moyenne des valeurs des rangs n/2 et n/2+1
 
-### Moyennes
-#### Moyenne arithmétique
-**x̄ = (1/n)Σnᵢxᵢ = Σfᵢxᵢ**
-
-#### Moyenne pondérée
-**x̄ = Σ(xᵢpᵢ)/Σpᵢ** avec pᵢ les poids
+### Moyenne arithmétique
+x̄ = (n₁x₁ + n₂x₂ + ... + nₖxₖ)/n = Σnᵢxᵢ/n
 
 ### Quartiles
-- **Q₁** : 25% des valeurs sont inférieures
-- **Q₃** : 75% des valeurs sont inférieures
-- **Intervalle interquartile** : [Q₁, Q₃]
+- Q₁ : 25% des valeurs lui sont inférieures
+- Q₂ = médiane : 50%
+- Q₃ : 75% des valeurs lui sont inférieures
 
 ## Paramètres de dispersion
-### Étendue
-**e = xₘₐₓ - xₘᵢₙ**
 
-### Variance  
-**V(X) = σ² = (1/n)Σnᵢ(xᵢ - x̄)² = x̄² - (x̄)²**
+### Étendue
+E = xₘₐₓ - xₘᵢₙ
+
+### Écart interquartile
+IQR = Q₃ - Q₁
+
+### Variance
+V = Σnᵢ(xᵢ - x̄)²/n = (Σnᵢxᵢ²)/n - x̄²
 
 ### Écart-type
-**σ = √V(X)**
+σ = √V
 
-## Interprétation
-- **σ petit** : valeurs groupées autour de x̄
-- **σ grand** : valeurs dispersées`
-      }
-    ]
-  }
-};
+## Diagrammes en boîte
 
-// Exercise data for math lessons
-export const mathExercisesData: { [key: string]: { title: string; exercises: any[] } } = {
-  "101": {
-    title: "Exercices - Les ensembles de nombres N, Z, Q, D et R",
-    exercises: [
-      {
-        id: 1,
-        title: "Classification des nombres",
-        difficulty: "Facile",
-        duration: "10 min",
-        points: 8,
-        question: `Classer les nombres suivants selon les ensembles N, Z, Q, D et R :
-        a) 5
-        b) -3
-        c) 2/3
-        d) 0,75
-        e) √2
-        f) π`,
-        solution: `Classification :
-        a) 5 ∈ N ⊂ Z ⊂ D ⊂ Q ⊂ R
-        b) -3 ∈ Z ⊂ Q ⊂ R mais -3 ∉ N
-        c) 2/3 ∈ Q ⊂ R mais 2/3 ∉ D (car 2/3 = 0,666...)
-        d) 0,75 ∈ D ⊂ Q ⊂ R (car 0,75 = 75/100)
-        e) √2 ∈ R mais √2 ∉ Q (nombre irrationnel)
-        f) π ∈ R mais π ∉ Q (nombre irrationnel)`
-      }
-    ]
-  },
-  "102": {
-    title: "Exercices - Arithmétique dans N", 
-    exercises: [
-      {
-        id: 1,
-        title: "Division euclidienne et PGCD",
-        difficulty: "Moyen",
-        duration: "15 min",
-        points: 12,
-        question: `1) Effectuer la division euclidienne de 127 par 15
-        2) Calculer PGCD(127, 15) par l'algorithme d'Euclide
-        3) En déduire PPCM(127, 15)`,
-        solution: `1) Division euclidienne :
-        127 = 15 × 8 + 7
-        Donc q = 8 et r = 7
-        
-        2) PGCD par algorithme d'Euclide :
-        127 = 15 × 8 + 7
-        15 = 7 × 2 + 1
-        7 = 1 × 7 + 0
-        Donc PGCD(127, 15) = 1
-        
-        3) PPCM calculation :
-        PGCD(127, 15) × PPCM(127, 15) = 127 × 15
-        1 × PPCM(127, 15) = 1905
-        Donc PPCM(127, 15) = 1905`
-      }
-    ]
-  },
-  "114": {
-    title: "Exercices - Géométrie dans l'espace",
-    exercises: [
-      {
-        id: 1,
-        title: "Positions relatives dans l'espace",
-        difficulty: "Moyen", 
-        duration: "20 min",
-        points: 15,
-        question: `ABCDEFGH est un cube. Déterminer les positions relatives :
-        1) Des droites (EG) et (FG)
-        2) Des droites (AD) et (FG)  
-        3) Des plans (BCG) et (BCE)
-        4) De la droite (GI) et du plan (ABC) où I est le centre de EFG`,
-        solution: `Analyse du cube ABCDEFGH :
+### Construction
+- Boîte : de Q₁ à Q₃
+- Médiane : trait dans la boîte
+- Moustaches : jusqu'aux valeurs extrêmes (sans aberrants)
+- Valeurs aberrantes : points isolés
 
-        1) Droites (EG) et (FG) :
-        - E, F, G sont trois sommets du cube
-        - (EG) et (FG) se coupent en G
-        - Position : SÉCANTES en G
+### Interprétation
+- Position : médiane
+- Dispersion : longueur de la boîte et des moustaches
+- Symétrie : position de la médiane dans la boîte
 
-        2) Droites (AD) et (FG) :
-        - (AD) appartient à la face ABCD
-        - (FG) appartient à la face EFGH  
-        - Ces droites ne sont ni parallèles ni sécantes
-        - Position : GAUCHES
+## Comparaison de séries
 
-        3) Plans (BCG) et (BCE) :
-        - Les deux plans passent par l'arête [BC]
-        - Ils se coupent suivant la droite (BC)
-        - Position : SÉCANTS selon (BC)
+### Critères de comparaison
+- Position : moyennes, médianes
+- Dispersion : écarts-types, étendues
+- Forme : symétrie, modalité
 
-        4) Droite (GI) et plan (ABC) :
-        - I est le centre de la face EFG, donc au-dessus du plan (ABC)
-        - (GI) n'a aucun point commun avec le plan (ABC)
-        - Position : STRICTEMENT PARALLÈLES`
+### Coefficient de variation
+CV = σ/x̄ (permet de comparer la dispersion relative)
+
+## Applications
+
+### Sondages
+Estimation des paramètres d'une population à partir d'un échantillon.
+
+### Contrôle qualité
+Surveillance de la production industrielle.
+
+### Sciences expérimentales
+Analyse des résultats d'expériences.
+
+## Probabilités élémentaires
+
+### Fréquence et probabilité
+Quand n → ∞, la fréquence tend vers la probabilité.
+
+### Loi des grands nombres
+Plus l'échantillon est grand, plus la moyenne de l'échantillon se rapproche de la moyenne théorique.`
       }
     ]
   }

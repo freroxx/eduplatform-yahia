@@ -1,10 +1,11 @@
 
 import React, { useState } from "react";
 import { motion, AnimatePresence } from "framer-motion";
-import { ChevronLeft, ChevronRight, BookOpen, CheckCircle } from "lucide-react";
+import { ChevronLeft, ChevronRight, BookOpen, CheckCircle, Image as ImageIcon } from "lucide-react";
 import { Button } from "@/components/ui/button";
 import { Progress } from "@/components/ui/progress";
 import { ScrollArea } from "@/components/ui/scroll-area";
+import { Dialog, DialogContent, DialogTrigger } from "@/components/ui/dialog";
 
 interface Slide {
   title: string;
@@ -15,9 +16,10 @@ interface Slide {
 interface CourseSlideProps {
   lessonTitle: string;
   slides: Slide[];
+  images?: string[];
 }
 
-const CourseSlide = ({ lessonTitle, slides }: CourseSlideProps) => {
+const CourseSlide = ({ lessonTitle, slides, images }: CourseSlideProps) => {
   const [currentSlide, setCurrentSlide] = useState(0);
 
   // Safety check for empty slides
@@ -106,6 +108,29 @@ const CourseSlide = ({ lessonTitle, slides }: CourseSlideProps) => {
               </div>
             </div>
             <div className="flex items-center gap-4">
+              {images && images.length > 0 && (
+                <Dialog>
+                  <DialogTrigger asChild>
+                    <Button variant="outline" size="sm" className="flex items-center gap-2">
+                      <ImageIcon className="h-4 w-4" />
+                      Voir les images ({images.length})
+                    </Button>
+                  </DialogTrigger>
+                  <DialogContent className="max-w-4xl max-h-[80vh] overflow-y-auto">
+                    <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-4">
+                      {images.map((image, index) => (
+                        <div key={index} className="border rounded-lg overflow-hidden">
+                          <img 
+                            src={image} 
+                            alt={`Image ${index + 1}`}
+                            className="w-full h-auto object-cover"
+                          />
+                        </div>
+                      ))}
+                    </div>
+                  </DialogContent>
+                </Dialog>
+              )}
               <div className="w-32">
                 <Progress value={progress} className="h-2" />
               </div>

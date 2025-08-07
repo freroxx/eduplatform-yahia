@@ -1,4 +1,3 @@
-
 // Math courses data with proper slide types
 export const mathLessonsData = {
   "1": {
@@ -90,7 +89,7 @@ export const mathLessonsData = {
       {
         id: 5,
         title: "Exemple de calcul de PGCD",
-        content: "Calculons pgcd(48, 18) avec l'algorithme d'Euclide :\n\n48 = 18 × 2 + 12\n18 = 12 × 1 + 6\n12 = 6 × 2 + 0\n\nDonc pgcd(48, 18) = 6\n\nVérification : 48 = 6 × 8 et 18 = 6 × 3\nComme pgcd(8,3) = 1, le résultat est correct.",
+        content: "Calculons pgcd(252, 105) avec l'algorithme d'Euclide :\n\n252 = 105 × 2 + 42\n105 = 42 × 2 + 21\n42 = 21 × 2 + 0\n\nDonc pgcd(252, 105) = 21\n\nVérification :\n252 = 21 × 12\n105 = 21 × 5\npgcd(12, 5) = 1 ✓",
         type: "example" as const
       },
       {
@@ -313,7 +312,7 @@ export const mathLessonsData = {
       {
         id: 3,
         title: "Inéquations",
-        content: "Résoudre une inéquation consiste à trouver toutes les valeurs qui la satisfont.\n\nPrincipes de résolution :\n• Même opérations que pour les équations\n• ATTENTION : multiplier ou diviser par un nombre négatif change le sens de l'inégalité\n\nInéquations du second degré :\n1. Trouver les racines de l'équation associée\n2. Étudier le signe du trinôme\n3. Dresser un tableau de signes\n4. Conclure selon l'inégalité demandée",
+        content: "Résoudre une inéquation consiste à trouver toutes les valeurs qui la satisfont.\n\nPrincipes de résolution :\n• Même opérations que pour les équations\n• ATTENTION : multiplier ou diviser par un nombre négatif change le sens de l'inégalité\n\nInéquations du second degré :\n1. Trouver les racines de l'équation associée\n2. Étudier le signe du trinôme\n3. Dresser un tableau de signes\n4. Conclure selon l'inéquation demandée",
         type: "definition" as const
       },
       {

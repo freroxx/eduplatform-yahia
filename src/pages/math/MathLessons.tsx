@@ -8,61 +8,31 @@ import { Tabs, TabsContent, TabsList, TabsTrigger } from "@/components/ui/tabs";
 import { BookOpen, FileText, Video, ArrowLeft, Calendar, Clock, Target, Calculator } from "lucide-react";
 import { Link } from "react-router-dom";
 import GlobalHeader from "@/components/GlobalHeader";
+import { mathLessonsData } from "@/data/mathCourseData";
 
 const MathLessons = () => {
-  const semester1Lessons = [
-    {
-      id: 101,
-      title: "Module 1: Équations et inéquations",
-      description: "Résolution d'équations du premier et second degré, systèmes d'équations et inéquations",
-      duration: "90 min",
-      difficulty: "Moyen",
-      hasVideos: true
-    },
-    {
-      id: 102,
-      title: "Module 2: Fonctions numériques",
-      description: "Étude des fonctions, variations, fonctions usuelles et représentations graphiques",
-      duration: "105 min",
-      difficulty: "Difficile",
-      hasVideos: true
-    },
-    {
-      id: 103,
-      title: "Module 3: Géométrie plane",
-      description: "Triangles, cercles, transformations géométriques et calculs d'aires",
-      duration: "75 min",
-      difficulty: "Moyen",
-      hasVideos: true
-    }
-  ];
+  // Transform the lessons data into semester arrays
+  const semester1Lessons = Object.entries(mathLessonsData)
+    .filter(([_, lesson]) => lesson.semester === 1)
+    .map(([id, lesson], index) => ({
+      id: parseInt(id),
+      title: `Module ${index + 1}: ${lesson.title}`,
+      description: lesson.slides[0]?.content.split('\n')[0].replace('# ', '') || lesson.title,
+      duration: "75-90 min",
+      difficulty: index < 3 ? "Facile" : index < 6 ? "Moyen" : "Difficile",
+      hasVideos: lesson.videos && lesson.videos.length > 0
+    }));
 
-  const semester2Lessons = [
-    {
-      id: 201,
-      title: "Module 4: Statistiques descriptives",
-      description: "Paramètres de position et de dispersion, représentations graphiques",
-      duration: "60 min",
-      difficulty: "Facile",
-      hasVideos: true
-    },
-    {
-      id: 202,
-      title: "Module 5: Probabilités",
-      description: "Expériences aléatoires, loi de probabilité et calculs probabilistes",
-      duration: "85 min",
-      difficulty: "Difficile",
-      hasVideos: true
-    },
-    {
-      id: 203,
-      title: "Module 6: Suites numériques",
-      description: "Suites arithmétiques et géométriques, calcul de termes et de sommes",
-      duration: "95 min",
-      difficulty: "Difficile",
-      hasVideos: true
-    }
-  ];
+  const semester2Lessons = Object.entries(mathLessonsData)
+    .filter(([_, lesson]) => lesson.semester === 2)
+    .map(([id, lesson], index) => ({
+      id: parseInt(id),
+      title: `Module ${index + 10}: ${lesson.title}`,
+      description: lesson.slides[0]?.content.split('\n')[0].replace('# ', '') || lesson.title,
+      duration: "75-90 min", 
+      difficulty: index < 2 ? "Moyen" : "Difficile",
+      hasVideos: lesson.videos && lesson.videos.length > 0
+    }));
 
   const getDifficultyColor = (difficulty: string) => {
     switch (difficulty) {
@@ -74,70 +44,77 @@ const MathLessons = () => {
   };
 
   const renderLessonCard = (lesson: any, index: number) => (
-    <Card key={lesson.id} className="backdrop-blur-sm border-0 shadow-lg hover:shadow-xl transition-all duration-300 hover:scale-[1.02] group bg-card/80">
-      <CardHeader>
-        <div className="flex items-start justify-between">
-          <div className="flex-1">
-            <div className="flex items-center space-x-3 mb-3">
-              <span className="bg-blue-600 rounded-full w-10 h-10 flex items-center justify-center text-sm font-bold text-white">
-                {lesson.id > 200 ? lesson.id - 200 : lesson.id - 100}
-              </span>
-              <Badge className={`${getDifficultyColor(lesson.difficulty)} font-medium border`}>
-                <Target className="h-3 w-3 mr-1" />
-                {lesson.difficulty}
-              </Badge>
-              <Badge variant="outline" className="border-muted-foreground/30 text-muted-foreground">
-                <Clock className="h-3 w-3 mr-1" />
-                {lesson.duration}
-              </Badge>
-              {lesson.hasVideos && (
-                <Badge variant="outline" className="text-blue-600 border-blue-300 dark:border-blue-400">
-                  <Video className="h-3 w-3 mr-1" />
-                  Vidéos
+    <motion.div
+      key={lesson.id}
+      initial={{ opacity: 0, y: 20 }}
+      animate={{ opacity: 1, y: 0 }}
+      transition={{ delay: index * 0.1 }}
+    >
+      <Card className="backdrop-blur-sm border-0 shadow-lg hover:shadow-xl transition-all duration-300 hover:scale-[1.02] group bg-card/80 hover-lift">
+        <CardHeader>
+          <div className="flex items-start justify-between">
+            <div className="flex-1">
+              <div className="flex items-center space-x-3 mb-3">
+                <span className="bg-blue-600 rounded-full w-10 h-10 flex items-center justify-center text-sm font-bold text-white">
+                  {lesson.id > 109 ? lesson.id - 109 : lesson.id - 100}
+                </span>
+                <Badge className={`${getDifficultyColor(lesson.difficulty)} font-medium border`}>
+                  <Target className="h-3 w-3 mr-1" />
+                  {lesson.difficulty}
                 </Badge>
-              )}
+                <Badge variant="outline" className="border-muted-foreground/30 text-muted-foreground">
+                  <Clock className="h-3 w-3 mr-1" />
+                  {lesson.duration}
+                </Badge>
+                {lesson.hasVideos && (
+                  <Badge variant="outline" className="text-blue-600 border-blue-300 dark:border-blue-400">
+                    <Video className="h-3 w-3 mr-1" />
+                    Vidéos
+                  </Badge>
+                )}
+              </div>
+              <CardTitle className="text-xl font-bold transition-colors mb-2 text-card-foreground group-hover:text-primary">
+                {lesson.title}
+              </CardTitle>
+              <CardDescription className="leading-relaxed">
+                {lesson.description}
+              </CardDescription>
             </div>
-            <CardTitle className="text-xl font-bold transition-colors mb-2 text-card-foreground group-hover:text-primary">
-              {lesson.title}
-            </CardTitle>
-            <CardDescription className="leading-relaxed">
-              {lesson.description}
-            </CardDescription>
           </div>
-        </div>
-      </CardHeader>
-      <CardContent>
-        <div className="flex flex-wrap gap-3">
-          <Link to={`/math/lesson/${lesson.id}/course`}>
-            <Button variant="default" size="sm" className="shadow-md hover:shadow-lg transition-all duration-200 bg-blue-600 hover:bg-blue-700">
-              <BookOpen className="h-4 w-4 mr-2" />
-              Cours
-            </Button>
-          </Link>
-          <Link to={`/math/lesson/${lesson.id}/exercises`}>
-            <Button variant="outline" size="sm" className="transition-all duration-200 border-purple-600 text-purple-600 hover:bg-purple-50 hover:border-purple-700 dark:border-purple-400 dark:text-purple-400 dark:hover:bg-purple-900/20">
-              <FileText className="h-4 w-4 mr-2" />
-              Exercices
-            </Button>
-          </Link>
-          {lesson.hasVideos && (
-            <Link to={`/math/lesson/${lesson.id}/videos`}>
-              <Button variant="outline" size="sm" className="transition-all duration-200 border-blue-600 text-blue-600 hover:bg-blue-50 hover:border-blue-700 dark:border-blue-400 dark:text-blue-400 dark:hover:bg-blue-900/20">
-                <Video className="h-4 w-4 mr-2" />
-                Vidéos YouTube
+        </CardHeader>
+        <CardContent>
+          <div className="flex flex-wrap gap-3">
+            <Link to={`/math/lesson/${lesson.id}/course`}>
+              <Button variant="default" size="sm" className="shadow-md hover:shadow-lg transition-all duration-200 bg-blue-600 hover:bg-blue-700">
+                <BookOpen className="h-4 w-4 mr-2" />
+                Cours
               </Button>
             </Link>
-          )}
-        </div>
-      </CardContent>
-    </Card>
+            <Link to={`/math/lesson/${lesson.id}/exercises`}>
+              <Button variant="outline" size="sm" className="transition-all duration-200 border-purple-600 text-purple-600 hover:bg-purple-50 hover:border-purple-700 dark:border-purple-400 dark:text-purple-400 dark:hover:bg-purple-900/20">
+                <FileText className="h-4 w-4 mr-2" />
+                Exercices
+              </Button>
+            </Link>
+            {lesson.hasVideos && (
+              <Link to={`/math/lesson/${lesson.id}/videos`}>
+                <Button variant="outline" size="sm" className="transition-all duration-200 border-blue-600 text-blue-600 hover:bg-blue-50 hover:border-blue-700 dark:border-blue-400 dark:text-blue-400 dark:hover:bg-blue-900/20">
+                  <Video className="h-4 w-4 mr-2" />
+                  Vidéos YouTube
+                </Button>
+              </Link>
+            )}
+          </div>
+        </CardContent>
+      </Card>
+    </motion.div>
   );
 
   return (
     <motion.div
       initial={{ opacity: 0 }}
       animate={{ opacity: 1 }}
-      transition={{ duration: 0.5 }}
+      transition={{ duration: 0.3 }}
       className="min-h-screen bg-gradient-to-br from-background via-secondary/30 to-accent/20"
     >
       <GlobalHeader />
@@ -159,7 +136,7 @@ const MathLessons = () => {
               </p>
             </div>
             <div className="text-sm font-medium text-primary">
-              6 modules
+              15 modules
             </div>
           </div>
         </div>
@@ -186,11 +163,11 @@ const MathLessons = () => {
             </div>
             <div className="flex items-center">
               <BookOpen className="h-4 w-4 mr-2" />
-              <span>6 Modules</span>
+              <span>15 Modules</span>
             </div>
             <div className="flex items-center">
               <Clock className="h-4 w-4 mr-2" />
-              <span>8h30 de contenu</span>
+              <span>20h+ de contenu</span>
             </div>
           </div>
         </motion.div>
@@ -205,7 +182,7 @@ const MathLessons = () => {
                 <Calendar className="h-4 w-4" />
                 <span>1er Semestre</span>
                 <Badge variant="secondary" className="ml-2">
-                  3 modules
+                  9 modules
                 </Badge>
               </TabsTrigger>
               <TabsTrigger 
@@ -215,7 +192,7 @@ const MathLessons = () => {
                 <Calendar className="h-4 w-4" />
                 <span>2ème Semestre</span>
                 <Badge variant="secondary" className="ml-2">
-                  3 modules
+                  6 modules
                 </Badge>
               </TabsTrigger>
             </TabsList>
@@ -226,7 +203,7 @@ const MathLessons = () => {
                   Premier Semestre
                 </h3>
                 <p className="text-muted-foreground">
-                  Équations, fonctions et géométrie plane
+                  Ensembles numériques, arithmétique, calcul vectoriel et géométrie
                 </p>
               </div>
               {semester1Lessons.map((lesson, index) => renderLessonCard(lesson, index))}
@@ -238,7 +215,7 @@ const MathLessons = () => {
                   Deuxième Semestre
                 </h3>
                 <p className="text-muted-foreground">
-                  Statistiques, probabilités et suites
+                  Fonctions, transformations, produit scalaire et statistiques
                 </p>
               </div>
               {semester2Lessons.map((lesson, index) => renderLessonCard(lesson, index))}

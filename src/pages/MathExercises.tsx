@@ -5,145 +5,18 @@ import { Card, CardContent, CardHeader, CardTitle } from "@/components/ui/card";
 import { Button } from "@/components/ui/button";
 import { Badge } from "@/components/ui/badge";
 import { ArrowLeft, CheckCircle, Clock, Target, Star, Trophy, Brain, Calculator } from "lucide-react";
-import { Link } from "react-router-dom";
+import { Link, useParams } from "react-router-dom";
 import { useToast } from "@/hooks/use-toast";
 import GlobalHeader from "@/components/GlobalHeader";
+import { mathExercisesData } from "@/data/mathCourseData";
 
 const MathExercises = () => {
+  const { id } = useParams();
   const { toast } = useToast();
   const [completedExercises, setCompletedExercises] = useState<number[]>([]);
   const [openSolutions, setOpenSolutions] = useState<number[]>([]);
 
-  const exercises = [
-    {
-      id: 1,
-      title: "Résolution d'équations du second degré",
-      difficulty: "Moyen",
-      duration: "15 min",
-      points: 10,
-      question: `Résoudre l'équation suivante :
-2x² - 5x + 2 = 0
-
-Détaillez votre démarche en calculant le discriminant et en donnant les solutions exactes.`,
-      solution: `Résolution :
-1) Identification des coefficients :
-   a = 2, b = -5, c = 2
-
-2) Calcul du discriminant :
-   Δ = b² - 4ac = (-5)² - 4(2)(2) = 25 - 16 = 9
-
-3) Comme Δ > 0, l'équation a deux solutions distinctes :
-   x₁ = (5 + √9)/(2×2) = (5 + 3)/4 = 2
-   x₂ = (5 - √9)/(2×2) = (5 - 3)/4 = 1/2
-
-Vérification :
-- Pour x = 2 : 2(2)² - 5(2) + 2 = 8 - 10 + 2 = 0 ✓
-- Pour x = 1/2 : 2(1/4) - 5(1/2) + 2 = 1/2 - 5/2 + 2 = 0 ✓
-
-Réponse : S = {1/2 ; 2}`
-    },
-    {
-      id: 2,
-      title: "Étude de fonction",
-      difficulty: "Difficile",
-      duration: "20 min",
-      points: 15,
-      question: `Soit f(x) = x² - 4x + 3
-
-1) Déterminer le domaine de définition de f
-2) Calculer f'(x) et étudier le signe de f'(x)
-3) Dresser le tableau de variations de f
-4) Déterminer les coordonnées du sommet de la parabole`,
-      solution: `Résolution :
-
-1) Domaine de définition :
-   f est un polynôme du second degré, donc Df = ℝ
-
-2) Calcul de la dérivée :
-   f'(x) = 2x - 4
-   
-   Signe de f'(x) :
-   f'(x) = 0 ⟺ 2x - 4 = 0 ⟺ x = 2
-   f'(x) > 0 ⟺ x > 2
-   f'(x) < 0 ⟺ x < 2
-
-3) Tableau de variations :
-   x    │ -∞        2        +∞
-   f'(x)│    -      0      +
-   f(x) │    ↘    -1      ↗
-
-4) Coordonnées du sommet :
-   Abscisse : x = 2
-   Ordonnée : f(2) = 4 - 8 + 3 = -1
-   
-   Le sommet est S(2, -1)`
-    },
-    {
-      id: 3,
-      title: "Calculs statistiques",
-      difficulty: "Facile",
-      duration: "10 min",
-      points: 8,
-      question: `Les notes d'un contrôle de mathématiques sont :
-12, 15, 8, 16, 11, 13, 9, 14, 10, 17
-
-Calculer :
-1) La moyenne
-2) La médiane
-3) L'étendue`,
-      solution: `Résolution :
-
-Données ordonnées : 8, 9, 10, 11, 12, 13, 14, 15, 16, 17
-
-1) Moyenne :
-   x̄ = (8 + 9 + 10 + 11 + 12 + 13 + 14 + 15 + 16 + 17) ÷ 10
-   x̄ = 125 ÷ 10 = 12,5
-
-2) Médiane :
-   N = 10 (pair)
-   Médiane = (note₅ + note₆) ÷ 2 = (12 + 13) ÷ 2 = 12,5
-
-3) Étendue :
-   E = Max - Min = 17 - 8 = 9
-
-Réponses :
-- Moyenne = 12,5
-- Médiane = 12,5  
-- Étendue = 9`
-    },
-    {
-      id: 4,
-      title: "Système d'équations",
-      difficulty: "Moyen",
-      duration: "12 min",
-      points: 12,
-      question: `Résoudre le système d'équations suivant :
-{2x + 3y = 7
-{x - y = 1
-
-Utilisez la méthode de substitution.`,
-      solution: `Résolution par substitution :
-
-1) À partir de la deuxième équation :
-   x - y = 1 ⟹ x = y + 1
-
-2) Substitution dans la première équation :
-   2(y + 1) + 3y = 7
-   2y + 2 + 3y = 7
-   5y + 2 = 7
-   5y = 5
-   y = 1
-
-3) Calcul de x :
-   x = y + 1 = 1 + 1 = 2
-
-4) Vérification :
-   • 2(2) + 3(1) = 4 + 3 = 7 ✓
-   • 2 - 1 = 1 ✓
-
-Solution : (x, y) = (2, 1)`
-    }
-  ];
+  const currentExercises = mathExercisesData[id || "101"];
 
   const toggleExercise = (exerciseId: number) => {
     const isCompleted = completedExercises.includes(exerciseId);
@@ -175,6 +48,26 @@ Solution : (x, y) = (2, 1)`
     }
   };
 
+  if (!currentExercises) {
+    return (
+      <div className="min-h-screen bg-gradient-to-br from-blue-50 via-indigo-50 to-purple-50 dark:from-gray-900 dark:via-gray-800 dark:to-gray-900">
+        <GlobalHeader />
+        <div className="container mx-auto px-4 py-8">
+          <div className="text-center">
+            <h1 className="text-2xl font-bold mb-4">Exercices non disponibles</h1>
+            <p className="text-muted-foreground mb-4">Les exercices pour cette leçon seront bientôt disponibles.</p>
+            <Link to="/lessons/math">
+              <Button variant="outline">
+                <ArrowLeft className="h-4 w-4 mr-2" />
+                Retour aux leçons
+              </Button>
+            </Link>
+          </div>
+        </div>
+      </div>
+    );
+  }
+
   return (
     <div className="min-h-screen bg-gradient-to-br from-blue-50 via-indigo-50 to-purple-50 dark:from-gray-900 dark:via-gray-800 dark:to-gray-900">
       <GlobalHeader />
@@ -196,7 +89,7 @@ Solution : (x, y) = (2, 1)`
             <div className="text-center">
               <h1 className="text-2xl font-bold text-foreground flex items-center gap-2 justify-center">
                 <Calculator className="h-6 w-6 text-blue-600" />
-                Exercices de Mathématiques
+                {currentExercises.title}
               </h1>
               <p className="text-sm text-muted-foreground">Entraînement et perfectionnement</p>
             </div>
@@ -208,14 +101,14 @@ Solution : (x, y) = (2, 1)`
 
           {/* Exercises */}
           <div className="space-y-6">
-            {exercises.map((exercise, index) => (
+            {currentExercises.exercises.map((exercise, index) => (
               <motion.div
                 key={exercise.id}
                 initial={{ opacity: 0, y: 20 }}
                 animate={{ opacity: 1, y: 0 }}
                 transition={{ delay: index * 0.1 }}
               >
-                <Card className="bg-card/80 backdrop-blur-sm border-0 shadow-lg hover:shadow-xl transition-all duration-300 hover:scale-[1.01]">
+                <Card className="bg-card/80 backdrop-blur-sm border-0 shadow-lg hover:shadow-xl transition-all duration-300 hover:scale-[1.01] hover-lift">
                   <CardHeader>
                     <div className="flex items-start justify-between">
                       <div className="flex-1">
@@ -242,7 +135,7 @@ Solution : (x, y) = (2, 1)`
                         onClick={() => toggleExercise(exercise.id)}
                         variant={completedExercises.includes(exercise.id) ? "default" : "outline"}
                         size="sm"
-                        className={`transition-all duration-300 ${
+                        className={`transition-all duration-200 ${
                           completedExercises.includes(exercise.id) 
                             ? 'bg-green-600 hover:bg-green-700 shadow-lg' 
                             : 'hover:border-green-500'

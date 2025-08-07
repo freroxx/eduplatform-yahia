@@ -1,4 +1,3 @@
-
 import React from 'react';
 import { BrowserRouter, Routes, Route } from 'react-router-dom';
 import { QueryClient, QueryClientProvider } from '@tanstack/react-query';
@@ -16,6 +15,7 @@ import MotivationalQuoteBar from "./components/MotivationalQuoteBar";
 
 // Math imports
 import MathLessons from "./pages/math/MathLessons";
+import MathVideos from "./pages/math/MathVideos";
 
 // Physics imports
 import PhysicsLessons from "./pages/physics/PhysicsLessons";
@@ -78,6 +78,7 @@ function App() {
             <Route path="/lessons/math" element={<MathLessons />} />
             <Route path="/math/lesson/:id/course" element={<MathCourse />} />
             <Route path="/math/lesson/:id/exercises" element={<MathExercises />} />
+            <Route path="/math/lesson/:id/videos" element={<MathVideos />} />
             
             {/* Physics Routes */}
             <Route path="/lessons/physics" element={<PhysicsLessons />} />

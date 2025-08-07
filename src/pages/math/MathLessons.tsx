@@ -19,7 +19,7 @@ const MathLessons = () => {
       description: lesson.slides[0]?.content.split('\n')[0].replace('# ', '') || lesson.title,
       duration: "75-90 min",
       difficulty: index < 3 ? "Facile" : index < 6 ? "Moyen" : "Difficile",
-      hasVideos: lesson.videos ? Array.isArray(lesson.videos) && lesson.videos.length > 0 : false
+      hasVideos: (lesson as any).videos && Array.isArray((lesson as any).videos) && (lesson as any).videos.length > 0
     }));
 
   const semester2Lessons = Object.entries(mathLessonsData)
@@ -30,7 +30,7 @@ const MathLessons = () => {
       description: lesson.slides[0]?.content.split('\n')[0].replace('# ', '') || lesson.title,
       duration: "75-90 min", 
       difficulty: index < 2 ? "Moyen" : "Difficile",
-      hasVideos: lesson.videos ? Array.isArray(lesson.videos) && lesson.videos.length > 0 : false
+      hasVideos: (lesson as any).videos && Array.isArray((lesson as any).videos) && (lesson as any).videos.length > 0
     }));
 
   const getDifficultyColor = (difficulty: string) => {

@@ -1,3 +1,4 @@
+
 // Math courses data with proper slide types
 export const mathLessonsData = {
   "1": {
@@ -367,7 +368,8 @@ export const mathLessonsData = {
         content: "La trigonométrie a de nombreuses applications :\n\n• Résolution de triangles quelconques\n• Physique : oscillations, ondes, mouvement circulaire\n• Ingénierie : analyse de signaux, traitement d'images\n• Astronomie : calculs de positions stellaires\n• Architecture : calculs de structures\n• Informatique graphique : rotations, transformations",
         type: "summary" as const
       }
-    ]
+    ],
+    videos: []
   },
   "10": {
     title: "Trigonométrie 2 (Équations et inéquations trigonométriques)",
@@ -391,7 +393,8 @@ export const mathLessonsData = {
         content: "Pour résoudre une inéquation trigonométrique :\n\n1. Se ramener à une inéquation simple\n2. Utiliser le cercle trigonométrique pour visualiser\n3. Tenir compte de la périodicité\n4. Donner la solution sous forme d'union d'intervalles\n\nExemple : sin x ≥ 1/2\nSur [0, 2π] : x ∈ [π/6, 5π/6]\nSolution générale : x ∈ [π/6 + 2kπ, 5π/6 + 2kπ], k ∈ ℤ",
         type: "definition" as const
       }
-    ]
+    ],
+    videos: []
   },
   "11": {
     title: "Généralités sur les fonctions",
@@ -415,7 +418,8 @@ export const mathLessonsData = {
         content: "Soit f et g deux fonctions :\n\n• Somme : (f + g)(x) = f(x) + g(x)\n• Produit : (f × g)(x) = f(x) × g(x)\n• Quotient : (f/g)(x) = f(x)/g(x) si g(x) ≠ 0\n• Composée : (g ∘ f)(x) = g(f(x))\n\nLe domaine de définition de chaque opération dépend des domaines de f et g.",
         type: "definition" as const
       }
-    ]
+    ],
+    videos: []
   },
   "12": {
     title: "Transformations du plan",
@@ -439,7 +443,8 @@ export const mathLessonsData = {
         content: "Une similitude est une transformation qui multiplie toutes les distances par un même facteur k > 0 (rapport de similitude).\n\nTypes de similitudes :\n• Homothétie : centre fixe, rapport k\n• Similitude directe : composition d'une homothétie et d'une rotation\n• Similitude indirecte : composition avec une réflexion\n\nPropriétés : conserve les angles et les rapports de longueurs.",
         type: "definition" as const
       }
-    ]
+    ],
+    videos: []
   },
   "13": {
     title: "Le produit scalaire",
@@ -463,7 +468,8 @@ export const mathLessonsData = {
         content: "Le produit scalaire permet de :\n\n• Calculer des longueurs : ||u⃗||² = u⃗ · u⃗\n• Déterminer des angles : cos θ = (u⃗ · v⃗)/(||u⃗|| × ||v⃗||)\n• Tester l'orthogonalité : u⃗ ⊥ v⃗ ⟺ u⃗ · v⃗ = 0\n• Calculer des distances et projections\n• Démontrer des propriétés géométriques (théorème de Pythagore, etc.)",
         type: "summary" as const
       }
-    ]
+    ],
+    videos: []
   },
   "14": {
     title: "Géométrie dans l'espace",
@@ -500,6 +506,7 @@ export const mathLessonsData = {
         type: "content" as const
       }
     ],
+    videos: [],
     images: [
       "/lovable-uploads/54e9514f-84af-4d63-8dfa-568532e403fb.png",
       "/lovable-uploads/027b5232-2600-493c-929d-90ad770a5188.png",
@@ -546,7 +553,8 @@ export const mathLessonsData = {
         content: "Les statistiques sont utilisées dans de nombreux domaines :\n\n• Économie : études de marché, analyses financières\n• Médecine : essais cliniques, épidémiologie\n• Sciences sociales : sondages d'opinion\n• Industrie : contrôle qualité, amélioration des processus\n• Recherche scientifique : validation d'hypothèses\n• Sport : analyse de performances\n• Politique publique : aide à la décision",
         type: "summary" as const
       }
-    ]
+    ],
+    videos: []
   }
 };
 
@@ -632,3 +640,4 @@ export const mathExercisesData = {
     ]
   }
 };
+

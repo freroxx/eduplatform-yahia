@@ -263,7 +263,7 @@ const Index = () => {
                 totalStudyTime={24}
                 currentStreak={5}
                 averageScore={89}
-                badgesEarned={12}
+                weeklyGoal={12}
               />
 
               <motion.section

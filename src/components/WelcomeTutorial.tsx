@@ -1,4 +1,3 @@
-
 import { useState } from 'react';
 import { motion, AnimatePresence } from 'framer-motion';
 import { Dialog, DialogContent, DialogHeader, DialogTitle } from '@/components/ui/dialog';
@@ -7,10 +6,11 @@ import { Card, CardContent } from '@/components/ui/card';
 import { BookOpen, FileText, Video, Target, ChevronLeft, ChevronRight } from 'lucide-react';
 
 interface WelcomeTutorialProps {
+  isOpen: boolean;
   onComplete: () => void;
 }
 
-const WelcomeTutorial = ({ onComplete }: WelcomeTutorialProps) => {
+const WelcomeTutorial = ({ isOpen, onComplete }: WelcomeTutorialProps) => {
   const [currentStep, setCurrentStep] = useState(0);
 
   const tutorialSteps = [
@@ -116,7 +116,7 @@ const WelcomeTutorial = ({ onComplete }: WelcomeTutorialProps) => {
   const currentStepData = tutorialSteps[currentStep];
 
   return (
-    <Dialog open={true} onOpenChange={() => {}}>
+    <Dialog open={isOpen} onOpenChange={() => {}}>
       <DialogContent className="max-w-lg" hideCloseButton>
         <DialogHeader>
           <div className="text-center mb-6">

@@ -1,4 +1,3 @@
-
 import { useState, useEffect } from "react";
 import { motion } from "framer-motion";
 import { Button } from "@/components/ui/button";
@@ -13,8 +12,8 @@ import QuickStats from "@/components/QuickStats";
 import EnhancedSubjectCard from "@/components/EnhancedSubjectCard";
 import MotivationalQuoteBar from "@/components/MotivationalQuoteBar";
 import Footer from "@/components/Footer";
-import { WelcomeTutorial } from "@/components/WelcomeTutorial";
-import { UserOnboarding } from "@/components/UserOnboarding";
+import WelcomeTutorial from "@/components/WelcomeTutorial";
+import UserOnboarding from "@/components/UserOnboarding";
 
 const Index = () => {
   const [showOnboarding, setShowOnboarding] = useState(false);
@@ -45,92 +44,107 @@ const Index = () => {
   const subjects = [
     {
       id: "math",
-      title: "Mathématiques",
+      name: "Mathématiques",
+      nameArabic: "الرياضيات",
       description: "Algèbre, géométrie, analyse et statistiques",
-      icon: Calculator,
-      color: "text-blue-600",
-      bgColor: "bg-blue-50",
-      darkBgColor: "dark:bg-blue-900/20",
+      icon: <Calculator className="h-6 w-6" />,
+      color: "#3B82F6",
+      bgGradient: "from-blue-500 to-indigo-600",
       lessons: 15,
-      progress: 65,
-      route: "/math"
+      exercises: 120,
+      duration: "20h",
+      difficulty: "Moyen" as const,
+      path: "math",
+      featured: true
     },
     {
       id: "physics",
-      title: "Physique-Chimie",
+      name: "Physique-Chimie",
+      nameArabic: "الفيزياء والكيمياء",
       description: "Mécanique, électricité, chimie organique",
-      icon: Atom,
-      color: "text-purple-600",
-      bgColor: "bg-purple-50",
-      darkBgColor: "dark:bg-purple-900/20",
+      icon: <Atom className="h-6 w-6" />,
+      color: "#8B5CF6",
+      bgGradient: "from-purple-500 to-violet-600",
       lessons: 12,
-      progress: 45,
-      route: "/physics"
+      exercises: 90,
+      duration: "18h",
+      difficulty: "Difficile" as const,
+      path: "physics"
     },
     {
       id: "svt",
-      title: "SVT",
+      name: "SVT",
+      nameArabic: "علوم الحياة والأرض",
       description: "Biologie, géologie et sciences de la terre",
-      icon: Leaf,
-      color: "text-green-600",
-      bgColor: "bg-green-50",
-      darkBgColor: "dark:bg-green-900/20",
+      icon: <Leaf className="h-6 w-6" />,
+      color: "#10B981",
+      bgGradient: "from-green-500 to-emerald-600",
       lessons: 10,
-      progress: 30,
-      route: "/svt"
+      exercises: 75,
+      duration: "15h",
+      difficulty: "Facile" as const,
+      path: "svt",
+      isNew: true
     },
     {
       id: "french",
-      title: "Français",
+      name: "Français",
+      nameArabic: "الفرنسية",
       description: "Littérature, grammaire et expression écrite",
-      icon: Book,
-      color: "text-red-600",
-      bgColor: "bg-red-50",
-      darkBgColor: "dark:bg-red-900/20",
+      icon: <Book className="h-6 w-6" />,
+      color: "#EF4444",
+      bgGradient: "from-red-500 to-rose-600",
       lessons: 14,
-      progress: 55,
-      route: "/french"
+      exercises: 85,
+      duration: "16h",
+      difficulty: "Moyen" as const,
+      path: "french"
     },
     {
       id: "english",
-      title: "Anglais",
+      name: "Anglais",
+      nameArabic: "الإنجليزية",
       description: "Grammaire, vocabulaire et compréhension",
-      icon: Languages,
-      color: "text-yellow-600",
-      bgColor: "bg-yellow-50",
-      darkBgColor: "dark:bg-yellow-900/20",
+      icon: <Languages className="h-6 w-6" />,
+      color: "#F59E0B",
+      bgGradient: "from-yellow-500 to-orange-600",
       lessons: 16,
-      progress: 40,
-      route: "/english"
+      exercises: 95,
+      duration: "18h",
+      difficulty: "Facile" as const,
+      path: "english"
     },
     {
       id: "arabic",
-      title: "العربية",
+      name: "العربية",
       description: "الأدب والنحو والتعبير",
-      icon: FileText,
-      color: "text-orange-600",
-      bgColor: "bg-orange-50",
-      darkBgColor: "dark:bg-orange-900/20",
+      icon: <FileText className="h-6 w-6" />,
+      color: "#F97316",
+      bgGradient: "from-orange-500 to-amber-600",
       lessons: 13,
-      progress: 25,
-      route: "/arabic"
+      exercises: 70,
+      duration: "14h",
+      difficulty: "Moyen" as const,
+      path: "arabic"
     },
     {
       id: "histoire-geo",
-      title: "Histoire-Géographie",
+      name: "Histoire-Géographie",
+      nameArabic: "التاريخ والجغرافيا",
       description: "Histoire mondiale et géographie physique",
-      icon: Globe,
-      color: "text-cyan-600",
-      bgColor: "bg-cyan-50",
-      darkBgColor: "dark:bg-cyan-900/20",
+      icon: <Globe className="h-6 w-6" />,
+      color: "#06B6D4",
+      bgGradient: "from-cyan-500 to-teal-600",
       lessons: 11,
-      progress: 50,
-      route: "/histoire-geo"
+      exercises: 65,
+      duration: "13h",
+      difficulty: "Moyen" as const,
+      path: "histoire-geo"
     }
   ];
 
   const quickActions = [
-    { icon: BookOpen, title: "Cours récents", description: "Reprendre où vous vous êtes arrêté", link: "/math" },
+    { icon: BookOpen, title: "Cours récents", description: "Reprendre où vous vous êtes arrêté", link: "/lessons/math" },
     { icon: FileText, title: "Exercices", description: "Pratiquer avec des exercices ciblés", link: "/math/lesson/1/exercises" },
     { icon: BarChart3, title: "Progrès", description: "Voir vos statistiques d'apprentissage", link: "/settings" },
     { icon: MessageSquare, title: "Assistant IA", description: "Obtenez de l'aide personnalisée", link: "#" }
@@ -178,7 +192,7 @@ const Index = () => {
           
           <div className="flex flex-col lg:flex-row gap-8">
             <div className="flex-1 space-y-8">
-              <SearchBar />
+              <SearchBar isOpen={false} onClose={() => {}} />
               
               <MotivationalQuoteBar />
               
@@ -204,16 +218,8 @@ const Index = () => {
                       transition={{ delay: 0.3 + index * 0.1 }}
                     >
                       <EnhancedSubjectCard
-                        subject={subject.title}
-                        description={subject.description}
-                        icon={subject.icon}
-                        color={subject.color}
-                        bgColor={subject.bgColor}
-                        darkBgColor={subject.darkBgColor}
-                        lessons={subject.lessons.toString()}
-                        progress={subject.progress.toString()}
-                        route={subject.route}
-                        className="transform transition-all duration-300 hover:scale-105 hover:shadow-xl"
+                        subject={subject}
+                        index={index}
                       />
                     </motion.div>
                   ))}
@@ -251,7 +257,14 @@ const Index = () => {
             </div>
 
             <div className="w-full lg:w-96 space-y-8">
-              <QuickStats />
+              <QuickStats 
+                totalLessons={101}
+                completedLessons={45}
+                totalStudyTime={24}
+                currentStreak={5}
+                averageScore={89}
+                badgesEarned={12}
+              />
 
               <motion.section
                 initial={{ y: 20, opacity: 0 }}

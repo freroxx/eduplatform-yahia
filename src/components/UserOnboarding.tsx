@@ -1,4 +1,3 @@
-
 import { useState } from 'react';
 import { motion, AnimatePresence } from 'framer-motion';
 import { Dialog, DialogContent, DialogHeader, DialogTitle } from '@/components/ui/dialog';
@@ -7,10 +6,11 @@ import { Card, CardContent } from '@/components/ui/card';
 import { BookOpen, Target, Trophy, ChevronRight } from 'lucide-react';
 
 interface UserOnboardingProps {
+  isOpen: boolean;
   onComplete: () => void;
 }
 
-const UserOnboarding = ({ onComplete }: UserOnboardingProps) => {
+const UserOnboarding = ({ isOpen, onComplete }: UserOnboardingProps) => {
   const [currentStep, setCurrentStep] = useState(0);
 
   const steps = [
@@ -46,7 +46,7 @@ const UserOnboarding = ({ onComplete }: UserOnboardingProps) => {
   const currentStepData = steps[currentStep];
 
   return (
-    <Dialog open={true} onOpenChange={() => {}}>
+    <Dialog open={isOpen} onOpenChange={() => {}}>
       <DialogContent className="max-w-md" hideCloseButton>
         <DialogHeader>
           <div className="text-center mb-6">

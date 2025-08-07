@@ -5,60 +5,12 @@ import { Card, CardContent, CardDescription, CardHeader, CardTitle } from "@/com
 import { Button } from "@/components/ui/button";
 import { Badge } from "@/components/ui/badge";
 import { Tabs, TabsContent, TabsList, TabsTrigger } from "@/components/ui/tabs";
-import { BookOpen, FileText, Video, ArrowLeft, Calendar, Clock, Target, Zap } from "lucide-react";
+import { BookOpen, FileText, Video, ArrowLeft, Calendar, Clock, Target, Atom } from "lucide-react";
 import { Link } from "react-router-dom";
 import GlobalHeader from "@/components/GlobalHeader";
-import EnhancedLoadingBar from "@/components/EnhancedLoadingBar";
+import { physicsLessonsStructure } from "@/data/physicsCourseData";
 
 const PhysicsLessons = () => {
-  const [isLoading, setIsLoading] = useState(false);
-
-  const semester1Lessons = [
-    {
-      id: 101,
-      title: "Module 1: Gravitation universelle",
-      description: "Loi de Newton, champ gravitationnel, pesanteur et mouvement des planètes",
-      duration: "120 min",
-      difficulty: "Difficile",
-      hasVideos: true
-    },
-    {
-      id: 102,
-      title: "Module 2: Mouvement et forces",
-      description: "Cinématique, dynamique, lois de Newton et applications",
-      duration: "110 min",
-      difficulty: "Moyen",
-      hasVideos: true
-    },
-    {
-      id: 103,
-      title: "Module 3: Travail et énergie",
-      description: "Travail d'une force, énergie cinétique, potentielle et conservation",
-      duration: "95 min",
-      difficulty: "Moyen",
-      hasVideos: true
-    }
-  ];
-
-  const semester2Lessons = [
-    {
-      id: 114,
-      title: "Module 4: Le courant électrique continu",
-      description: "Intensité, tension, résistance, loi d'Ohm et circuits électriques",
-      duration: "85 min",
-      difficulty: "Facile",
-      hasVideos: true
-    },
-    {
-      id: 115,
-      title: "Module 5: Optique géométrique",
-      description: "Réflexion, réfraction, lentilles minces et formation d'images",
-      duration: "100 min",
-      difficulty: "Moyen",
-      hasVideos: true
-    }
-  ];
-
   const getDifficultyColor = (difficulty: string) => {
     switch (difficulty) {
       case "Facile": return "bg-green-100 text-green-800 border-green-200";
@@ -68,84 +20,85 @@ const PhysicsLessons = () => {
     }
   };
 
-  const renderLessonCard = (lesson: any, index: number) => (
-    <Card key={lesson.id} className="backdrop-blur-sm border-0 shadow-lg hover:shadow-xl transition-all duration-300 hover:scale-[1.02] group bg-card/80">
-      <CardHeader>
-        <div className="flex items-start justify-between">
-          <div className="flex-1">
-            <div className="flex items-center space-x-3 mb-3">
-              <span className="bg-emerald-600 rounded-full w-10 h-10 flex items-center justify-center text-sm font-bold text-white">
-                {lesson.id > 113 ? lesson.id - 113 : lesson.id - 100}
-              </span>
-              <Badge className={`${getDifficultyColor(lesson.difficulty)} font-medium border`}>
-                <Target className="h-3 w-3 mr-1" />
-                {lesson.difficulty}
-              </Badge>
-              <Badge variant="outline" className="border-muted-foreground/30 text-muted-foreground">
-                <Clock className="h-3 w-3 mr-1" />
-                {lesson.duration}
-              </Badge>
-              {lesson.hasVideos && (
-                <Badge variant="outline" className="text-emerald-600 border-emerald-300 dark:border-emerald-400">
-                  <Video className="h-3 w-3 mr-1" />
-                  Vidéos
-                </Badge>
-              )}
-            </div>
-            <CardTitle className="text-xl font-bold transition-colors mb-2 text-card-foreground group-hover:text-primary">
-              {lesson.title}
-            </CardTitle>
-            <CardDescription className="leading-relaxed">
-              {lesson.description}
-            </CardDescription>
-          </div>
-        </div>
-      </CardHeader>
-      <CardContent>
-        <div className="flex flex-wrap gap-3">
-          <Link to={`/physics/lesson/${lesson.id}/course`}>
-            <Button variant="default" size="sm" className="shadow-md hover:shadow-lg transition-all duration-200 bg-emerald-600 hover:bg-emerald-700">
-              <BookOpen className="h-4 w-4 mr-2" />
-              Cours
-            </Button>
-          </Link>
-          <Link to={`/physics/lesson/${lesson.id}/exercises`}>
-            <Button variant="outline" size="sm" className="transition-all duration-200 border-purple-600 text-purple-600 hover:bg-purple-50 hover:border-purple-700 dark:border-purple-400 dark:text-purple-400 dark:hover:bg-purple-900/20">
-              <FileText className="h-4 w-4 mr-2" />
-              Exercices
-            </Button>
-          </Link>
-          {lesson.hasVideos && (
-            <Link to={`/physics/lesson/${lesson.id}/videos`}>
-              <Button variant="outline" size="sm" className="transition-all duration-200 border-emerald-600 text-emerald-600 hover:bg-emerald-50 hover:border-emerald-700 dark:border-emerald-400 dark:text-emerald-400 dark:hover:bg-emerald-900/20">
-                <Video className="h-4 w-4 mr-2" />
-                Vidéos
-              </Button>
-            </Link>
-          )}
-        </div>
-      </CardContent>
-    </Card>
-  );
+  const getDifficulty = (index: number, semester: number) => {
+    if (semester === 1) {
+      return index < 4 ? "Facile" : index < 10 ? "Moyen" : "Difficile";
+    } else {
+      return index < 3 ? "Moyen" : "Difficile";
+    }
+  };
 
-  if (isLoading) {
+  const renderLessonCard = (lesson: any, index: number, semester: number) => {
+    const difficulty = getDifficulty(index, semester);
     return (
-      <div className="min-h-screen bg-gradient-to-br from-background via-secondary/30 to-accent/20 flex items-center justify-center">
-        <EnhancedLoadingBar 
-          isLoading={isLoading} 
-          progress={75}
-          message="Chargement des leçons de physique..."
-          color="green"
-        />
-      </div>
+      <motion.div
+        key={lesson.id}
+        initial={{ opacity: 0, y: 20 }}
+        animate={{ opacity: 1, y: 0 }}
+        transition={{ delay: index * 0.1 }}
+      >
+        <Card className="backdrop-blur-sm border-0 shadow-lg hover:shadow-xl transition-all duration-300 hover:scale-[1.02] group bg-card/80 hover-lift">
+          <CardHeader>
+            <div className="flex items-start justify-between">
+              <div className="flex-1">
+                <div className="flex items-center space-x-3 mb-3">
+                  <span className="bg-purple-600 rounded-full w-10 h-10 flex items-center justify-center text-sm font-bold text-white">
+                    {lesson.id}
+                  </span>
+                  <Badge className={`${getDifficultyColor(difficulty)} font-medium border`}>
+                    <Target className="h-3 w-3 mr-1" />
+                    {difficulty}
+                  </Badge>
+                  <Badge variant="outline" className="border-muted-foreground/30 text-muted-foreground">
+                    <Clock className="h-3 w-3 mr-1" />
+                    60-75 min
+                  </Badge>
+                  <Badge variant="outline" className="text-blue-600 border-blue-300 dark:border-blue-400">
+                    <Video className="h-3 w-3 mr-1" />
+                    Vidéos
+                  </Badge>
+                </div>
+                <CardTitle className="text-xl font-bold transition-colors mb-2 text-card-foreground group-hover:text-primary">
+                  Module {lesson.id}: {lesson.title}
+                </CardTitle>
+                <CardDescription className="leading-relaxed">
+                  {lesson.description || `Étude approfondie de ${lesson.title.toLowerCase()}`}
+                </CardDescription>
+              </div>
+            </div>
+          </CardHeader>
+          <CardContent>
+            <div className="flex flex-wrap gap-3">
+              <Link to={`/physics/lesson/${lesson.id}/course`}>
+                <Button variant="default" size="sm" className="shadow-md hover:shadow-lg transition-all duration-200 bg-purple-600 hover:bg-purple-700">
+                  <BookOpen className="h-4 w-4 mr-2" />
+                  Cours
+                </Button>
+              </Link>
+              <Link to={`/physics/lesson/${lesson.id}/exercises`}>
+                <Button variant="outline" size="sm" className="transition-all duration-200 border-green-600 text-green-600 hover:bg-green-50 hover:border-green-700 dark:border-green-400 dark:text-green-400 dark:hover:bg-green-900/20">
+                  <FileText className="h-4 w-4 mr-2" />
+                  Exercices
+                </Button>
+              </Link>
+              <Link to={`/physics/lesson/${lesson.id}/videos`}>
+                <Button variant="outline" size="sm" className="transition-all duration-200 border-blue-600 text-blue-600 hover:bg-blue-50 hover:border-blue-700 dark:border-blue-400 dark:text-blue-400 dark:hover:bg-blue-900/20">
+                  <Video className="h-4 w-4 mr-2" />
+                  Vidéos YouTube
+                </Button>
+              </Link>
+            </div>
+          </CardContent>
+        </Card>
+      </motion.div>
     );
-  }
+  };
 
   return (
     <motion.div
       initial={{ opacity: 0 }}
       animate={{ opacity: 1 }}
-      transition={{ duration: 0.5 }}
+      transition={{ duration: 0.3 }}
       className="min-h-screen bg-gradient-to-br from-background via-secondary/30 to-accent/20"
     >
       <GlobalHeader />
@@ -159,15 +112,15 @@ const PhysicsLessons = () => {
             </Link>
             <div className="text-center">
               <h1 className="text-2xl font-bold text-foreground flex items-center gap-2">
-                <Zap className="h-6 w-6 text-emerald-600" />
-                Physique
+                <Atom className="h-6 w-6 text-purple-600" />
+                Physique-Chimie
               </h1>
               <p className="text-sm text-muted-foreground">
                 Tronc Commun Sciences
               </p>
             </div>
             <div className="text-sm font-medium text-primary">
-              5 modules
+              23 modules
             </div>
           </div>
         </div>
@@ -181,10 +134,10 @@ const PhysicsLessons = () => {
           className="text-center mb-12"
         >
           <h2 className="text-4xl font-bold mb-4 text-foreground">
-            Programme de Physique
+            Programme de Physique-Chimie
           </h2>
           <p className="text-xl mb-6 text-muted-foreground">
-            Mécanique, électricité et optique
+            Mécanique, électricité, chimie et thermodynamique
           </p>
           
           <div className="flex justify-center space-x-8 text-sm text-muted-foreground">
@@ -194,11 +147,11 @@ const PhysicsLessons = () => {
             </div>
             <div className="flex items-center">
               <BookOpen className="h-4 w-4 mr-2" />
-              <span>5 Modules</span>
+              <span>23 Modules</span>
             </div>
             <div className="flex items-center">
               <Clock className="h-4 w-4 mr-2" />
-              <span>8h30 de contenu</span>
+              <span>25h+ de contenu</span>
             </div>
           </div>
         </motion.div>
@@ -213,7 +166,7 @@ const PhysicsLessons = () => {
                 <Calendar className="h-4 w-4" />
                 <span>1er Semestre</span>
                 <Badge variant="secondary" className="ml-2">
-                  3 modules
+                  13 modules
                 </Badge>
               </TabsTrigger>
               <TabsTrigger 
@@ -223,7 +176,7 @@ const PhysicsLessons = () => {
                 <Calendar className="h-4 w-4" />
                 <span>2ème Semestre</span>
                 <Badge variant="secondary" className="ml-2">
-                  2 modules
+                  10 modules
                 </Badge>
               </TabsTrigger>
             </TabsList>
@@ -234,10 +187,12 @@ const PhysicsLessons = () => {
                   Premier Semestre
                 </h3>
                 <p className="text-muted-foreground">
-                  Mécanique classique
+                  Mécanique, chimie générale et structure de la matière
                 </p>
               </div>
-              {semester1Lessons.map((lesson, index) => renderLessonCard(lesson, index))}
+              {physicsLessonsStructure.semester1.map((lesson, index) => 
+                renderLessonCard(lesson, index, 1)
+              )}
             </TabsContent>
             
             <TabsContent value="semester2" className="space-y-6">
@@ -246,10 +201,12 @@ const PhysicsLessons = () => {
                   Deuxième Semestre
                 </h3>
                 <p className="text-muted-foreground">
-                  Électricité et optique
+                  Électricité, électronique et chimie quantitative
                 </p>
               </div>
-              {semester2Lessons.map((lesson, index) => renderLessonCard(lesson, index))}
+              {physicsLessonsStructure.semester2.map((lesson, index) => 
+                renderLessonCard(lesson, index, 2)
+              )}
             </TabsContent>
           </Tabs>
         </div>

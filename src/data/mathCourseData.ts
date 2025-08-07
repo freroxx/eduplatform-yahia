@@ -1,4 +1,3 @@
-
 // Math courses data with proper slide types
 export const mathLessonsData = {
   "1": {
@@ -452,24 +451,59 @@ export const mathLessonsData = {
     slides: [
       {
         id: 1,
-        title: "Définition du produit scalaire",
-        content: "Le produit scalaire de deux vecteurs u⃗ et v⃗ est le nombre réel :\n\nu⃗ · v⃗ = ||u⃗|| × ||v⃗|| × cos θ\n\noù θ est l'angle entre u⃗ et v⃗.\n\nEn coordonnées : si u⃗(x₁, y₁) et v⃗(x₂, y₂), alors :\nu⃗ · v⃗ = x₁x₂ + y₁y₂",
+        title: "Introduction au produit scalaire",
+        content: "Le produit scalaire est une opération fondamentale en géométrie vectorielle, introduite pour répondre aux besoins de la physique.\n\nCette notion, développée par Hermann Grassmann (1809-1877) puis baptisée par William Hamilton (1805-1865), permet de:\n• Calculer des longueurs et des angles\n• Déterminer l'orthogonalité de vecteurs\n• Résoudre des problèmes géométriques complexes\n• Applications en physique et ingénierie",
         type: "introduction" as const
       },
       {
         id: 2,
-        title: "Propriétés du produit scalaire",
-        content: "Le produit scalaire vérifie :\n\n• Commutativité : u⃗ · v⃗ = v⃗ · u⃗\n• Bilinéarité : (au⃗ + bv⃗) · w⃗ = au⃗ · w⃗ + bv⃗ · w⃗\n• u⃗ · u⃗ = ||u⃗||² ≥ 0\n• u⃗ · v⃗ = 0 ⟺ u⃗ ⊥ v⃗ (orthogonalité)\n\nInégalité de Cauchy-Schwarz : |u⃗ · v⃗| ≤ ||u⃗|| × ||v⃗||",
+        title: "Définition du produit scalaire",
+        content: "**Définition 1:** Soit u⃗ et v⃗ deux vecteurs du plan. Et soient A, B et C trois points du plan tel que u⃗ = AB⃗ et v⃗ = AC⃗.\n\nOn appelle produit scalaire de u⃗ par v⃗, noté u⃗.v⃗, le nombre réel défini par:\n• Si u⃗ = 0⃗ ou v⃗ = 0⃗ alors u⃗.v⃗ = 0\n• Si u⃗ ≠ 0⃗ et v⃗ ≠ 0⃗ alors soit H le projeté orthogonal de C sur la droite (AB)\n\n**Cas selon l'orientation:**\n• u⃗.v⃗ = AB⃗.AC⃗ = AH × AB⃗ si AB⃗ et AH⃗ ont le même sens\n• u⃗.v⃗ = AB⃗.AC⃗ = -AH × AB⃗ si AB⃗ et AH⃗ ont un sens contraire",
         type: "definition" as const
       },
       {
         id: 3,
-        title: "Applications géométriques",
-        content: "Le produit scalaire permet de :\n\n• Calculer des longueurs : ||u⃗||² = u⃗ · u⃗\n• Déterminer des angles : cos θ = (u⃗ · v⃗)/(||u⃗|| × ||v⃗||)\n• Tester l'orthogonalité : u⃗ ⊥ v⃗ ⟺ u⃗ · v⃗ = 0\n• Calculer des distances et projections\n• Démontrer des propriétés géométriques (théorème de Pythagore, etc.)",
+        title: "Propriétés du produit scalaire",
+        content: "**Définition 3:** Pour tous vecteurs u⃗ et v⃗:\nu⃗.v⃗ = ||u⃗|| × ||v⃗|| × cos(u⃗, v⃗) dans le cas général\n\n**Propriétés fondamentales:**\n1. u⃗.(v⃗ + w⃗) = u⃗.v⃗ + u⃗.w⃗\n2. u⃗.(kv⃗) = ku⃗.v⃗, avec k un nombre réel\n3. (u⃗ + v⃗)² = u⃗² + 2u⃗.v⃗ + v⃗²\n4. (u⃗ - v⃗)² = u⃗² - 2u⃗.v⃗ + v⃗²\n5. (u⃗ + v⃗)(u⃗ - v⃗) = u⃗² - v⃗²",
+        type: "definition" as const
+      },
+      {
+        id: 4,
+        title: "Produit scalaire et norme",
+        content: "**Relation fondamentale:**\nPour un vecteur u⃗, on a: u⃗.u⃗ = ||u⃗||²\n\n**Propriété importante:**\nPour deux vecteurs u⃗ et v⃗:\nu⃗.v⃗ = 1/2(||u⃗||² + ||v⃗||² - ||u⃗ - v⃗||²)\n\n**Applications:**\n• Calcul de longueurs dans un triangle\n• Théorème de la médiane: MA² + MB² = 2MI² + AB²/2\n• Relations métriques dans les triangles",
+        type: "content" as const
+      },
+      {
+        id: 5,
+        title: "Orthogonalité et projection",
+        content: "**Vecteurs orthogonaux:**\nLes vecteurs u⃗ et v⃗ sont orthogonaux si et seulement si u⃗.v⃗ = 0\n\n**Projection orthogonale:**\nSoit une droite d et un point M du plan. Le projeté orthogonal du point M sur la droite d est le point d'intersection H de la droite d avec la perpendiculaire à d passant par M.\n\n**Propriété:** Si u⃗ = OA⃗ et v⃗ = OB⃗, alors:\nu⃗.v⃗ = OA.OH, où H est le projeté orthogonal de B sur (OA)",
+        type: "definition" as const
+      },
+      {
+        id: 6,
+        title: "Applications du produit scalaire",
+        content: "**1) Relations métriques dans le triangle rectangle:**\nSi ABC est rectangle en A, alors BC² = AB² + AC² (Théorème de Pythagore)\n\n**2) Théorème d'Al Kashi:**\nDans un triangle ABC quelconque:\nBC² = AB² + AC² - 2.AB × AC × cos A\n\n**3) Théorème de la médiane:**\nPour tout point M: MA² + MB² = 2MI² + AB²/2\noù I est le milieu de [AB]\n\n**4) Formule de la surface:**\nSurface du triangle ABC = 1/2 × AB × AC × sin A",
+        type: "content" as const
+      },
+      {
+        id: 7,
+        title: "Récapitulatif et applications",
+        content: "**Points clés à retenir:**\n\n✅ **Définitions:**\n• u⃗.v⃗ = ||u⃗|| × ||v⃗|| × cos(u⃗, v⃗)\n• u⃗.v⃗ = 0 ⟺ u⃗ ⊥ v⃗\n\n✅ **Propriétés:**\n• Bilinéarité: u⃗.(v⃗ + w⃗) = u⃗.v⃗ + u⃗.w⃗\n• u⃗.u⃗ = ||u⃗||²\n\n✅ **Applications géométriques:**\n• Calcul d'angles et de longueurs\n• Théorèmes de Pythagore et d'Al Kashi\n• Résolution de problèmes géométriques\n\n**Exercices recommandés:** Applications dans les triangles rectangles et quelconques",
         type: "summary" as const
       }
     ],
-    videos: []
+    videos: [],
+    images: [
+      "/lovable-uploads/934a8780-6c25-410a-9b09-8a8ca5228b83.png",
+      "/lovable-uploads/f091d88a-abb3-499a-859e-2c9b0e1eeba0.png",
+      "/lovable-uploads/4fd76b46-f039-4f50-9b03-dc97ec923144.png",
+      "/lovable-uploads/760b3cfb-0f57-40dd-9d56-c147f422cf81.png",
+      "/lovable-uploads/e9c12f57-0424-42d1-94f8-f4fc20e2f242.png",
+      "/lovable-uploads/9b1413c6-2e94-4f9e-97ca-a0c638705fb8.png",
+      "/lovable-uploads/caa85389-9723-4106-8724-48d8a5bf791c.png",
+      "/lovable-uploads/25bba69a-703e-4b7a-9d23-188a7f2b4734.png",
+      "/lovable-uploads/0744405c-2dd1-49fb-ba54-d9074313ee3d.png"
+    ]
   },
   "14": {
     title: "Géométrie dans l'espace",
@@ -640,4 +674,3 @@ export const mathExercisesData = {
     ]
   }
 };
-

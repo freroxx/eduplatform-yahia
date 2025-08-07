@@ -290,7 +290,7 @@ const MathCourse = () => {
     return (
       <div className="min-h-screen bg-gradient-to-br from-background via-secondary/30 to-accent/20 flex items-center justify-center">
         <EnhancedLoadingBar 
-          isLoading={isLoading} 
+          isLoading={isLoading}
           progress={loadingProgress}
           message="Chargement du cours de mathématiques..."
           color="blue"

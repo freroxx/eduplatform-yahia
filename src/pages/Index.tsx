@@ -178,7 +178,7 @@ const Index = () => {
     return (
       <div className="min-h-screen bg-gradient-to-br from-background via-secondary/30 to-accent/20 flex items-center justify-center">
         <EnhancedLoadingBar 
-          isLoading={isLoading} 
+          isLoading={isLoading}
           progress={loadingProgress}
           message="Chargement d'EduLearn Pro..."
         />
@@ -295,10 +295,10 @@ const Index = () => {
                 <ProgressTracker 
                   subject="Mathématiques"
                   totalLessons={12}
-                  completedLessons={3}
+                  completedLessons={totalStats.coursesCompleted || 3}
                   totalPoints={120}
-                  earnedPoints={45}
-                  studyTime="2h 30min"
+                  earnedPoints={totalStats.totalPoints || 45}
+                  studyTime={`${totalStats.totalStudyTime || 150}min`}
                 />
               </motion.div>
             </div>

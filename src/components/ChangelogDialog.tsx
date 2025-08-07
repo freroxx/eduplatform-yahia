@@ -3,7 +3,7 @@ import { Dialog, DialogContent, DialogHeader, DialogTitle } from "@/components/u
 import { Badge } from "@/components/ui/badge";
 import { ScrollArea } from "@/components/ui/scroll-area";
 import { Separator } from "@/components/ui/separator";
-import { Sparkles, Bug, Settings, BookOpen, Target, Zap, Image, Palette, Cpu } from "lucide-react";
+import { Sparkles, Bug, Settings, BookOpen, Target, Zap, Image, Palette, Cpu, Play, Users, Globe, Layers } from "lucide-react";
 
 interface ChangelogDialogProps {
   open: boolean;
@@ -12,6 +12,55 @@ interface ChangelogDialogProps {
 
 const ChangelogDialog = ({ open, onOpenChange }: ChangelogDialogProps) => {
   const versions = [
+    {
+      version: "5.5.0",
+      date: "Janvier 2025",
+      type: "major",
+      changes: [
+        {
+          type: "feature",
+          icon: Sparkles,
+          title: "Onboarding amélioré",
+          description: "Nouvelle expérience d'accueil interactive avec tutoriel personnalisé"
+        },
+        {
+          type: "feature",
+          icon: Play,
+          title: "Lecteur vidéo intégré",
+          description: "Nouveau lecteur vidéo avec support YouTube et contrôles avancés"
+        },
+        {
+          type: "feature",
+          icon: Image,
+          title: "Visionneuse d'images optimisée",
+          description: "Interface améliorée avec zoom, navigation et mode plein écran"
+        },
+        {
+          type: "feature",
+          icon: BookOpen,
+          title: "Cours de Physique-Chimie complets",
+          description: "23 modules structurés sur 2 semestres avec exercices et vidéos"
+        },
+        {
+          type: "improvement",
+          icon: Zap,
+          title: "Animations fluides",
+          description: "Nouvelles animations avec Framer Motion pour une expérience premium"
+        },
+        {
+          type: "improvement",
+          icon: Palette,
+          title: "Interface redessinée",
+          description: "Design moderne avec gradients et effets visuels améliorés"
+        },
+        {
+          type: "improvement",
+          icon: Layers,
+          title: "Navigation optimisée",
+          description: "Routage amélioré et structure de pages plus intuitive"
+        }
+      ]
+    },
     {
       version: "5.0.0",
       date: "Janvier 2025",
@@ -129,64 +178,74 @@ const ChangelogDialog = ({ open, onOpenChange }: ChangelogDialogProps) => {
 
   const getVersionBadgeColor = (type: string) => {
     switch (type) {
-      case "major": return "bg-red-500 text-white";
-      case "minor": return "bg-blue-500 text-white";
-      case "patch": return "bg-green-500 text-white";
+      case "major": return "bg-gradient-to-r from-red-500 to-pink-500 text-white border-0";
+      case "minor": return "bg-gradient-to-r from-blue-500 to-cyan-500 text-white border-0";
+      case "patch": return "bg-gradient-to-r from-green-500 to-emerald-500 text-white border-0";
       default: return "bg-gray-500 text-white";
     }
   };
 
   const getChangeIcon = (type: string) => {
     switch (type) {
-      case "feature": return "text-green-600";
-      case "fix": return "text-orange-600";
-      case "improvement": return "text-blue-600";
-      default: return "text-gray-600";
+      case "feature": return "text-green-600 dark:text-green-400";
+      case "fix": return "text-orange-600 dark:text-orange-400";
+      case "improvement": return "text-blue-600 dark:text-blue-400";
+      default: return "text-gray-600 dark:text-gray-400";
     }
   };
 
   return (
     <Dialog open={open} onOpenChange={onOpenChange}>
-      <DialogContent className="max-w-2xl max-h-[80vh]">
+      <DialogContent className="max-w-3xl max-h-[85vh] bg-gradient-to-br from-background to-secondary/20">
         <DialogHeader>
-          <DialogTitle className="flex items-center gap-2">
-            <Sparkles className="h-6 w-6 text-primary" />
+          <DialogTitle className="flex items-center gap-2 text-2xl">
+            <div className="bg-gradient-to-r from-primary to-accent p-2 rounded-lg">
+              <Sparkles className="h-6 w-6 text-white" />
+            </div>
             Nouveautés EduPlatform
           </DialogTitle>
         </DialogHeader>
         
-        <ScrollArea className="max-h-[60vh] pr-4">
-          <div className="space-y-6">
+        <ScrollArea className="max-h-[65vh] pr-4">
+          <div className="space-y-8">
             {versions.map((version, index) => (
               <div key={version.version} className="space-y-4">
                 <div className="flex items-center justify-between">
                   <div className="flex items-center gap-3">
-                    <h3 className="text-xl font-bold">Version {version.version}</h3>
+                    <h3 className="text-2xl font-bold bg-gradient-to-r from-primary to-accent bg-clip-text text-transparent">
+                      Version {version.version}
+                    </h3>
                     <Badge className={getVersionBadgeColor(version.type)}>
                       {version.type}
                     </Badge>
+                    {version.version === "5.5.0" && (
+                      <Badge className="bg-gradient-to-r from-yellow-400 to-orange-500 text-white border-0">
+                        <Sparkles className="h-3 w-3 mr-1" />
+                        NOUVEAU
+                      </Badge>
+                    )}
                   </div>
-                  <span className="text-sm text-muted-foreground">{version.date}</span>
+                  <span className="text-sm text-muted-foreground font-medium">{version.date}</span>
                 </div>
                 
-                <div className="space-y-3">
+                <div className="grid gap-4 md:grid-cols-2">
                   {version.changes.map((change, changeIndex) => {
                     const IconComponent = change.icon;
                     return (
-                      <div key={changeIndex} className="flex gap-3 p-3 rounded-lg bg-muted/50">
-                        <div className={`flex-shrink-0 ${getChangeIcon(change.type)}`}>
+                      <div key={changeIndex} className="flex gap-3 p-4 rounded-xl bg-card/60 border border-border/50 hover:bg-card/80 transition-all duration-300 hover:shadow-lg">
+                        <div className={`flex-shrink-0 ${getChangeIcon(change.type)} bg-background p-2 rounded-lg border`}>
                           <IconComponent className="h-5 w-5" />
                         </div>
                         <div className="space-y-1">
                           <h4 className="font-semibold text-foreground">{change.title}</h4>
-                          <p className="text-sm text-muted-foreground">{change.description}</p>
+                          <p className="text-sm text-muted-foreground leading-relaxed">{change.description}</p>
                         </div>
                       </div>
                     );
                   })}
                 </div>
                 
-                {index < versions.length - 1 && <Separator className="my-6" />}
+                {index < versions.length - 1 && <Separator className="my-8" />}
               </div>
             ))}
           </div>

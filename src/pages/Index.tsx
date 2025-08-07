@@ -1,32 +1,39 @@
+
 import { useState, useEffect } from "react";
 import { motion } from "framer-motion";
 import { Button } from "@/components/ui/button";
 import { Card, CardContent, CardDescription, CardHeader, CardTitle } from "@/components/ui/card";
 import { Badge } from "@/components/ui/badge";
-import { Book, Calculator, Atom, Leaf, Globe, Languages, FileText, MessageSquare, BarChart3, Clock, Target, Star, TrendingUp, BookOpen, Users } from "lucide-react";
+import { Book, Calculator, Atom, Leaf, Globe, Languages, FileText, MessageSquare, BarChart3, Clock, Target, Star, TrendingUp, BookOpen, Users, Sparkles } from "lucide-react";
 import { Link } from "react-router-dom";
 import GlobalHeader from "@/components/GlobalHeader";
 import SearchBar from "@/components/SearchBar";
 import WelcomeBanner from "@/components/WelcomeBanner";
 import QuickStats from "@/components/QuickStats";
 import EnhancedSubjectCard from "@/components/EnhancedSubjectCard";
-import MotivationalQuoteBar from "@/components/MotivationalQuoteBar";
 import Footer from "@/components/Footer";
 import WelcomeTutorial from "@/components/WelcomeTutorial";
 import UserOnboarding from "@/components/UserOnboarding";
+import ChangelogDialog from "@/components/ChangelogDialog";
 
 const Index = () => {
   const [showOnboarding, setShowOnboarding] = useState(false);
   const [showTutorial, setShowTutorial] = useState(false);
+  const [showChangelog, setShowChangelog] = useState(false);
 
   useEffect(() => {
     const hasSeenOnboarding = localStorage.getItem('hasSeenOnboarding');
     const hasSeenTutorial = localStorage.getItem('hasSeenTutorial');
+    const currentVersion = '5.5';
+    const lastSeenVersion = localStorage.getItem('lastSeenVersion');
     
     if (!hasSeenOnboarding) {
       setShowOnboarding(true);
     } else if (!hasSeenTutorial) {
       setShowTutorial(true);
+    } else if (lastSeenVersion !== currentVersion) {
+      setShowChangelog(true);
+      localStorage.setItem('lastSeenVersion', currentVersion);
     }
   }, []);
 
@@ -65,9 +72,9 @@ const Index = () => {
       icon: <Atom className="h-6 w-6" />,
       color: "#8B5CF6",
       bgGradient: "from-purple-500 to-violet-600",
-      lessons: 12,
-      exercises: 90,
-      duration: "18h",
+      lessons: 23,
+      exercises: 180,
+      duration: "25h",
       difficulty: "Difficile" as const,
       path: "physics"
     },
@@ -151,17 +158,41 @@ const Index = () => {
   ];
 
   const achievements = [
-    { icon: Target, title: "Précision", value: "89%", description: "Taux de réussite moyen" },
-    { icon: Clock, title: "Temps d'étude", value: "24h", description: "Cette semaine" },
-    { icon: Star, title: "Badges", value: "12", description: "Objectifs atteints" },
-    { icon: TrendingUp, title: "Progression", value: "+15%", description: "Ce mois-ci" }
+    { icon: Target, title: "Précision", value: "92%", description: "Taux de réussite moyen" },
+    { icon: Clock, title: "Temps d'étude", value: "28h", description: "Cette semaine" },
+    { icon: Star, title: "Badges", value: "15", description: "Objectifs atteints" },
+    { icon: TrendingUp, title: "Progression", value: "+23%", description: "Ce mois-ci" }
   ];
 
   const recentActivities = [
-    { subject: "Mathématiques", lesson: "Les polynômes", time: "Il y a 2h", progress: 75 },
-    { subject: "Physique", lesson: "Électricité", time: "Hier", progress: 60 },
-    { subject: "SVT", lesson: "Génétique", time: "Il y a 2 jours", progress: 90 },
+    { subject: "Mathématiques", lesson: "Le produit scalaire", time: "Il y a 1h", progress: 85 },
+    { subject: "Physique", lesson: "Le courant électrique", time: "Il y a 3h", progress: 72 },
+    { subject: "SVT", lesson: "La génétique", time: "Hier", progress: 95 },
   ];
+
+  const containerVariants = {
+    hidden: { opacity: 0 },
+    visible: {
+      opacity: 1,
+      transition: {
+        duration: 0.6,
+        staggerChildren: 0.1
+      }
+    }
+  };
+
+  const itemVariants = {
+    hidden: { y: 30, opacity: 0 },
+    visible: {
+      y: 0,
+      opacity: 1,
+      transition: {
+        type: "spring",
+        stiffness: 100,
+        damping: 15
+      }
+    }
+  };
 
   return (
     <>
@@ -179,32 +210,47 @@ const Index = () => {
         />
       )}
 
+      {showChangelog && (
+        <ChangelogDialog
+          open={showChangelog}
+          onOpenChange={setShowChangelog}
+        />
+      )}
+
       <motion.div
-        initial={{ opacity: 0 }}
-        animate={{ opacity: 1 }}
-        transition={{ duration: 0.5 }}
+        variants={containerVariants}
+        initial="hidden"
+        animate="visible"
         className="min-h-screen bg-gradient-to-br from-background via-secondary/30 to-accent/20"
       >
         <GlobalHeader />
         
         <div className="container mx-auto px-4 py-8 space-y-8">
-          <WelcomeBanner />
+          <motion.div variants={itemVariants}>
+            <WelcomeBanner onShowChangelog={() => setShowChangelog(true)} />
+          </motion.div>
           
           <div className="flex flex-col lg:flex-row gap-8">
             <div className="flex-1 space-y-8">
-              <SearchBar isOpen={false} onClose={() => {}} />
-              
-              <MotivationalQuoteBar />
+              <motion.div variants={itemVariants}>
+                <SearchBar isOpen={false} onClose={() => {}} />
+              </motion.div>
               
               <motion.section
-                initial={{ y: 20, opacity: 0 }}
-                animate={{ y: 0, opacity: 1 }}
-                transition={{ delay: 0.2 }}
+                variants={itemVariants}
                 className="space-y-6"
               >
                 <div className="flex items-center justify-between">
-                  <h2 className="text-3xl font-bold text-foreground">Matières</h2>
-                  <Badge variant="secondary" className="text-sm">
+                  <div className="space-y-2">
+                    <h2 className="text-4xl font-bold bg-gradient-to-r from-primary to-accent bg-clip-text text-transparent">
+                      EduPlatform v5.5
+                    </h2>
+                    <p className="text-muted-foreground text-lg">
+                      Votre plateforme d'apprentissage nouvelle génération
+                    </p>
+                  </div>
+                  <Badge variant="secondary" className="text-sm px-4 py-2">
+                    <Sparkles className="h-4 w-4 mr-2" />
                     {subjects.length} matières disponibles
                   </Badge>
                 </div>
@@ -213,9 +259,9 @@ const Index = () => {
                   {subjects.map((subject, index) => (
                     <motion.div
                       key={subject.id}
-                      initial={{ y: 20, opacity: 0 }}
-                      animate={{ y: 0, opacity: 1 }}
-                      transition={{ delay: 0.3 + index * 0.1 }}
+                      variants={itemVariants}
+                      whileHover={{ scale: 1.02 }}
+                      whileTap={{ scale: 0.98 }}
                     >
                       <EnhancedSubjectCard
                         subject={subject}
@@ -227,9 +273,7 @@ const Index = () => {
               </motion.section>
 
               <motion.section
-                initial={{ y: 20, opacity: 0 }}
-                animate={{ y: 0, opacity: 1 }}
-                transition={{ delay: 0.4 }}
+                variants={itemVariants}
                 className="space-y-6"
               >
                 <h2 className="text-2xl font-bold text-foreground">Actions rapides</h2>
@@ -237,14 +281,19 @@ const Index = () => {
                   {quickActions.map((action, index) => (
                     <motion.div
                       key={action.title}
-                      initial={{ y: 20, opacity: 0 }}
-                      animate={{ y: 0, opacity: 1 }}
-                      transition={{ delay: 0.5 + index * 0.1 }}
+                      variants={itemVariants}
+                      whileHover={{ scale: 1.05, y: -2 }}
+                      whileTap={{ scale: 0.95 }}
                     >
                       <Link to={action.link}>
-                        <Card className="cursor-pointer hover:shadow-lg transition-all duration-300 hover:scale-105 bg-card/80 backdrop-blur-sm border-0">
+                        <Card className="cursor-pointer hover:shadow-xl transition-all duration-300 bg-card/80 backdrop-blur-sm border-0 hover:border-primary/20">
                           <CardContent className="p-6 text-center">
-                            <action.icon className="h-10 w-10 mx-auto mb-3 text-primary" />
+                            <motion.div
+                              whileHover={{ rotate: 5 }}
+                              transition={{ type: "spring", stiffness: 400 }}
+                            >
+                              <action.icon className="h-10 w-10 mx-auto mb-3 text-primary" />
+                            </motion.div>
                             <h3 className="font-semibold mb-2">{action.title}</h3>
                             <p className="text-sm text-muted-foreground">{action.description}</p>
                           </CardContent>
@@ -257,19 +306,19 @@ const Index = () => {
             </div>
 
             <div className="w-full lg:w-96 space-y-8">
-              <QuickStats 
-                totalLessons={101}
-                completedLessons={45}
-                totalStudyTime={24}
-                currentStreak={5}
-                averageScore={89}
-                weeklyGoal={12}
-              />
+              <motion.div variants={itemVariants}>
+                <QuickStats 
+                  totalLessons={112}
+                  completedLessons={58}
+                  totalStudyTime={28}
+                  currentStreak={7}
+                  averageScore={92}
+                  weeklyGoal={15}
+                />
+              </motion.div>
 
               <motion.section
-                initial={{ y: 20, opacity: 0 }}
-                animate={{ y: 0, opacity: 1 }}
-                transition={{ delay: 0.6 }}
+                variants={itemVariants}
                 className="space-y-6"
               >
                 <h2 className="text-xl font-bold text-foreground">Vos performances</h2>
@@ -277,11 +326,11 @@ const Index = () => {
                   {achievements.map((achievement, index) => (
                     <motion.div
                       key={achievement.title}
-                      initial={{ y: 20, opacity: 0 }}
-                      animate={{ y: 0, opacity: 1 }}
-                      transition={{ delay: 0.7 + index * 0.1 }}
+                      variants={itemVariants}
+                      whileHover={{ scale: 1.05 }}
+                      whileTap={{ scale: 0.95 }}
                     >
-                      <Card className="bg-card/80 backdrop-blur-sm border-0">
+                      <Card className="bg-card/80 backdrop-blur-sm border-0 hover:shadow-lg transition-all duration-300">
                         <CardContent className="p-4 text-center">
                           <achievement.icon className="h-6 w-6 mx-auto mb-2 text-primary" />
                           <div className="text-2xl font-bold text-foreground">{achievement.value}</div>
@@ -295,9 +344,7 @@ const Index = () => {
               </motion.section>
 
               <motion.section
-                initial={{ y: 20, opacity: 0 }}
-                animate={{ y: 0, opacity: 1 }}
-                transition={{ delay: 0.8 }}
+                variants={itemVariants}
                 className="space-y-6"
               >
                 <h2 className="text-xl font-bold text-foreground">Activité récente</h2>
@@ -305,11 +352,10 @@ const Index = () => {
                   {recentActivities.map((activity, index) => (
                     <motion.div
                       key={activity.subject + activity.lesson}
-                      initial={{ x: 20, opacity: 0 }}
-                      animate={{ x: 0, opacity: 1 }}
-                      transition={{ delay: 0.9 + index * 0.1 }}
+                      variants={itemVariants}
+                      whileHover={{ x: 5 }}
                     >
-                      <Card className="bg-card/80 backdrop-blur-sm border-0">
+                      <Card className="bg-card/80 backdrop-blur-sm border-0 hover:shadow-lg transition-all duration-300">
                         <CardContent className="p-4">
                           <div className="flex justify-between items-start mb-2">
                             <div>
@@ -329,14 +375,17 @@ const Index = () => {
               </motion.section>
 
               <motion.section
-                initial={{ y: 20, opacity: 0 }}
-                animate={{ y: 0, opacity: 1 }}
-                transition={{ delay: 1.0 }}
+                variants={itemVariants}
                 className="space-y-4"
               >
                 <Card className="bg-gradient-to-r from-primary/10 to-secondary/10 border-0">
                   <CardContent className="p-6 text-center">
-                    <Users className="h-10 w-10 mx-auto mb-3 text-primary" />
+                    <motion.div
+                      whileHover={{ scale: 1.1, rotate: 10 }}
+                      transition={{ type: "spring", stiffness: 400 }}
+                    >
+                      <Users className="h-10 w-10 mx-auto mb-3 text-primary" />
+                    </motion.div>
                     <h3 className="font-semibold mb-2">Communauté</h3>
                     <p className="text-sm text-muted-foreground mb-4">
                       Rejoignez notre communauté d'étudiants

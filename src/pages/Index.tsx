@@ -187,7 +187,7 @@ const Index = () => {
       y: 0,
       opacity: 1,
       transition: {
-        type: "spring",
+        type: "spring" as const,
         stiffness: 100,
         damping: 15
       }
@@ -290,7 +290,7 @@ const Index = () => {
                           <CardContent className="p-6 text-center">
                             <motion.div
                               whileHover={{ rotate: 5 }}
-                              transition={{ type: "spring", stiffness: 400 }}
+                              transition={{ type: "spring" as const, stiffness: 400 }}
                             >
                               <action.icon className="h-10 w-10 mx-auto mb-3 text-primary" />
                             </motion.div>
@@ -382,7 +382,7 @@ const Index = () => {
                   <CardContent className="p-6 text-center">
                     <motion.div
                       whileHover={{ scale: 1.1, rotate: 10 }}
-                      transition={{ type: "spring", stiffness: 400 }}
+                      transition={{ type: "spring" as const, stiffness: 400 }}
                     >
                       <Users className="h-10 w-10 mx-auto mb-3 text-primary" />
                     </motion.div>

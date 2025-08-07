@@ -1,12 +1,11 @@
 
-import { Card, CardContent, CardHeader, CardTitle } from "@/components/ui/card";
-import { Badge } from "@/components/ui/badge";
-import { Button } from "@/components/ui/button";
-import { Progress } from "@/components/ui/progress";
-import { BookOpen, FileText, Video, Clock, Target, Star, TrendingUp } from "lucide-react";
-import { Link } from "react-router-dom";
-import { motion } from "framer-motion";
-import { useExerciseProgress } from "@/hooks/useExerciseProgress";
+import React from 'react';
+import { motion } from 'framer-motion';
+import { Card, CardContent, CardDescription, CardHeader, CardTitle } from '@/components/ui/card';
+import { Button } from '@/components/ui/button';
+import { Badge } from '@/components/ui/badge';
+import { BookOpen, Users, Clock, Target, Star, Sparkles } from 'lucide-react';
+import { Link } from 'react-router-dom';
 
 interface Subject {
   id: string;
@@ -19,10 +18,10 @@ interface Subject {
   lessons: number;
   exercises: number;
   duration: string;
-  difficulty: "Facile" | "Moyen" | "Difficile";
+  difficulty: 'Facile' | 'Moyen' | 'Difficile';
   path: string;
-  isNew?: boolean;
   featured?: boolean;
+  isNew?: boolean;
 }
 
 interface EnhancedSubjectCardProps {
@@ -31,125 +30,114 @@ interface EnhancedSubjectCardProps {
 }
 
 const EnhancedSubjectCard = ({ subject, index }: EnhancedSubjectCardProps) => {
-  const { totalPoints, completedExercises } = useExerciseProgress();
-  
-  // Calculate progress (mock calculation based on completed exercises)
-  const totalExercises = subject.exercises;
-  const completedCount = Math.min(completedExercises.length, totalExercises);
-  const progress = totalExercises > 0 ? (completedCount / totalExercises) * 100 : 0;
-
   const getDifficultyColor = (difficulty: string) => {
     switch (difficulty) {
-      case "Facile": return "text-green-600 bg-green-100 border-green-200";
-      case "Moyen": return "text-yellow-600 bg-yellow-100 border-yellow-200";
-      case "Difficile": return "text-red-600 bg-red-100 border-red-200";
-      default: return "text-gray-600 bg-gray-100 border-gray-200";
+      case 'Facile': return 'bg-green-100 text-green-800 border-green-200 dark:bg-green-900/20 dark:text-green-300';
+      case 'Moyen': return 'bg-yellow-100 text-yellow-800 border-yellow-200 dark:bg-yellow-900/20 dark:text-yellow-300';
+      case 'Difficile': return 'bg-red-100 text-red-800 border-red-200 dark:bg-red-900/20 dark:text-red-300';
+      default: return 'bg-gray-100 text-gray-800 border-gray-200 dark:bg-gray-900/20 dark:text-gray-300';
     }
   };
 
   return (
     <motion.div
-      initial={{ opacity: 0, y: 20 }}
-      animate={{ opacity: 1, y: 0 }}
-      transition={{ delay: index * 0.1 }}
-      whileHover={{ scale: 1.02 }}
-      className="h-full"
+      initial={{ opacity: 0, y: 30, scale: 0.9 }}
+      animate={{ opacity: 1, y: 0, scale: 1 }}
+      transition={{ 
+        delay: index * 0.1,
+        duration: 0.6,
+        type: "spring",
+        bounce: 0.3
+      }}
+      whileHover={{ scale: 1.02, y: -5 }}
+      className="relative group"
     >
-      <Card className={`h-full bg-gradient-to-br ${subject.bgGradient} border-0 shadow-xl hover:shadow-2xl transition-all duration-300 group relative overflow-hidden`}>
-        {subject.isNew && (
-          <div className="absolute top-4 right-4 z-10">
-            <Badge className="bg-red-500 text-white border-0 shadow-lg animate-pulse">
-              Nouveau !
-            </Badge>
-          </div>
-        )}
+      <Card className="h-full bg-card/80 backdrop-blur-xl border-0 shadow-lg hover:shadow-2xl transition-all duration-500 overflow-hidden relative">
+        {/* Gradient Background */}
+        <div className={`absolute inset-0 bg-gradient-to-br ${subject.bgGradient} opacity-5 group-hover:opacity-10 transition-opacity duration-500`} />
         
-        {subject.featured && (
-          <div className="absolute top-4 left-4 z-10">
-            <Badge className="bg-yellow-500 text-white border-0 shadow-lg">
+        {/* Badges */}
+        <div className="absolute top-4 right-4 flex flex-col gap-2 z-10">
+          {subject.featured && (
+            <Badge className="bg-yellow-500/90 text-white border-0 shadow-md">
               <Star className="h-3 w-3 mr-1" />
               Populaire
             </Badge>
-          </div>
-        )}
+          )}
+          {subject.isNew && (
+            <Badge className="bg-emerald-500/90 text-white border-0 shadow-md animate-pulse">
+              <Sparkles className="h-3 w-3 mr-1" />
+              Nouveau
+            </Badge>
+          )}
+        </div>
 
-        <CardHeader className="pb-4">
+        <CardHeader className="pb-4 relative z-10">
           <div className="flex items-start justify-between mb-4">
-            <div className={`w-16 h-16 rounded-2xl bg-white/90 backdrop-blur-sm flex items-center justify-center text-3xl shadow-lg group-hover:scale-110 transition-transform duration-300`}>
-              {subject.icon}
+            <div className={`p-3 rounded-xl bg-gradient-to-br ${subject.bgGradient} shadow-lg group-hover:scale-110 transition-transform duration-300`}>
+              {React.cloneElement(subject.icon as React.ReactElement, {
+                className: "h-6 w-6 text-white"
+              })}
             </div>
-            {progress > 0 && (
-              <div className="text-right">
-                <div className="text-sm font-medium text-white/80 mb-1">Progression</div>
-                <div className="text-lg font-bold text-white">{Math.round(progress)}%</div>
-              </div>
-            )}
-          </div>
-          
-          <CardTitle className="text-2xl font-bold text-white mb-2 group-hover:text-white/90 transition-colors">
-            {subject.name}
-          </CardTitle>
-          {subject.nameArabic && (
-            <div className="text-lg font-semibold text-white/90 mb-2" dir="rtl">
-              {subject.nameArabic}
-            </div>
-          )}
-          <p className="text-white/80 text-sm leading-relaxed mb-4">
-            {subject.description}
-          </p>
-          
-          {progress > 0 && (
-            <div className="mb-4">
-              <Progress value={progress} className="h-2 bg-white/20">
-                <div 
-                  className="h-full bg-white/80 transition-all duration-500 rounded-full"
-                  style={{ width: `${progress}%` }}
-                />
-              </Progress>
-            </div>
-          )}
-        </CardHeader>
-
-        <CardContent className="pt-0">
-          <div className="grid grid-cols-2 gap-3 mb-6">
-            <div className="bg-white/10 backdrop-blur-sm rounded-lg p-3 text-center">
-              <BookOpen className="h-5 w-5 text-white/80 mx-auto mb-1" />
-              <div className="text-sm font-medium text-white">{subject.lessons}</div>
-              <div className="text-xs text-white/70">Leçons</div>
-            </div>
-            <div className="bg-white/10 backdrop-blur-sm rounded-lg p-3 text-center">
-              <FileText className="h-5 w-5 text-white/80 mx-auto mb-1" />
-              <div className="text-sm font-medium text-white">{subject.exercises}</div>
-              <div className="text-xs text-white/70">Exercices</div>
-            </div>
-          </div>
-
-          <div className="flex flex-wrap gap-2 mb-6">
-            <Badge className={`${getDifficultyColor(subject.difficulty)} font-medium border text-xs`}>
+            <Badge className={`${getDifficultyColor(subject.difficulty)} font-medium border shadow-sm`}>
               <Target className="h-3 w-3 mr-1" />
               {subject.difficulty}
             </Badge>
-            <Badge variant="outline" className="text-white border-white/30 bg-white/10 text-xs">
-              <Clock className="h-3 w-3 mr-1" />
-              {subject.duration}
-            </Badge>
-            {progress > 0 && (
-              <Badge variant="outline" className="text-white border-white/30 bg-white/10 text-xs">
-                <TrendingUp className="h-3 w-3 mr-1" />
-                {completedCount}/{totalExercises}
-              </Badge>
-            )}
+          </div>
+          
+          <CardTitle className="text-xl font-bold mb-2 text-card-foreground group-hover:text-primary transition-colors duration-300">
+            {subject.name}
+          </CardTitle>
+          
+          {subject.nameArabic && (
+            <p className="text-right text-lg font-semibold text-muted-foreground mb-2 opacity-80">
+              {subject.nameArabic}
+            </p>
+          )}
+          
+          <CardDescription className="text-sm leading-relaxed text-muted-foreground">
+            {subject.description}
+          </CardDescription>
+        </CardHeader>
+
+        <CardContent className="pt-0 relative z-10">
+          {/* Statistics */}
+          <div className="grid grid-cols-3 gap-4 mb-6">
+            <div className="text-center p-3 bg-accent/50 rounded-lg backdrop-blur-sm">
+              <BookOpen className="h-5 w-5 mx-auto mb-1 text-primary" />
+              <div className="text-lg font-bold text-foreground">{subject.lessons}</div>
+              <p className="text-xs text-muted-foreground">Leçons</p>
+            </div>
+            <div className="text-center p-3 bg-accent/50 rounded-lg backdrop-blur-sm">
+              <Users className="h-5 w-5 mx-auto mb-1 text-primary" />
+              <div className="text-lg font-bold text-foreground">{subject.exercises}</div>
+              <p className="text-xs text-muted-foreground">Exercices</p>
+            </div>
+            <div className="text-center p-3 bg-accent/50 rounded-lg backdrop-blur-sm">
+              <Clock className="h-5 w-5 mx-auto mb-1 text-primary" />
+              <div className="text-sm font-bold text-foreground">{subject.duration}</div>
+              <p className="text-xs text-muted-foreground">Durée</p>
+            </div>
           </div>
 
-          <div className="flex flex-col gap-2">
-            <Link to={`/lessons/${subject.path}`} className="w-full">
-              <Button className="w-full bg-white/20 hover:bg-white/30 text-white border border-white/30 backdrop-blur-sm transition-all duration-200 hover:scale-105">
-                <BookOpen className="h-4 w-4 mr-2" />
-                Explorer les leçons
-              </Button>
-            </Link>
-          </div>
+          {/* Action Button */}
+          <Link to={`/lessons/${subject.path}`} className="block">
+            <Button 
+              className={`w-full bg-gradient-to-r ${subject.bgGradient} hover:scale-105 shadow-lg hover:shadow-xl transition-all duration-300 border-0 text-white font-semibold py-3`}
+              size="lg"
+            >
+              <BookOpen className="h-4 w-4 mr-2" />
+              Commencer l'apprentissage
+            </Button>
+          </Link>
         </CardContent>
+
+        {/* Animated Border Effect */}
+        <div className="absolute inset-0 rounded-lg bg-gradient-to-r from-transparent via-primary/20 to-transparent opacity-0 group-hover:opacity-100 transition-opacity duration-500 pointer-events-none" 
+             style={{
+               background: `conic-gradient(from 0deg, transparent, ${subject.color}20, transparent)`,
+             }} 
+        />
       </Card>
     </motion.div>
   );

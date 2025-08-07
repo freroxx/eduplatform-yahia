@@ -1,206 +1,309 @@
 
-import { useState } from "react";
-import { motion } from "framer-motion";
-import { Card, CardContent, CardHeader, CardTitle } from "@/components/ui/card";
-import { Button } from "@/components/ui/button";
-import { Badge } from "@/components/ui/badge";
-import { ArrowLeft, BookOpen, Calculator, Clock, Target } from "lucide-react";
-import { Link } from "react-router-dom";
-import GlobalHeader from "@/components/GlobalHeader";
+import CourseSlide from "@/components/CourseSlide";
 import EnhancedLoadingBar from "@/components/EnhancedLoadingBar";
+import { useParams } from "react-router-dom";
+import { useState, useEffect } from "react";
 
-const MathCourse = () => {
-  const [isLoading, setIsLoading] = useState(false);
-
-  const mathTopics = [
-    {
-      id: 1,
-      title: "Équations et inéquations",
-      description: "Résolution d'équations du premier et second degré, systèmes d'équations",
-      duration: "45 min",
-      difficulty: "Moyen",
-      content: `
-# Équations et inéquations
-
-## Équations du premier degré
-Une équation du premier degré est de la forme : ax + b = 0
-
-### Méthode de résolution :
-1. Isoler le terme en x
-2. Diviser par le coefficient de x
-
-**Exemple :** 
-3x + 5 = 14
-3x = 14 - 5
-3x = 9
-x = 3
-
-## Équations du second degré
-Une équation du second degré est de la forme : ax² + bx + c = 0
-
-### Discriminant :
-Δ = b² - 4ac
-
-- Si Δ > 0 : deux solutions réelles
-- Si Δ = 0 : une solution double
-- Si Δ < 0 : pas de solution réelle
-
-### Solutions :
-x₁ = (-b + √Δ) / (2a)
-x₂ = (-b - √Δ) / (2a)
-      `
-    },
-    {
-      id: 2,
-      title: "Fonctions numériques",
-      description: "Étude des fonctions, domaine de définition, variations",
-      duration: "50 min",
-      difficulty: "Difficile",
-      content: `
-# Fonctions numériques
+const mathLessons = {
+  "101": {
+    title: "Module 1: Équations et inéquations",
+    slides: [
+      {
+        id: 1,
+        title: "Les équations du premier degré",
+        content: `# Équations du Premier Degré
 
 ## Définition
-Une fonction f est une relation qui associe à chaque élément x d'un ensemble E au plus un élément y d'un ensemble F.
+Une équation du premier degré à une inconnue est une égalité de la forme **ax + b = 0** où :
+- a ≠ 0 (coefficient de x)
+- b est une constante
+- x est l'inconnue
+
+## Résolution
+Pour résoudre ax + b = 0 :
+1. **Isoler le terme en x** : ax = -b
+2. **Diviser par le coefficient** : x = -b/a
+
+## Exemples
+### Exemple 1 : 2x + 6 = 0
+- 2x = -6
+- x = -6/2 = -3
+
+### Exemple 2 : 3x - 9 = 0  
+- 3x = 9
+- x = 9/3 = 3
+
+## Vérification
+Toujours **substituer** la solution dans l'équation d'origine pour vérifier.
+
+## Cas particuliers
+- Si a = 0 et b = 0 : **infinité de solutions**
+- Si a = 0 et b ≠ 0 : **aucune solution**`
+      },
+      {
+        id: 2,
+        title: "Les systèmes d'équations",
+        content: `# Systèmes d'Équations Linéaires
+
+## Définition
+Un système de deux équations à deux inconnues :
+\`\`\`
+ax + by = c
+dx + ey = f
+\`\`\`
+
+## Méthodes de résolution
+
+### 1. Méthode par substitution
+1. **Exprimer** une variable en fonction de l'autre
+2. **Substituer** dans la deuxième équation
+3. **Résoudre** l'équation à une inconnue
+4. **Calculer** la deuxième variable
+
+### 2. Méthode par élimination
+1. **Multiplier** les équations pour éliminer une variable
+2. **Additionner** ou soustraire les équations
+3. **Résoudre** l'équation obtenue
+4. **Substituer** pour trouver l'autre variable
+
+## Exemple pratique
+Système : 
+\`\`\`
+2x + 3y = 7
+x - y = 1
+\`\`\`
+
+**Par substitution :**
+- De la 2ème équation : x = y + 1
+- Dans la 1ère : 2(y + 1) + 3y = 7
+- 2y + 2 + 3y = 7
+- 5y = 5, donc y = 1
+- x = 1 + 1 = 2
+
+**Solution : (2, 1)**`
+      }
+    ]
+  },
+  "102": {
+    title: "Module 2: Fonctions numériques", 
+    slides: [
+      {
+        id: 1,
+        title: "Généralités sur les fonctions",
+        content: `# Les Fonctions Numériques
+
+## Définition
+Une fonction f est une relation qui associe à chaque élément x d'un ensemble D (domaine) un unique élément y = f(x) d'un ensemble d'arrivée.
+
+## Notations
+- **f : D → ℝ**
+- **x ↦ f(x)**
+- y = f(x) se lit "y égale f de x"
 
 ## Domaine de définition
-Le domaine de définition Df d'une fonction f est l'ensemble des valeurs pour lesquelles f(x) est définie.
+Ensemble des valeurs de x pour lesquelles f(x) existe.
 
-## Variations d'une fonction
-- Fonction croissante : si x₁ < x₂ alors f(x₁) ≤ f(x₂)
-- Fonction décroissante : si x₁ < x₂ alors f(x₁) ≥ f(x₂)
+### Exemples courants :
+- **f(x) = 2x + 1** : Df = ℝ
+- **f(x) = 1/x** : Df = ℝ* (ℝ privé de 0)
+- **f(x) = √x** : Df = [0, +∞[
 
-## Fonctions usuelles
-1. **Fonction affine** : f(x) = ax + b
-2. **Fonction carré** : f(x) = x²
-3. **Fonction inverse** : f(x) = 1/x
-4. **Fonction racine carrée** : f(x) = √x
-      `
-    },
-    {
-      id: 3,
-      title: "Statistiques descriptives",
-      description: "Calculs de moyennes, médiane, écart-type, représentations graphiques",
-      duration: "40 min",
-      difficulty: "Facile",
-      content: `
-# Statistiques descriptives
+## Représentation graphique
+La courbe représentative de f est l'ensemble des points M(x, f(x)) dans un repère.
 
-## Vocabulaire
-- **Population** : ensemble des individus étudiés
-- **Caractère** : propriété étudiée sur la population
-- **Modalité** : valeur prise par le caractère
+## Image et antécédent
+- **Image de a** : f(a)
+- **Antécédent de b** : valeur(s) de x telles que f(x) = b
 
-## Paramètres de position
-### Moyenne arithmétique
-x̄ = (Σ xi × ni) / N
+## Fonctions particulières
+### Fonction constante : f(x) = k
+### Fonction linéaire : f(x) = ax  
+### Fonction affine : f(x) = ax + b`
+      },
+      {
+        id: 2,
+        title: "Variations des fonctions",
+        content: `# Variations des Fonctions
 
-### Médiane
-Valeur qui partage la série en deux parties égales
+## Fonction croissante
+Sur un intervalle I, f est croissante si :
+**Pour tout x₁ < x₂ dans I : f(x₁) ≤ f(x₂)**
 
-### Mode
-Modalité qui a la plus grande fréquence
+## Fonction décroissante  
+Sur un intervalle I, f est décroissante si :
+**Pour tout x₁ < x₂ dans I : f(x₁) ≥ f(x₂)**
 
-## Paramètres de dispersion
-### Étendue
-E = Max - Min
+## Tableau de variations
+Représentation synthétique des variations de f :
+- **Flèches montantes** : fonction croissante
+- **Flèches descendantes** : fonction décroissante
+- **Maximum/Minimum local**
 
-### Écart-type
-σ = √(Variance)
+## Extremums
+### Maximum
+f(a) est un maximum de f si f(x) ≤ f(a) pour tout x du domaine
 
-### Variance
-V = Σ(xi - x̄)² × ni / N
-      `
-    }
-  ];
+### Minimum  
+f(a) est un minimum de f si f(x) ≥ f(a) pour tout x du domaine
+
+## Méthodes d'étude
+1. **Calcul algébrique** : comparer f(x₁) et f(x₂)
+2. **Étude du signe** de f(x₂) - f(x₁)  
+3. **Représentation graphique**
+
+## Exemple : f(x) = x²
+- **Décroissante** sur ]-∞, 0]
+- **Croissante** sur [0, +∞[
+- **Minimum** en x = 0 : f(0) = 0`
+      }
+    ]
+  },
+  "103": {
+    title: "Module 3: Géométrie plane",
+    slides: [
+      {
+        id: 1,
+        title: "Triangles et relations métriques",
+        content: `# Triangles et Relations Métriques
+
+## Théorème de Pythagore
+Dans un triangle rectangle ABC rectangle en C :
+**AB² = AC² + BC²**
+
+### Réciproque
+Si AB² = AC² + BC², alors le triangle ABC est rectangle en C.
+
+## Relations dans le triangle quelconque
+
+### Théorème d'Al-Kashi (généralisation de Pythagore)
+Dans un triangle ABC :
+**c² = a² + b² - 2ab cos(Ĉ)**
+
+## Aire d'un triangle
+### Formule de base
+**Aire = (base × hauteur) / 2**
+
+### Formule avec deux côtés et angle
+**Aire = (1/2) × a × b × sin(Ĉ)**
+
+### Formule de Héron
+**Aire = √[p(p-a)(p-b)(p-c)]**
+où p = (a+b+c)/2 est le demi-périmètre
+
+## Centres remarquables
+### Circoncentre : centre du cercle circonscrit
+### Incentre : centre du cercle inscrit  
+### Centroïde : point d'intersection des médianes
+### Orthocentre : point d'intersection des hauteurs
+
+## Applications pratiques
+- **Calculs de distances**
+- **Aires de terrains**
+- **Navigation et géolocalisation**`
+      },
+      {
+        id: 2,
+        title: "Transformations géométriques",
+        content: `# Transformations Géométriques
+
+## Translation
+### Définition
+Une translation de vecteur **u⃗** transforme tout point M en M' tel que :
+**MM'⃗ = u⃗**
+
+### Propriétés
+- **Conservation des distances**
+- **Conservation des angles**  
+- **Conservation du parallélisme**
+- L'image d'une droite est une droite parallèle
+
+## Symétrie axiale
+### Définition
+Symétrie par rapport à une droite (d) :
+- Si M ∈ (d), alors M' = M
+- Si M ∉ (d), alors (d) est médiatrice de [MM']
+
+### Propriétés
+- **Isométrie** : conservation des distances
+- **Conservation des angles**
+- **Inversion de l'orientation**
+
+## Rotation
+### Définition
+Rotation de centre O et d'angle α :
+- O est point fixe
+- OM' = OM pour tout point M
+- (OM⃗, OM'⃗) = α
+
+### Propriétés  
+- **Isométrie**
+- **Conservation de l'orientation**
+- Composition de rotations de même centre
+
+## Homothétie
+### Définition
+Homothétie de centre O et rapport k :
+**OM'⃗ = k × OM⃗**
+
+### Propriétés
+- Si |k| > 1 : **agrandissement**
+- Si |k| < 1 : **réduction**  
+- Si k < 0 : **inversion du sens**
+- Conservation du parallélisme et des angles`
+      }
+    ]
+  }
+};
+
+const MathCourse = () => {
+  const { id } = useParams();
+  const [isLoading, setIsLoading] = useState(true);
+  const [loadingProgress, setLoadingProgress] = useState(0);
+  
+  useEffect(() => {
+    const interval = setInterval(() => {
+      setLoadingProgress(prev => {
+        const newProgress = prev + Math.random() * 20;
+        if (newProgress >= 100) {
+          setIsLoading(false);
+          clearInterval(interval);
+          return 100;
+        }
+        return newProgress;
+      });
+    }, 150);
+
+    const timeout = setTimeout(() => {
+      setIsLoading(false);
+      clearInterval(interval);
+    }, 2000);
+
+    return () => {
+      clearInterval(interval);
+      clearTimeout(timeout);
+    };
+  }, []);
+
+  const currentCourse = mathLessons[id || "101"];
 
   if (isLoading) {
     return (
       <div className="min-h-screen bg-gradient-to-br from-background via-secondary/30 to-accent/20 flex items-center justify-center">
-        <EnhancedLoadingBar progress={75} />
+        <EnhancedLoadingBar 
+          isLoading={isLoading} 
+          progress={loadingProgress}
+          message="Chargement du cours de mathématiques..."
+          color="blue"
+        />
       </div>
     );
   }
 
   return (
-    <div className="min-h-screen bg-gradient-to-br from-blue-50 via-indigo-50 to-purple-50 dark:from-gray-900 dark:via-gray-800 dark:to-gray-900">
-      <GlobalHeader />
-      
-      <div className="container mx-auto px-4 py-8">
-        <motion.div
-          initial={{ opacity: 0, y: 20 }}
-          animate={{ opacity: 1, y: 0 }}
-          className="max-w-6xl mx-auto"
-        >
-          {/* Header */}
-          <div className="flex items-center justify-between mb-8">
-            <Link to="/lessons/math">
-              <Button variant="outline" size="sm">
-                <ArrowLeft className="h-4 w-4 mr-2" />
-                Retour aux leçons
-              </Button>
-            </Link>
-            <div className="text-center">
-              <h1 className="text-3xl font-bold text-foreground flex items-center gap-2 justify-center">
-                <Calculator className="h-8 w-8 text-blue-600" />
-                Cours de Mathématiques
-              </h1>
-              <p className="text-muted-foreground">Tronc Commun Sciences</p>
-            </div>
-            <Badge variant="outline" className="flex items-center gap-1">
-              <BookOpen className="h-4 w-4" />
-              {mathTopics.length} chapitres
-            </Badge>
-          </div>
-
-          {/* Topics */}
-          <div className="space-y-8">
-            {mathTopics.map((topic, index) => (
-              <motion.div
-                key={topic.id}
-                initial={{ opacity: 0, y: 20 }}
-                animate={{ opacity: 1, y: 0 }}
-                transition={{ delay: index * 0.1 }}
-              >
-                <Card className="bg-card/80 backdrop-blur-sm border-0 shadow-lg hover:shadow-xl transition-all duration-300">
-                  <CardHeader>
-                    <div className="flex items-start justify-between">
-                      <div className="flex-1">
-                        <div className="flex items-center space-x-3 mb-3">
-                          <Badge className={`
-                            ${topic.difficulty === 'Facile' ? 'bg-green-100 text-green-800 border-green-200' : 
-                              topic.difficulty === 'Moyen' ? 'bg-yellow-100 text-yellow-800 border-yellow-200' : 
-                              'bg-red-100 text-red-800 border-red-200'}
-                            font-medium border
-                          `}>
-                            <Target className="h-3 w-3 mr-1" />
-                            {topic.difficulty}
-                          </Badge>
-                          <Badge variant="outline">
-                            <Clock className="h-3 w-3 mr-1" />
-                            {topic.duration}
-                          </Badge>
-                        </div>
-                        <CardTitle className="text-2xl font-bold text-card-foreground mb-2">
-                          {topic.title}
-                        </CardTitle>
-                        <p className="text-muted-foreground">{topic.description}</p>
-                      </div>
-                    </div>
-                  </CardHeader>
-                  <CardContent>
-                    <div className="prose prose-sm max-w-none dark:prose-invert">
-                      <pre className="whitespace-pre-wrap font-sans text-sm leading-relaxed">
-                        {topic.content}
-                      </pre>
-                    </div>
-                  </CardContent>
-                </Card>
-              </motion.div>
-            ))}
-          </div>
-        </motion.div>
-      </div>
-    </div>
+    <CourseSlide 
+      lessonTitle={currentCourse?.title || "Cours de Mathématiques"}
+      slides={currentCourse?.slides || []}
+    />
   );
 };
 

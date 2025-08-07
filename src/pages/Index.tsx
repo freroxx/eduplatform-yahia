@@ -12,6 +12,8 @@ import ProgressTracker from "@/components/ProgressTracker";
 import EnhancedSubjectCard from "@/components/EnhancedSubjectCard";
 import EnhancedProgressTracker from "@/components/EnhancedProgressTracker";
 import EnhancedLoadingBar from "@/components/EnhancedLoadingBar";
+import UserOnboarding from "@/components/UserOnboarding";
+import WelcomeTutorial from "@/components/WelcomeTutorial";
 import { useSettings } from "@/hooks/useSettings";
 import { useExerciseStats } from "@/hooks/useExerciseStats";
 
@@ -20,8 +22,20 @@ const Index = () => {
   const { getTotalStats } = useExerciseStats();
   const [isLoading, setIsLoading] = useState(true);
   const [loadingProgress, setLoadingProgress] = useState(0);
+  const [showOnboarding, setShowOnboarding] = useState(false);
+  const [showTutorial, setShowTutorial] = useState(false);
 
   useEffect(() => {
+    // Check if user has completed onboarding
+    const hasOnboarded = localStorage.getItem('hasOnboarded') === 'true';
+    const hasSeenTutorial = localStorage.getItem('hasSeenTutorial') === 'true';
+    
+    if (!hasOnboarded) {
+      setShowOnboarding(true);
+    } else if (!hasSeenTutorial) {
+      setShowTutorial(true);
+    }
+
     const interval = setInterval(() => {
       setLoadingProgress(prev => {
         const newProgress = prev + Math.random() * 15;
@@ -150,122 +164,148 @@ const Index = () => {
     }
   ];
 
+  const handleOnboardingComplete = () => {
+    setShowOnboarding(false);
+    setShowTutorial(true);
+  };
+
+  const handleTutorialComplete = () => {
+    setShowTutorial(false);
+    localStorage.setItem('hasSeenTutorial', 'true');
+  };
+
   if (isLoading) {
     return (
       <div className="min-h-screen bg-gradient-to-br from-background via-secondary/30 to-accent/20 flex items-center justify-center">
-        <EnhancedLoadingBar progress={loadingProgress} />
+        <EnhancedLoadingBar 
+          isLoading={isLoading} 
+          progress={loadingProgress}
+          message="Chargement d'EduLearn Pro..."
+        />
       </div>
     );
   }
 
   return (
-    <motion.div 
-      initial={{ opacity: 0 }}
-      animate={{ opacity: 1 }}
-      transition={{ duration: 0.5 }}
-      className={`min-h-screen transition-all duration-500 ${
-        settings?.animatedBackground ? 'animated-bg' : 'bg-gradient-to-br from-background via-secondary/30 to-accent/20'
-      }`}
-    >
-      <GlobalHeader />
+    <>
+      {showOnboarding && <UserOnboarding onComplete={handleOnboardingComplete} />}
+      {showTutorial && <WelcomeTutorial onComplete={handleTutorialComplete} />}
       
-      <div className="container mx-auto px-4 py-8 space-y-8">
-        {/* Hero Section */}
-        <motion.div
-          initial={{ y: 50, opacity: 0 }}
-          animate={{ y: 0, opacity: 1 }}
-          transition={{ delay: 0.1 }}
-          className="text-center mb-12"
-        >
-          <div className="inline-flex items-center gap-2 bg-primary/10 px-4 py-2 rounded-full mb-4 animate-pulse-subtle">
-            <Star className="h-4 w-4 text-primary animate-spin-slow" />
-            <span className="text-sm font-medium text-primary">Plateforme éducative avancée</span>
-          </div>
-          <h1 className="text-4xl md:text-6xl font-bold mb-6 bg-gradient-to-r from-primary via-purple-600 to-blue-600 bg-clip-text text-transparent animate-gradient">
-            EduLearn Pro
-          </h1>
-          <p className="text-xl text-muted-foreground max-w-2xl mx-auto mb-8">
-            Votre parcours d'apprentissage personnalisé pour exceller dans toutes les matières du Tronc Commun Sciences
-          </p>
-          <div className="flex flex-wrap justify-center gap-4 text-sm">
-            <div className="flex items-center gap-2 bg-card/80 backdrop-blur-sm px-4 py-2 rounded-lg shadow-sm hover:shadow-md transition-all duration-200">
-              <Target className="h-4 w-4 text-green-600" />
-              <span>+1000 exercices</span>
+      <motion.div 
+        initial={{ opacity: 0 }}
+        animate={{ opacity: 1 }}
+        transition={{ duration: 0.5 }}
+        className={`min-h-screen transition-all duration-500 ${
+          settings?.animatedBackgrounds ? 'animated-bg' : 'bg-gradient-to-br from-background via-secondary/30 to-accent/20'
+        }`}
+      >
+        <GlobalHeader />
+        
+        <div className="container mx-auto px-4 py-8 space-y-8">
+          {/* Hero Section */}
+          <motion.div
+            initial={{ y: 50, opacity: 0 }}
+            animate={{ y: 0, opacity: 1 }}
+            transition={{ delay: 0.1 }}
+            className="text-center mb-12"
+          >
+            <div className="inline-flex items-center gap-2 bg-primary/10 px-4 py-2 rounded-full mb-4 animate-pulse-subtle">
+              <Star className="h-4 w-4 text-primary animate-spin-slow" />
+              <span className="text-sm font-medium text-primary">Plateforme éducative avancée</span>
             </div>
-            <div className="flex items-center gap-2 bg-card/80 backdrop-blur-sm px-4 py-2 rounded-lg shadow-sm hover:shadow-md transition-all duration-200">
-              <Users className="h-4 w-4 text-blue-600" />
-              <span>+5000 étudiants</span>
-            </div>
-            <div className="flex items-center gap-2 bg-card/80 backdrop-blur-sm px-4 py-2 rounded-lg shadow-sm hover:shadow-md transition-all duration-200">
-              <TrendingUp className="h-4 w-4 text-purple-600" />
-              <span>Progression garantie</span>
-            </div>
-          </div>
-        </motion.div>
-
-        <div className="grid lg:grid-cols-4 gap-6">
-          {/* Main Content */}
-          <div className="lg:col-span-3 space-y-8">
-            {/* Quick Stats */}
-            <motion.div
-              initial={{ opacity: 0, y: 20 }}
-              animate={{ opacity: 1, y: 0 }}
-              transition={{ delay: 0.3 }}
-            >
-              <QuickStats
-                totalLessons={totalStats.totalLessons}
-                completedLessons={totalStats.coursesCompleted}
-                totalStudyTime={totalStats.totalStudyTime}
-                currentStreak={totalStats.streak}
-                averageScore={totalStats.averageScore}
-                weeklyGoal={totalStats.weeklyGoal}
-              />
-            </motion.div>
-
-            {/* Subjects Grid */}
-            <motion.div
-              initial={{ opacity: 0, y: 20 }}
-              animate={{ opacity: 1, y: 0 }}
-              transition={{ delay: 0.4 }}
-            >
-              <div className="flex items-center justify-between mb-6">
-                <h2 className="text-2xl font-bold text-foreground">Matières disponibles</h2>
-                <Badge variant="outline" className="bg-card/80 backdrop-blur-sm">
-                  {subjects.length} matières
-                </Badge>
+            <h1 className="text-4xl md:text-6xl font-bold mb-6 bg-gradient-to-r from-primary via-purple-600 to-blue-600 bg-clip-text text-transparent animate-gradient">
+              EduLearn Pro
+            </h1>
+            <p className="text-xl text-muted-foreground max-w-2xl mx-auto mb-8">
+              Votre parcours d'apprentissage personnalisé pour exceller dans toutes les matières du Tronc Commun Sciences
+            </p>
+            <div className="flex flex-wrap justify-center gap-4 text-sm">
+              <div className="flex items-center gap-2 bg-card/80 backdrop-blur-sm px-4 py-2 rounded-lg shadow-sm hover:shadow-md transition-all duration-200">
+                <Target className="h-4 w-4 text-green-600" />
+                <span>+1000 exercices</span>
               </div>
-              
-              <div className="grid md:grid-cols-2 xl:grid-cols-2 gap-6">
-                {subjects.map((subject, index) => (
-                  <EnhancedSubjectCard key={subject.id} subject={subject} index={index} />
-                ))}
+              <div className="flex items-center gap-2 bg-card/80 backdrop-blur-sm px-4 py-2 rounded-lg shadow-sm hover:shadow-md transition-all duration-200">
+                <Users className="h-4 w-4 text-blue-600" />
+                <span>+5000 étudiants</span>
               </div>
-            </motion.div>
-          </div>
+              <div className="flex items-center gap-2 bg-card/80 backdrop-blur-sm px-4 py-2 rounded-lg shadow-sm hover:shadow-md transition-all duration-200">
+                <TrendingUp className="h-4 w-4 text-purple-600" />
+                <span>Progression garantie</span>
+              </div>
+            </div>
+          </motion.div>
 
-          {/* Sidebar */}
-          <div className="space-y-6">
-            {/* Progress Tracker */}
-            <motion.div
-              initial={{ opacity: 0, x: 20 }}
-              animate={{ opacity: 1, x: 0 }}
-              transition={{ delay: 0.5 }}
-            >
-              <EnhancedProgressTracker />
-            </motion.div>
+          <div className="grid lg:grid-cols-4 gap-6">
+            {/* Main Content */}
+            <div className="lg:col-span-3 space-y-8">
+              {/* Quick Stats */}
+              <motion.div
+                initial={{ opacity: 0, y: 20 }}
+                animate={{ opacity: 1, y: 0 }}
+                transition={{ delay: 0.3 }}
+              >
+                <QuickStats
+                  totalLessons={totalStats.totalLessons}
+                  completedLessons={totalStats.coursesCompleted}
+                  totalStudyTime={totalStats.totalStudyTime}
+                  currentStreak={totalStats.streak}
+                  averageScore={totalStats.averageScore}
+                  weeklyGoal={totalStats.weeklyGoal}
+                />
+              </motion.div>
 
-            {/* Legacy Progress Tracker */}
-            <motion.div
-              initial={{ opacity: 0, x: 20 }}
-              animate={{ opacity: 1, x: 0 }}
-              transition={{ delay: 0.6 }}
-            >
-              <ProgressTracker />
-            </motion.div>
+              {/* Subjects Grid */}
+              <motion.div
+                initial={{ opacity: 0, y: 20 }}
+                animate={{ opacity: 1, y: 0 }}
+                transition={{ delay: 0.4 }}
+              >
+                <div className="flex items-center justify-between mb-6">
+                  <h2 className="text-2xl font-bold text-foreground">Matières disponibles</h2>
+                  <Badge variant="outline" className="bg-card/80 backdrop-blur-sm">
+                    {subjects.length} matières
+                  </Badge>
+                </div>
+                
+                <div className="grid md:grid-cols-2 xl:grid-cols-2 gap-6">
+                  {subjects.map((subject, index) => (
+                    <EnhancedSubjectCard key={subject.id} subject={subject} index={index} />
+                  ))}
+                </div>
+              </motion.div>
+            </div>
+
+            {/* Sidebar */}
+            <div className="space-y-6">
+              {/* Progress Tracker */}
+              <motion.div
+                initial={{ opacity: 0, x: 20 }}
+                animate={{ opacity: 1, x: 0 }}
+                transition={{ delay: 0.5 }}
+              >
+                <EnhancedProgressTracker />
+              </motion.div>
+
+              {/* Legacy Progress Tracker */}
+              <motion.div
+                initial={{ opacity: 0, x: 20 }}
+                animate={{ opacity: 1, x: 0 }}
+                transition={{ delay: 0.6 }}
+              >
+                <ProgressTracker 
+                  subject="Mathématiques"
+                  totalLessons={12}
+                  completedLessons={3}
+                  totalPoints={120}
+                  earnedPoints={45}
+                  studyTime="2h 30min"
+                />
+              </motion.div>
+            </div>
           </div>
         </div>
-      </div>
-    </motion.div>
+      </motion.div>
+    </>
   );
 };
 

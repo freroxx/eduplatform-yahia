@@ -1,117 +1,41 @@
 
-import { Button } from "@/components/ui/button";
+import { useState } from "react";
+import { motion } from "framer-motion";
 import { Card, CardContent, CardDescription, CardHeader, CardTitle } from "@/components/ui/card";
+import { Button } from "@/components/ui/button";
 import { Badge } from "@/components/ui/badge";
 import { Tabs, TabsContent, TabsList, TabsTrigger } from "@/components/ui/tabs";
-import { BookOpen, FileText, Video, ArrowLeft, Calendar, Clock, Target, Atom } from "lucide-react";
+import { BookOpen, FileText, Video, ArrowLeft, Calendar, Clock, Target, Zap } from "lucide-react";
 import { Link } from "react-router-dom";
-import { motion } from "framer-motion";
 import GlobalHeader from "@/components/GlobalHeader";
+import EnhancedLoadingBar from "@/components/EnhancedLoadingBar";
 
 const PhysicsLessons = () => {
+  const [isLoading, setIsLoading] = useState(false);
+
   const semester1Lessons = [
     {
       id: 101,
-      title: "La gravitation universelle",
-      description: "Loi de Newton, force gravitationnelle et applications",
-      duration: "50 min",
-      difficulty: "Moyen",
+      title: "Module 1: Gravitation universelle",
+      description: "Loi de Newton, champ gravitationnel, pesanteur et mouvement des planètes",
+      duration: "120 min",
+      difficulty: "Difficile",
       hasVideos: true
     },
     {
       id: 102,
-      title: "Exemples d'actions mécaniques",
-      description: "Forces de contact, forces à distance et leurs effets",
-      duration: "45 min",
-      difficulty: "Facile",
+      title: "Module 2: Mouvement et forces",
+      description: "Cinématique, dynamique, lois de Newton et applications",
+      duration: "110 min",
+      difficulty: "Moyen",
       hasVideos: true
     },
     {
       id: 103,
-      title: "Le mouvement",
-      description: "Cinématique, trajectoire et référentiels",
-      duration: "55 min",
+      title: "Module 3: Travail et énergie",
+      description: "Travail d'une force, énergie cinétique, potentielle et conservation",
+      duration: "95 min",
       difficulty: "Moyen",
-      hasVideos: true
-    },
-    {
-      id: 104,
-      title: "Le principe d'inertie",
-      description: "Première loi de Newton et ses applications",
-      duration: "40 min",
-      difficulty: "Moyen",
-      hasVideos: true
-    },
-    {
-      id: 105,
-      title: "Équilibre d'un corps sous l'action de 2 forces",
-      description: "Tension d'un ressort et poussée d'Archimède",
-      duration: "60 min",
-      difficulty: "Difficile",
-      hasVideos: true
-    },
-    {
-      id: 106,
-      title: "Équilibre d'un corps sous l'action de 3 forces",
-      description: "Conditions d'équilibre et résolution graphique",
-      duration: "55 min",
-      difficulty: "Difficile",
-      hasVideos: true
-    },
-    {
-      id: 107,
-      title: "Équilibre d'un solide en rotation autour d'un axe fixe",
-      description: "Moment d'une force et équilibre rotationnel",
-      duration: "50 min",
-      difficulty: "Difficile",
-      hasVideos: true
-    },
-    {
-      id: 108,
-      title: "Les espèces chimiques",
-      description: "Atomes, molécules et ions",
-      duration: "45 min",
-      difficulty: "Facile",
-      hasVideos: true
-    },
-    {
-      id: 109,
-      title: "Extraction, séparation et identification des espèces chimiques",
-      description: "Techniques expérimentales en chimie",
-      duration: "65 min",
-      difficulty: "Moyen",
-      hasVideos: true
-    },
-    {
-      id: 110,
-      title: "Synthèse des espèces chimiques",
-      description: "Réactions de synthèse et rendement",
-      duration: "50 min",
-      difficulty: "Moyen",
-      hasVideos: true
-    },
-    {
-      id: 111,
-      title: "Le modèle de l'atome",
-      description: "Structure atomique et configuration électronique",
-      duration: "55 min",
-      difficulty: "Moyen",
-      hasVideos: true
-    },
-    {
-      id: 112,
-      title: "La géométrie de quelques molécules",
-      description: "VSEPR et formes moléculaires",
-      duration: "40 min",
-      difficulty: "Moyen",
-      hasVideos: true
-    },
-    {
-      id: 113,
-      title: "Classification périodique des éléments chimiques",
-      description: "Tableau périodique et propriétés des éléments",
-      duration: "45 min",
-      difficulty: "Facile",
       hasVideos: true
     }
   ];
@@ -119,92 +43,28 @@ const PhysicsLessons = () => {
   const semester2Lessons = [
     {
       id: 114,
-      title: "Le courant électrique continu",
-      description: "Intensité, débit d'électrons et circuits électriques",
-      duration: "50 min",
-      difficulty: "Moyen",
+      title: "Module 4: Le courant électrique continu",
+      description: "Intensité, tension, résistance, loi d'Ohm et circuits électriques",
+      duration: "85 min",
+      difficulty: "Facile",
       hasVideos: true
     },
     {
       id: 115,
-      title: "La tension électrique",
-      description: "Différence de potentiel et mesure de tension",
-      duration: "45 min",
+      title: "Module 5: Optique géométrique",
+      description: "Réflexion, réfraction, lentilles minces et formation d'images",
+      duration: "100 min",
       difficulty: "Moyen",
-      hasVideos: true
-    },
-    {
-      id: 116,
-      title: "Association des conducteurs ohmiques",
-      description: "Résistances en série et en parallèle",
-      duration: "55 min",
-      difficulty: "Moyen",
-      hasVideos: true
-    },
-    {
-      id: 117,
-      title: "Caractéristiques de quelques dipôles passifs",
-      description: "Caractéristiques courant-tension",
-      duration: "50 min",
-      difficulty: "Difficile",
-      hasVideos: true
-    },
-    {
-      id: 118,
-      title: "Caractéristique d'un dipôle actif",
-      description: "Générateurs et leurs caractéristiques",
-      duration: "45 min",
-      difficulty: "Difficile",
-      hasVideos: true
-    },
-    {
-      id: 119,
-      title: "Le transistor",
-      description: "Principe de fonctionnement et applications",
-      duration: "40 min",
-      difficulty: "Difficile",
-      hasVideos: true
-    },
-    {
-      id: 120,
-      title: "L'amplificateur opérationnel",
-      description: "Fonctionnement et circuits d'amplification",
-      duration: "50 min",
-      difficulty: "Difficile",
-      hasVideos: true
-    },
-    {
-      id: 121,
-      title: "La mole, unité de quantité de matière",
-      description: "Concept de mole et calculs stœchiométriques",
-      duration: "45 min",
-      difficulty: "Moyen",
-      hasVideos: true
-    },
-    {
-      id: 122,
-      title: "La concentration molaire",
-      description: "Calculs de concentration et préparation de solutions",
-      duration: "40 min",
-      difficulty: "Moyen",
-      hasVideos: true
-    },
-    {
-      id: 123,
-      title: "Modélisation des transformations chimiques - Bilan de la matière",
-      description: "Équations chimiques et conservation de la matière",
-      duration: "60 min",
-      difficulty: "Difficile",
       hasVideos: true
     }
   ];
 
   const getDifficultyColor = (difficulty: string) => {
     switch (difficulty) {
-      case "Facile": return "bg-green-100 text-green-800 border-green-200 dark:bg-green-900/20 dark:text-green-400 dark:border-green-800";
-      case "Moyen": return "bg-yellow-100 text-yellow-800 border-yellow-200 dark:bg-yellow-900/20 dark:text-yellow-400 dark:border-yellow-800";
-      case "Difficile": return "bg-red-100 text-red-800 border-red-200 dark:bg-red-900/20 dark:text-red-400 dark:border-red-800";
-      default: return "bg-gray-100 text-gray-800 border-gray-200 dark:bg-gray-900/20 dark:text-gray-400 dark:border-gray-800";
+      case "Facile": return "bg-green-100 text-green-800 border-green-200";
+      case "Moyen": return "bg-yellow-100 text-yellow-800 border-yellow-200";
+      case "Difficile": return "bg-red-100 text-red-800 border-red-200";
+      default: return "bg-gray-100 text-gray-800 border-gray-200";
     }
   };
 
@@ -215,7 +75,7 @@ const PhysicsLessons = () => {
           <div className="flex-1">
             <div className="flex items-center space-x-3 mb-3">
               <span className="bg-emerald-600 rounded-full w-10 h-10 flex items-center justify-center text-sm font-bold text-white">
-                {lesson.id - 100}
+                {lesson.id > 113 ? lesson.id - 113 : lesson.id - 100}
               </span>
               <Badge className={`${getDifficultyColor(lesson.difficulty)} font-medium border`}>
                 <Target className="h-3 w-3 mr-1" />
@@ -226,7 +86,7 @@ const PhysicsLessons = () => {
                 {lesson.duration}
               </Badge>
               {lesson.hasVideos && (
-                <Badge variant="outline" className="text-emerald-600 border-emerald-300 dark:border-emerald-400 dark:text-emerald-400">
+                <Badge variant="outline" className="text-emerald-600 border-emerald-300 dark:border-emerald-400">
                   <Video className="h-3 w-3 mr-1" />
                   Vidéos
                 </Badge>
@@ -259,7 +119,7 @@ const PhysicsLessons = () => {
             <Link to={`/physics/lesson/${lesson.id}/videos`}>
               <Button variant="outline" size="sm" className="transition-all duration-200 border-emerald-600 text-emerald-600 hover:bg-emerald-50 hover:border-emerald-700 dark:border-emerald-400 dark:text-emerald-400 dark:hover:bg-emerald-900/20">
                 <Video className="h-4 w-4 mr-2" />
-                Vidéos YouTube
+                Vidéos
               </Button>
             </Link>
           )}
@@ -267,6 +127,19 @@ const PhysicsLessons = () => {
       </CardContent>
     </Card>
   );
+
+  if (isLoading) {
+    return (
+      <div className="min-h-screen bg-gradient-to-br from-background via-secondary/30 to-accent/20 flex items-center justify-center">
+        <EnhancedLoadingBar 
+          isLoading={isLoading} 
+          progress={75}
+          message="Chargement des leçons de physique..."
+          color="green"
+        />
+      </div>
+    );
+  }
 
   return (
     <motion.div
@@ -286,15 +159,15 @@ const PhysicsLessons = () => {
             </Link>
             <div className="text-center">
               <h1 className="text-2xl font-bold text-foreground flex items-center gap-2">
-                <Atom className="h-6 w-6 text-emerald-600" />
-                Physique Chimie
+                <Zap className="h-6 w-6 text-emerald-600" />
+                Physique
               </h1>
               <p className="text-sm text-muted-foreground">
                 Tronc Commun Sciences
               </p>
             </div>
             <div className="text-sm font-medium text-primary">
-              23 chapitres
+              5 modules
             </div>
           </div>
         </div>
@@ -308,10 +181,10 @@ const PhysicsLessons = () => {
           className="text-center mb-12"
         >
           <h2 className="text-4xl font-bold mb-4 text-foreground">
-            Programme de Physique Chimie
+            Programme de Physique
           </h2>
           <p className="text-xl mb-6 text-muted-foreground">
-            Mécanique, électricité et chimie
+            Mécanique, électricité et optique
           </p>
           
           <div className="flex justify-center space-x-8 text-sm text-muted-foreground">
@@ -321,11 +194,11 @@ const PhysicsLessons = () => {
             </div>
             <div className="flex items-center">
               <BookOpen className="h-4 w-4 mr-2" />
-              <span>23 Chapitres</span>
+              <span>5 Modules</span>
             </div>
             <div className="flex items-center">
               <Clock className="h-4 w-4 mr-2" />
-              <span>18h45 de contenu</span>
+              <span>8h30 de contenu</span>
             </div>
           </div>
         </motion.div>
@@ -340,7 +213,7 @@ const PhysicsLessons = () => {
                 <Calendar className="h-4 w-4" />
                 <span>1er Semestre</span>
                 <Badge variant="secondary" className="ml-2">
-                  13 chapitres
+                  3 modules
                 </Badge>
               </TabsTrigger>
               <TabsTrigger 
@@ -350,7 +223,7 @@ const PhysicsLessons = () => {
                 <Calendar className="h-4 w-4" />
                 <span>2ème Semestre</span>
                 <Badge variant="secondary" className="ml-2">
-                  10 chapitres
+                  2 modules
                 </Badge>
               </TabsTrigger>
             </TabsList>
@@ -361,7 +234,7 @@ const PhysicsLessons = () => {
                   Premier Semestre
                 </h3>
                 <p className="text-muted-foreground">
-                  Mécanique et chimie générale
+                  Mécanique classique
                 </p>
               </div>
               {semester1Lessons.map((lesson, index) => renderLessonCard(lesson, index))}
@@ -373,7 +246,7 @@ const PhysicsLessons = () => {
                   Deuxième Semestre
                 </h3>
                 <p className="text-muted-foreground">
-                  Électricité et chimie quantitative
+                  Électricité et optique
                 </p>
               </div>
               {semester2Lessons.map((lesson, index) => renderLessonCard(lesson, index))}

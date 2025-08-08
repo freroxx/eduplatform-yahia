@@ -25,6 +25,7 @@ const EnglishLessons = lazy(() => import("./pages/english/EnglishLessons"));
 const ArabicLessons = lazy(() => import("./pages/arabic/ArabicLessons"));
 const HistoryGeoLessons = lazy(() => import("./pages/history-geo/HistoryGeoLessons"));
 const PhilosophyLessons = lazy(() => import("./pages/philosophy/PhilosophyLessons"));
+const PhilosophyLesson = lazy(() => import("./pages/philosophy/PhilosophyLesson"));
 
 const AppContent = () => {
   const { theme } = useTheme();

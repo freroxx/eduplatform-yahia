@@ -36,7 +36,7 @@ const PhilosophyLesson = ({ type }: PhilosophyLessonProps) => {
                 id: '1',
                 title: currentLesson.title,
                 content: currentLesson.content,
-                type: 'text'
+                type: 'content'
               }
             ]}
           />

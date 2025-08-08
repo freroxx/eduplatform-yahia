@@ -1,12 +1,12 @@
 
 import CourseSlide from "@/components/CourseSlide";
 import { useParams } from "react-router-dom";
-import { physicsData } from "@/data/courseData";
+import { physicsLessonsData } from "@/data/physicsCourseData";
 
 const PhysicsCourse = () => {
   const { id } = useParams();
   
-  const currentCourse = physicsData[id || "101"];
+  const currentCourse = physicsLessonsData[id || "1"];
 
   return (
     <CourseSlide 

@@ -1,4 +1,3 @@
-
 import React, { useState, useEffect } from 'react';
 import { Search, X, BookOpen, Play, FileText, PenTool } from 'lucide-react';
 import { Button } from "@/components/ui/button";
@@ -28,72 +27,51 @@ const SearchBar: React.FC<SearchBarProps> = ({ isOpen, onClose }) => {
   const [isSearching, setIsSearching] = useState(false);
   const [recentSearches, setRecentSearches] = useState<string[]>([]);
 
-  // Enhanced search data
+  // Enhanced search data with complete course content
   const searchData: SearchResult[] = [
-    {
-      id: '1',
-      title: 'Les ensembles de nombres',
-      description: 'Introduction aux ensembles N, Z, Q, D et R avec exemples pratiques',
-      type: 'course',
-      subject: 'Mathématiques',
-      link: '/lesson/1/course'
-    },
-    {
-      id: '2',
-      title: 'Produit scalaire',
-      description: 'Cours complet sur le produit scalaire et ses applications',
-      type: 'course',
-      subject: 'Mathématiques',
-      link: '/lesson/1/course'
-    },
-    {
-      id: '3',
-      title: 'Statistiques',
-      description: 'Population statistique, caractères, effectifs et paramètres',
-      type: 'course',
-      subject: 'Mathématiques',
-      link: '/statistiques'
-    },
-    {
-      id: '4',
-      title: 'Exercices sur les ensembles',
-      description: 'Exercices pratiques avec correction détaillée',
-      type: 'exercise',
-      subject: 'Mathématiques',
-      link: '/lesson/1/exercises'
-    },
-    {
-      id: '5',
-      title: 'Vidéos explicatives - Mathématiques',
-      description: 'Collection de vidéos YouTube pour approfondir',
-      type: 'video',
-      subject: 'Mathématiques',
-      link: '/lesson/1/videos'
-    },
-    {
-      id: '6',
-      title: 'Typologie textuelle',
-      description: 'Les différents types de textes et leurs caractéristiques',
-      type: 'course',
-      subject: 'Français',
-      link: '/french/module1'
-    },
-    {
-      id: '7',
-      title: 'La gravitation universelle',
-      description: 'Lois de Newton et applications de la gravitation',
-      type: 'course',
-      subject: 'Physique-Chimie',
-      link: '/physics/lesson1'
-    },
-    {
-      id: '8',
-      title: 'Techniques adaptatives écologiques',
-      description: 'Méthodes d\'étude et d\'observation sur le terrain',
-      type: 'course',
-      subject: 'SVT',
-      link: '/svt/lesson1'
-    }
+    // Mathematics
+    { id: '1', title: 'Les ensembles de nombres', description: 'Introduction aux ensembles N, Z, Q, D et R avec exemples pratiques', type: 'course', subject: 'Mathématiques', link: '/math/lesson/1/course' },
+    { id: '2', title: 'Exercices sur les ensembles', description: 'Exercices pratiques avec correction détaillée', type: 'exercise', subject: 'Mathématiques', link: '/math/lesson/1/exercises' },
+    { id: '3', title: 'Produit scalaire', description: 'Cours complet sur le produit scalaire et ses applications', type: 'course', subject: 'Mathématiques', link: '/math/lesson/11/course' },
+    { id: '4', title: 'Statistiques', description: 'Population statistique, caractères, effectifs et paramètres', type: 'course', subject: 'Mathématiques', link: '/math/lesson/15/course' },
+    { id: '5', title: 'Vidéos explicatives - Mathématiques', description: 'Collection de vidéos YouTube pour approfondir', type: 'video', subject: 'Mathématiques', link: '/math/lesson/1/videos' },
+    
+    // Physics
+    { id: '6', title: 'La gravitation universelle', description: 'Lois de Newton et applications de la gravitation', type: 'course', subject: 'Physique-Chimie', link: '/physics/lesson/1' },
+    { id: '7', title: 'Le courant électrique continu', description: 'Nature du courant, lois d\'Ohm et applications', type: 'course', subject: 'Physique-Chimie', link: '/physics/lesson/14' },
+    { id: '8', title: 'Exercices de gravitation', description: 'Calculs de forces et applications pratiques', type: 'exercise', subject: 'Physique-Chimie', link: '/physics/exercises/1' },
+    { id: '9', title: 'La tension électrique', description: 'Définition, mesure et lois de Kirchhoff', type: 'course', subject: 'Physique-Chimie', link: '/physics/lesson/15' },
+    { id: '10', title: 'La mole, unité de quantité de matière', description: 'Nombre d\'Avogadro et calculs stœchiométriques', type: 'course', subject: 'Physique-Chimie', link: '/physics/lesson/21' },
+    
+    // French
+    { id: '11', title: 'Typologie textuelle', description: 'Les différents types de textes et leurs caractéristiques', type: 'course', subject: 'Français', link: '/french/lesson/1' },
+    { id: '12', title: 'Guy de Maupassant et le réalisme', description: 'Étude de l\'œuvre et du mouvement littéraire', type: 'course', subject: 'Français', link: '/french/lesson/2' },
+    { id: '13', title: 'Exercices d\'analyse textuelle', description: 'Pratique d\'identification et d\'analyse des types de textes', type: 'exercise', subject: 'Français', link: '/french/exercises/1' },
+    
+    // English
+    { id: '14', title: 'Grammar Fundamentals', description: 'Parts of speech and sentence structure', type: 'course', subject: 'English', link: '/english/lesson/1' },
+    { id: '15', title: 'Tenses and Time', description: 'Complete guide to English tenses', type: 'course', subject: 'English', link: '/english/lesson/2' },
+    { id: '16', title: 'Reading Comprehension', description: 'Strategies for effective reading', type: 'course', subject: 'English', link: '/english/lesson/3' },
+    { id: '17', title: 'Business English', description: 'Professional communication skills', type: 'course', subject: 'English', link: '/english/lesson/9' },
+    { id: '18', title: 'Grammar Practice Exercises', description: 'Parts of speech and sentence analysis', type: 'exercise', subject: 'English', link: '/english/exercises/1' },
+    
+    // Arabic
+    { id: '19', title: 'الإملاء والقواعد الأساسية', description: 'قواعد الهمزة والتاء وعلامات الترقيم', type: 'course', subject: 'العربية', link: '/arabic/lesson/1' },
+    { id: '20', title: 'أسماء الآلة والزمان والمكان', description: 'الاشتقاق وأوزان الأسماء المشتقة', type: 'course', subject: 'العربية', link: '/arabic/lesson/7' },
+    { id: '21', title: 'تمارين الإملاء', description: 'تطبيقات عملية على قواعد الإملاء', type: 'exercise', subject: 'العربية', link: '/arabic/exercises/1' },
+    
+    // Philosophy
+    { id: '22', title: 'تقديم عام لمجزوءة الفلسفة', description: 'ما هي الفلسفة وخصائص التفكير الفلسفي', type: 'course', subject: 'الفلسفة', link: '/philosophy/lesson/1' },
+    { id: '23', title: 'نشأة الفلسفة', description: 'البدايات اليونانية والانتقال من الأسطورة إلى العقل', type: 'course', subject: 'الفلسفة', link: '/philosophy/lesson/2' },
+    { id: '24', title: 'الفلسفة الإسلامية', description: 'خصائصها ورواد الفكر الإسلامي', type: 'course', subject: 'الفلسفة', link: '/philosophy/lesson/4' },
+    { id: '25', title: 'الإنسان كائن ثقافي', description: 'مفهوم الثقافة وخصائصها الإنسانية', type: 'course', subject: 'الفلسفة', link: '/philosophy/lesson/10' },
+    { id: '26', title: 'منطق الفلسفة', description: 'المنطق كآلة للتفكير وقوانين الفكر', type: 'course', subject: 'الفلسفة', link: '/philosophy/lesson/7' },
+    
+    // SVT
+    { id: '27', title: 'التقنيات التكيفية الإيكولوجية', description: 'طرق دراسة ومراقبة الأوساط الطبيعية', type: 'course', subject: 'علوم الحياة والأرض', link: '/svt/lesson/1' },
+    
+    // Histoire-Géographie
+    { id: '28', title: 'التاريخ والحضارة', description: 'مناهج دراسة التاريخ والحضارات', type: 'course', subject: 'التاريخ والجغرافيا', link: '/histoire-geo/lesson/1' }
   ];
 
   useEffect(() => {

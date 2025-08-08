@@ -1,8 +1,10 @@
+
 // Math course data with lessons and exercises including Statistics
 
 export const mathLessonsData = {
   "1": {
     title: "Les Ensembles - مجموعات الأعداد",
+    semester: 1,
     slides: [
       {
         title: "Introduction aux Ensembles",
@@ -82,8 +84,236 @@ c) 5 + 4 = 9`,
       }
     ]
   },
+  "2": {
+    title: "Calcul dans ℝ - الحساب في ℝ",
+    semester: 1,
+    slides: [
+      {
+        title: "Introduction au calcul dans ℝ",
+        content: `🔢 Calcul dans l'ensemble des réels
+
+L'ensemble des nombres réels ℝ est muni de deux opérations fondamentales :
+• L'addition (+)
+• La multiplication (×)
+
+Ces opérations satisfont plusieurs propriétés importantes qui permettent de simplifier les calculs et résoudre des équations.`,
+        type: "intro" as const
+      }
+    ]
+  },
+  "3": {
+    title: "Ordre dans ℝ - الترتيب في ℝ",
+    semester: 1,
+    slides: [
+      {
+        title: "Introduction à l'ordre dans ℝ",
+        content: `📊 L'ordre dans les nombres réels
+
+L'ensemble ℝ est totalement ordonné par la relation ≤ (inférieur ou égal).
+
+Pour tous nombres réels a, b, c :
+• Réflexivité : a ≤ a
+• Antisymétrie : si a ≤ b et b ≤ a, alors a = b
+• Transitivité : si a ≤ b et b ≤ c, alors a ≤ c`,
+        type: "intro" as const
+      }
+    ]
+  },
+  "4": {
+    title: "Valeur absolue - القيمة المطلقة",
+    semester: 1,
+    slides: [
+      {
+        title: "Introduction à la valeur absolue",
+        content: `📐 Valeur absolue d'un nombre réel
+
+La valeur absolue d'un nombre réel a, notée |a|, est définie par :
+• |a| = a si a ≥ 0
+• |a| = -a si a < 0
+
+Géométriquement, |a| représente la distance de a à 0 sur la droite numérique.`,
+        type: "intro" as const
+      }
+    ]
+  },
+  "5": {
+    title: "Puissances - القوى",
+    semester: 1,
+    slides: [
+      {
+        title: "Introduction aux puissances",
+        content: `⚡ Les puissances dans ℝ
+
+Pour a ∈ ℝ* et n ∈ ℕ :
+• aⁿ = a × a × ... × a (n fois)
+• a⁰ = 1 (par convention, a ≠ 0)
+• a⁻ⁿ = 1/aⁿ (pour a ≠ 0)
+
+Propriétés des puissances :
+• aᵐ × aⁿ = aᵐ⁺ⁿ
+• (aᵐ)ⁿ = aᵐˣⁿ
+• aᵐ ÷ aⁿ = aᵐ⁻ⁿ`,
+        type: "intro" as const
+      }
+    ]
+  },
+  "6": {
+    title: "Polynômes - كثيرات الحدود",
+    semester: 1,
+    slides: [
+      {
+        title: "Introduction aux polynômes",
+        content: `📊 Les polynômes
+
+Un polynôme de degré n est une expression de la forme :
+P(x) = aₙxⁿ + aₙ₋₁xⁿ⁻¹ + ... + a₁x + a₀
+
+où aₙ, aₙ₋₁, ..., a₁, a₀ sont des nombres réels (coefficients) et aₙ ≠ 0.`,
+        type: "intro" as const
+      }
+    ]
+  },
+  "7": {
+    title: "Équations - المعادلات",
+    semester: 1,
+    slides: [
+      {
+        title: "Introduction aux équations",
+        content: `🔍 Les équations du premier et second degré
+
+**Équation du premier degré :** ax + b = 0 (a ≠ 0)
+Solution : x = -b/a
+
+**Équation du second degré :** ax² + bx + c = 0 (a ≠ 0)
+Discriminant : Δ = b² - 4ac
+
+Solutions selon le signe de Δ :
+• Si Δ > 0 : deux solutions distinctes
+• Si Δ = 0 : une solution double
+• Si Δ < 0 : aucune solution réelle`,
+        type: "intro" as const
+      }
+    ]
+  },
+  "8": {
+    title: "Inéquations - المتراجحات",
+    semester: 2,
+    slides: [
+      {
+        title: "Introduction aux inéquations",
+        content: `📊 Résolution d'inéquations
+
+Une inéquations est une inégalité contenant une ou plusieurs inconnues.
+
+Types d'inéquations :
+• Premier degré : ax + b > 0, ax + b ≤ 0, etc.
+• Second degré : ax² + bx + c > 0, etc.
+• Rationnelles : f(x)/g(x) > 0, etc.`,
+        type: "intro" as const
+      }
+    ]
+  },
+  "9": {
+    title: "Systèmes d'équations - جمل المعادلات",
+    semester: 2,
+    slides: [
+      {
+        title: "Introduction aux systèmes",
+        content: `🔗 Systèmes d'équations linéaires
+
+Un système de deux équations à deux inconnues :
+{ax + by = c
+{a'x + b'y = c'
+
+Méthodes de résolution :
+• Substitution
+• Élimination (combinaisons linéaires)
+• Méthode graphique`,
+        type: "intro" as const
+      }
+    ]
+  },
+  "10": {
+    title: "Géométrie plane - الهندسة المستوية",
+    semester: 2,
+    slides: [
+      {
+        title: "Introduction à la géométrie plane",
+        content: `📐 Géométrie dans le plan
+
+Éléments de base :
+• Points, droites, segments
+• Angles et leurs mesures
+• Figures géométriques : triangles, quadrilatères, cercles
+
+Propriétés fondamentales :
+• Théorème de Pythagore
+• Théorème de Thalès
+• Propriétés des triangles et quadrilatères`,
+        type: "intro" as const
+      }
+    ]
+  },
+  "11": {
+    title: "Transformations - التحويلات",
+    semester: 2,
+    slides: [
+      {
+        title: "Introduction aux transformations",
+        content: `🔄 Transformations géométriques
+
+Les transformations du plan :
+• **Translation** : déplacement selon un vecteur
+• **Rotation** : rotation autour d'un point
+• **Symétrie axiale** : réflexion par rapport à une droite
+• **Symétrie centrale** : symétrie par rapport à un point
+
+Chaque transformation conserve certaines propriétés géométriques.`,
+        type: "intro" as const
+      }
+    ]
+  },
+  "12": {
+    title: "Fonctions - الدوال",
+    semester: 2,
+    slides: [
+      {
+        title: "Introduction aux fonctions",
+        content: `📈 Notion de fonction
+
+Une fonction f est une relation qui associe à chaque élément x d'un ensemble A (domaine de définition) un unique élément y d'un ensemble B.
+
+Notation : f: A → B
+         x ↦ f(x) = y
+
+Représentation graphique dans un repère orthonormé.`,
+        type: "intro" as const
+      }
+    ]
+  },
+  "13": {
+    title: "Trigonométrie - المثلثات",
+    semester: 2,
+    slides: [
+      {
+        title: "Introduction à la trigonométrie",
+        content: `📐 Fonctions trigonométriques
+
+Dans un triangle rectangle :
+• sin(α) = côté opposé / hypoténuse
+• cos(α) = côté adjacent / hypoténuse  
+• tan(α) = côté opposé / côté adjacent
+
+Cercle trigonométrique et angles remarquables :
+• 30°, 45°, 60°, 90°
+• π/6, π/4, π/3, π/2 (en radians)`,
+        type: "intro" as const
+      }
+    ]
+  },
   "14": {
     title: "Statistiques - الإحصاء",
+    semester: 2,
     slides: [
       {
         title: "Population statistique et Caractère",
@@ -217,6 +447,28 @@ Cette méthode permet un calcul rapide et précis des paramètres statistiques s
       "/lovable-uploads/d6037b0d-8716-4959-ae79-059ac75fe8ae.png",
       "/lovable-uploads/4d027159-0943-4265-a547-9837e61b3cb0.png"
     ]
+  },
+  "15": {
+    title: "Probabilités - الاحتماليات",
+    semester: 2,
+    slides: [
+      {
+        title: "Introduction aux probabilités",
+        content: `🎲 Notion de probabilité
+
+**Expérience aléatoire :** Une expérience dont le résultat ne peut être prédit avec certitude.
+
+**Événement :** Un sous-ensemble de l'ensemble des résultats possibles.
+
+**Probabilité d'un événement A :** P(A) = (nombre de cas favorables)/(nombre de cas possibles)
+
+Propriétés :
+• 0 ≤ P(A) ≤ 1
+• P(∅) = 0 (événement impossible)
+• P(Ω) = 1 (événement certain)`,
+        type: "intro" as const
+      }
+    ]
   }
 };
 
@@ -237,7 +489,8 @@ export const mathLessonsStructure = {
     { id: "11", title: "Transformations - التحويلات", description: "Translation, rotation, symétrie" },
     { id: "12", title: "Fonctions - الدوال", description: "Introduction aux fonctions" },
     { id: "13", title: "Trigonométrie - المثلثات", description: "Fonctions trigonométriques" },
-    { id: "14", title: "Statistiques - الإحصاء", description: "Étude statistique complète avec paramètres de position et de dispersion" }
+    { id: "14", title: "Statistiques - الإحصاء", description: "Étude statistique complète avec paramètres de position et de dispersion" },
+    { id: "15", title: "Probabilités - الاحتماليات", description: "Introduction aux probabilités" }
   ]
 };
 

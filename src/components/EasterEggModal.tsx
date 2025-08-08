@@ -4,7 +4,7 @@ import { motion, AnimatePresence } from 'framer-motion';
 import { Dialog, DialogContent, DialogHeader, DialogTitle } from '@/components/ui/dialog';
 import { Button } from '@/components/ui/button';
 import { Card, CardContent } from '@/components/ui/card';
-import { X, Maximize, Github, Mail, MapPin, Heart } from 'lucide-react';
+import { X, Maximize, Github, Mail, MapPin, Heart, Minimize } from 'lucide-react';
 
 interface EasterEggModalProps {
   isOpen: boolean;
@@ -57,7 +57,7 @@ const EasterEggModal = ({ isOpen, onClose }: EasterEggModalProps) => {
                 onClick={toggleFullscreen}
                 className="h-8 w-8 p-0 hover:bg-purple-100 dark:hover:bg-purple-900 transition-all duration-200 hover:scale-105"
               >
-                <Maximize className="h-4 w-4" />
+                {isFullscreen ? <Minimize className="h-4 w-4" /> : <Maximize className="h-4 w-4" />}
               </Button>
               <Button
                 variant="ghost"
@@ -103,6 +103,10 @@ const EasterEggModal = ({ isOpen, onClose }: EasterEggModalProps) => {
           >
             <Card className="glass-effect border-0 bg-gradient-to-br from-purple-50/50 to-pink-50/50 dark:from-purple-900/20 dark:to-pink-900/20">
               <CardContent className="p-6 space-y-4">
+                <div className="text-center mb-4">
+                  <h3 className="text-xl font-semibold text-foreground mb-2">Made by Yahia Ikni</h3>
+                </div>
+
                 <div className="flex items-center gap-3 p-3 rounded-lg bg-white/50 dark:bg-gray-800/50 backdrop-blur-sm">
                   <Github className="h-5 w-5 text-purple-600" />
                   <div>

@@ -1,99 +1,126 @@
 
 # Changelog
 
-Toutes les modifications notables de ce projet seront documentées dans ce fichier.
+All notable changes to this project will be documented in this file.
 
-## [4.5.0] - 2025-01-08
+## [5.5.0] - 2024-12-28
 
-### ✨ Nouvelles Fonctionnalités
-- **Nouveau programme de mathématiques complet** : 15 modules répartis sur 2 semestres
-- **Géométrie dans l'espace** : Support d'images intégrées pour le module 14
-- **Système de vidéos YouTube** : Intégration de ressources vidéo pour chaque leçon
-- **Onboarding interactif** : Guide de bienvenue pour les nouveaux utilisateurs
-- **Tutoriel de navigation** : Présentation des fonctionnalités de la plateforme
+### ✨ Added
+- **Statistics Course**: Complete mathematics lesson on statistics with 5 comprehensive slides and supporting images
+- **Easter Egg Feature**: Hidden surprise triggered by changing themes 5 times in a row
+  - Beautiful modal with project information
+  - Links to GitHub repository and contact details
+  - Smooth animations and fullscreen support
+- **Enhanced Physics Course**: Complete French-only physics lessons with detailed content
+- **Comprehensive SVT Structure**: Full biology course structure with 11 lessons across 2 semesters
+- **Arabic Course Completion**: Extended Arabic lessons with grammar, morphology, and literature
+- **Improved Search Functionality**: Enhanced search bar with all subject content integration
 
-### 🎨 Améliorations UI/UX
-- **Animations optimisées** : Réduction de la latence et amélioration de la fluidité
-- **Nouveau design de la page d'accueil** : Interface plus moderne et intuitive
-- **Cartes de matières améliorées** : Meilleur design et animations
-- **Système de chargement** : Barres de progression améliorées
-- **Thème sombre optimisé** : Meilleur contraste et lisibilité
+### 🔧 Fixed  
+- Fixed circular import errors in physics course data
+- Corrected routing issues for physics lessons
+- Resolved TypeScript errors in lesson structures
+- Fixed theme selector functionality
 
-### 🔧 Améliorations Techniques
-- **Performance des animations** : Utilisation du GPU pour les transformations
-- **Optimisation CSS** : Réduction des re-renders et amélioration de la fluidité
-- **Architecture modulaire** : Séparation des données de cours dans des fichiers dédiés
-- **TypeScript amélioré** : Meilleure typage et gestion d'erreurs
+### 🎨 Improved
+- Better animations throughout the application
+- Enhanced modal styling with glass effects
+- Improved theme switching with Easter egg integration
+- More responsive design elements
+- Better hover effects and transitions
 
-### 📚 Contenu Pédagogique
-#### Semestre 1 (9 modules)
-1. Les ensembles de nombres N, Z, Q, D et R
-2. Arithmétique dans ℕ
-3. Calcul vectoriel dans le plan
-4. La projection dans le plan
-5. L'ordre dans ℝ
-6. La droite dans le plan
-7. Les polynômes
-8. Équations, inéquations et systèmes
-9. Trigonométrie 1 (Règles du calcul trigonométrique)
+### 📚 Course Content Updates
+- **Mathematics**: Added complete Statistics lesson with real examples
+- **Physics**: All content now in French with comprehensive explanations  
+- **SVT**: Complete lesson structure for ecological studies and plant biology
+- **Arabic**: Extended grammar and literature modules
+- **All Subjects**: Enhanced exercise collections and practical examples
 
-#### Semestre 2 (6 modules)
-10. Trigonométrie 2 (Équations et inéquations trigonométriques)
-11. Généralités sur les fonctions
-12. Transformations du plan
-13. Le produit scalaire
-14. Géométrie dans l'espace (avec support d'images)
-15. Statistiques
-
-### 🔗 Ressources Externes
-- **Vidéos YouTube** : Liens vers des ressources éducatives en arabe et français
-- **Documentation visuelle** : Images de géométrie dans l'espace intégrées
-- **Exercices corrigés** : Solutions détaillées pour chaque module
-
-### 🐛 Corrections de Bugs
-- **Erreurs TypeScript** : Correction des props manquantes dans les composants
-- **Routage amélioré** : Gestion correcte des paramètres d'URL
-- **Responsive design** : Meilleur affichage sur mobile et tablette
-- **Gestion des états** : Correction des problèmes de chargement et d'affichage
+### 🐛 Bug Fixes
+- Fixed physics course data structure issues
+- Resolved theme switching problems
+- Corrected lesson navigation errors
+- Fixed TypeScript compilation errors
 
 ---
 
-## [4.4.0] - 2025-01-07
+## [5.4.0] - 2024-12-27
 
-### ✨ Nouvelles Fonctionnalités
-- **Système de progression avancé** : Suivi détaillé par matière
-- **Interface multi-matières** : Support pour toutes les matières du Tronc Commun
-- **Mode sombre complet** : Thème sombre optimisé pour toute l'application
+### ✨ Added
+- **Enhanced Global Header**: Redesigned navigation with better animations
+- **Music Integration**: EduMusic component with Elfsight audio player
+- **Picture-in-Picture Mode**: Draggable music player overlay
+- **Advanced Theme System**: Support for light, dark, and night themes
+- **User Onboarding**: Interactive welcome tutorial for new users
 
-### 🔧 Améliorations
-- **Performance générale** : Optimisation des composants React
-- **Navigation améliorée** : Meilleure expérience utilisateur
-- **Design responsive** : Adaptation parfaite sur tous les appareils
-
----
-
-## [4.3.0] - 2025-01-06
-
-### ✨ Nouvelles Fonctionnalités
-- **Système d'exercices interactifs** : Exercices avec solutions détaillées
-- **Suivi de progression** : Statistiques de performance par matière
-- **Interface utilisateur moderne** : Design Material inspiré
-
-### 🔧 Améliorations
-- **Optimisation des performances** : Réduction du temps de chargement
-- **Accessibilité** : Amélioration du support des lecteurs d'écran
-- **Compatibilité mobile** : Interface adaptée aux appareils mobiles
+### 🎨 Improvements
+- Enhanced animations using Framer Motion
+- Better glass effect styling throughout the app
+- Improved loading states and transitions
+- More intuitive navigation patterns
 
 ---
 
-## [4.2.0] - 2025-01-05
+## [5.3.0] - 2024-12-26
 
-### ✨ Nouvelles Fonctionnalités
-- **Plateforme éducative complète** : Lancement de la version initiale
-- **Support multi-matières** : Mathématiques, Physique, SVT, Français, etc.
-- **Système de cours interactifs** : Présentation moderne des leçons
+### ✨ Added
+- **Multi-language Support**: Enhanced course content in Arabic, French, and English
+- **Advanced Exercise System**: Interactive exercises with detailed solutions
+- **Progress Tracking**: Comprehensive progress monitoring system
+- **Video Integration**: Enhanced video viewer component
 
-### 🔧 Infrastructure
-- **Architecture React/TypeScript** : Base technique solide
-- **Système de routage** : Navigation fluide entre les pages
-- **Interface responsive** : Design adaptatif pour tous les écrans
+### 📚 Course Updates
+- Extended mathematics curriculum with advanced topics
+- Comprehensive physics and chemistry content
+- Enhanced English language learning modules
+- Detailed French literature and grammar lessons
+
+---
+
+## [5.2.0] - 2024-12-25
+
+### ✨ Added
+- **Enhanced Course Slides**: Improved presentation format with better navigation
+- **PDF Integration**: Support for embedded PDF viewing
+- **Statistics Dashboard**: Advanced progress and performance analytics
+- **Mobile Responsiveness**: Better mobile device support
+
+### 🔧 Technical Improvements
+- Optimized component architecture
+- Better state management
+- Enhanced TypeScript support
+- Improved build performance
+
+---
+
+## [5.1.0] - 2024-12-24
+
+### ✨ Added
+- **Philosophy Courses**: Complete philosophy curriculum
+- **History-Geography Integration**: Enhanced social sciences content
+- **Advanced Search**: Improved search functionality across all subjects
+- **Customizable Interface**: Better theme and layout options
+
+---
+
+## [5.0.0] - 2024-12-23
+
+### 🚀 Major Release
+- **Complete Redesign**: Modern, responsive interface
+- **Multi-subject Support**: Mathematics, Physics, Chemistry, Biology, Languages
+- **Interactive Learning**: Engaging exercises and multimedia content
+- **Progress Tracking**: Comprehensive learning analytics
+- **Modern Tech Stack**: Built with React, TypeScript, Tailwind CSS, and Framer Motion
+
+### ✨ Features
+- Comprehensive course management system
+- Interactive exercises with immediate feedback
+- Multimedia integration (videos, images, PDFs)
+- Advanced progress tracking and analytics
+- Mobile-first responsive design
+- Dark/light theme support
+- Multi-language content support
+
+---
+
+*This changelog follows the [Keep a Changelog](https://keepachangelog.com/) format.*

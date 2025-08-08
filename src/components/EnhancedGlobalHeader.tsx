@@ -1,3 +1,4 @@
+
 import React, { useState } from 'react';
 import { Button } from "@/components/ui/button";
 import { Bot, Search, Settings, Sun, Moon, Monitor, User, Music, Palette } from "lucide-react";
@@ -7,6 +8,7 @@ import { useTheme } from "./ThemeProvider";
 import AIAssistant from "./AIAssistant";
 import SearchBar from "./SearchBar";
 import EduMusic from "./EduMusic";
+import EasterEggModal from "./EasterEggModal";
 import { useThemeEasterEgg } from "@/hooks/useThemeEasterEgg";
 
 const EnhancedGlobalHeader: React.FC = () => {
@@ -16,7 +18,7 @@ const EnhancedGlobalHeader: React.FC = () => {
   const [showMusic, setShowMusic] = useState(false);
   const [showThemeSelector, setShowThemeSelector] = useState(false);
   
-  const { handleThemeChange } = useThemeEasterEgg();
+  const { handleThemeChange, showEasterEgg, closeEasterEgg } = useThemeEasterEgg();
 
   const getThemeIcon = () => {
     switch (theme) {
@@ -176,6 +178,7 @@ const EnhancedGlobalHeader: React.FC = () => {
       <AIAssistant isOpen={showAI} onClose={() => setShowAI(false)} />
       <SearchBar isOpen={showSearch} onClose={() => setShowSearch(false)} />
       <EduMusic isOpen={showMusic} onClose={() => setShowMusic(false)} />
+      <EasterEggModal isOpen={showEasterEgg} onClose={closeEasterEgg} />
       
       {/* Click outside to close theme selector */}
       {showThemeSelector && (

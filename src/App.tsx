@@ -24,6 +24,7 @@ const FrenchLessons = lazy(() => import("./pages/french/FrenchLessons"));
 const EnglishLessons = lazy(() => import("./pages/english/EnglishLessons"));
 const ArabicLessons = lazy(() => import("./pages/arabic/ArabicLessons"));
 const HistoryGeoLessons = lazy(() => import("./pages/history-geo/HistoryGeoLessons"));
+const PhilosophyLessons = lazy(() => import("./pages/philosophy/PhilosophyLessons"));
 
 const AppContent = () => {
   const { theme } = useTheme();
@@ -45,6 +46,7 @@ const AppContent = () => {
             <Route path="/english" element={<EnglishLessons />} />
             <Route path="/arabic" element={<ArabicLessons />} />
             <Route path="/histoire-geo" element={<HistoryGeoLessons />} />
+            <Route path="/philosophy" element={<PhilosophyLessons />} />
             
             {/* Math lesson routes */}
             <Route path="/math/lesson/:id/course" element={<MathLesson type="course" />} />
@@ -60,6 +62,11 @@ const AppContent = () => {
             <Route path="/svt/lesson/:id/course" element={<SVTLesson type="course" />} />
             <Route path="/svt/lesson/:id/exercises" element={<SVTLesson type="exercises" />} />
             <Route path="/svt/lesson/:id/videos" element={<SVTLesson type="videos" />} />
+            
+            {/* Philosophy lesson routes */}
+            <Route path="/philosophy/lesson/:id/course" element={<PhilosophyLesson type="course" />} />
+            <Route path="/philosophy/lesson/:id/exercises" element={<PhilosophyLesson type="exercises" />} />
+            <Route path="/philosophy/lesson/:id/videos" element={<PhilosophyLesson type="videos" />} />
           </Routes>
         </Suspense>
       </BrowserRouter>

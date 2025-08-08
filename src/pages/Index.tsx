@@ -1,4 +1,3 @@
-
 import { useState, useEffect } from "react";
 import { motion } from "framer-motion";
 import { Button } from "@/components/ui/button";
@@ -15,11 +14,19 @@ import Footer from "@/components/Footer";
 import WelcomeTutorial from "@/components/WelcomeTutorial";
 import UserOnboarding from "@/components/UserOnboarding";
 import ChangelogDialog from "@/components/ChangelogDialog";
+import EasterEggModal from "@/components/EasterEggModal";
+import PictureInPictureMusic from "@/components/PictureInPictureMusic";
+import { useThemeEasterEgg } from "@/hooks/useThemeEasterEgg";
 
 const Index = () => {
   const [showOnboarding, setShowOnboarding] = useState(false);
   const [showTutorial, setShowTutorial] = useState(false);
   const [showChangelog, setShowChangelog] = useState(false);
+  const [showPipMusic, setShowPipMusic] = useState(() => {
+    return localStorage.getItem('pipMusicVisible') === 'true';
+  });
+  
+  const { handleThemeChange, showEasterEgg, closeEasterEgg } = useThemeEasterEgg();
 
   useEffect(() => {
     // Check for new users or reset data
@@ -155,6 +162,21 @@ const Index = () => {
       duration: "13h",
       difficulty: "Moyen" as const,
       path: "histoire-geo"
+    },
+    {
+      id: "philosophy",
+      name: "Philosophie",
+      nameArabic: "الفلسفة",
+      description: "Pensée critique, éthique et philosophie islamique",
+      icon: <Book className="h-6 w-6" />,
+      color: "#6366F1",
+      bgGradient: "from-indigo-500 to-purple-600",
+      lessons: 15,
+      exercises: 45,
+      duration: "13h",
+      difficulty: "Moyen" as const,
+      path: "philosophy",
+      isNew: true
     }
   ];
 
@@ -218,6 +240,21 @@ const Index = () => {
           onOpenChange={setShowChangelog}
         />
       )}
+
+      {showEasterEgg && (
+        <EasterEggModal 
+          isOpen={showEasterEgg}
+          onClose={closeEasterEgg}
+        />
+      )}
+
+      <PictureInPictureMusic 
+        isVisible={showPipMusic}
+        onToggle={() => {
+          setShowPipMusic(!showPipMusic);
+          localStorage.setItem('pipMusicVisible', (!showPipMusic).toString());
+        }}
+      />
 
       <motion.div
         variants={containerVariants}

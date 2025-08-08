@@ -1,4 +1,3 @@
-
 import React, { useState } from 'react';
 import { Button } from "@/components/ui/button";
 import { Bot, Search, Settings, Sun, Moon, Monitor, User, Music, Palette } from "lucide-react";
@@ -8,6 +7,7 @@ import { useTheme } from "./ThemeProvider";
 import AIAssistant from "./AIAssistant";
 import SearchBar from "./SearchBar";
 import EduMusic from "./EduMusic";
+import { useThemeEasterEgg } from "@/hooks/useThemeEasterEgg";
 
 const EnhancedGlobalHeader: React.FC = () => {
   const { theme, setTheme } = useTheme();
@@ -15,6 +15,8 @@ const EnhancedGlobalHeader: React.FC = () => {
   const [showSearch, setShowSearch] = useState(false);
   const [showMusic, setShowMusic] = useState(false);
   const [showThemeSelector, setShowThemeSelector] = useState(false);
+  
+  const { handleThemeChange } = useThemeEasterEgg();
 
   const getThemeIcon = () => {
     switch (theme) {
@@ -23,6 +25,12 @@ const EnhancedGlobalHeader: React.FC = () => {
       case 'night': return <Palette className="h-4 w-4" />;
       default: return <Monitor className="h-4 w-4" />;
     }
+  };
+
+  const handleThemeSelect = (themeKey: 'light' | 'dark' | 'night') => {
+    setTheme(themeKey);
+    setShowThemeSelector(false);
+    handleThemeChange(); // Trigger easter egg counter
   };
 
   const themes = [
@@ -134,10 +142,7 @@ const EnhancedGlobalHeader: React.FC = () => {
                           key={themeOption.key}
                           whileHover={{ scale: 1.05, x: 5 }}
                           whileTap={{ scale: 0.95 }}
-                          onClick={() => {
-                            setTheme(themeOption.key);
-                            setShowThemeSelector(false);
-                          }}
+                          onClick={() => handleThemeSelect(themeOption.key)}
                           className={`w-full flex items-center gap-2 p-2 rounded-md transition-all duration-200 ${
                             theme === themeOption.key 
                               ? 'bg-primary text-primary-foreground' 

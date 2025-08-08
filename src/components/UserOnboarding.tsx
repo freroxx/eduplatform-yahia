@@ -1,4 +1,3 @@
-
 import { useState, useEffect } from 'react';
 import { motion, AnimatePresence } from 'framer-motion';
 import { Dialog, DialogContent, DialogHeader, DialogTitle } from '@/components/ui/dialog';
@@ -13,6 +12,13 @@ interface UserOnboardingProps {
 
 const UserOnboarding = ({ isOpen, onComplete }: UserOnboardingProps) => {
   const [currentStep, setCurrentStep] = useState(0);
+  const [canSkip, setCanSkip] = useState(false);
+
+  // Enable skip after 3 seconds
+  useEffect(() => {
+    const timer = setTimeout(() => setCanSkip(true), 3000);
+    return () => clearTimeout(timer);
+  }, []);
 
   const steps = [
     {
@@ -59,6 +65,10 @@ const UserOnboarding = ({ isOpen, onComplete }: UserOnboardingProps) => {
     } else {
       onComplete();
     }
+  };
+
+  const handleSkip = () => {
+    onComplete();
   };
 
   const currentStepData = steps[currentStep];
@@ -184,15 +194,33 @@ const UserOnboarding = ({ isOpen, onComplete }: UserOnboardingProps) => {
         </AnimatePresence>
 
         <motion.div 
-          className="flex justify-end"
+          className="flex justify-between items-center"
           initial={{ opacity: 0 }}
           animate={{ opacity: 1 }}
           transition={{ delay: 1 }}
         >
+          <AnimatePresence>
+            {canSkip && (
+              <motion.div
+                initial={{ opacity: 0, x: -20 }}
+                animate={{ opacity: 1, x: 0 }}
+                exit={{ opacity: 0, x: -20 }}
+              >
+                <Button 
+                  onClick={handleSkip}
+                  variant="ghost"
+                  className="text-muted-foreground hover:text-foreground transition-colors duration-300"
+                >
+                  Passer l'introduction
+                </Button>
+              </motion.div>
+            )}
+          </AnimatePresence>
+          
           <Button 
             onClick={handleNext}
             size="lg"
-            className={`bg-gradient-to-r ${currentStepData.gradient} text-white border-0 hover:shadow-xl transition-all duration-300 px-8 hover:scale-105`}
+            className={`bg-gradient-to-r ${currentStepData.gradient} text-white border-0 hover:shadow-xl transition-all duration-300 px-8 hover:scale-105 ml-auto`}
           >
             {currentStep === steps.length - 1 ? 'Commencer l\'aventure' : 'Continuer'}
             <motion.div

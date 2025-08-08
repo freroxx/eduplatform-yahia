@@ -1,4 +1,3 @@
-
 import { useState, useEffect } from "react";
 import { Button } from "@/components/ui/button";
 import { Dialog, DialogContent, DialogHeader, DialogTitle } from "@/components/ui/dialog";
@@ -43,6 +42,14 @@ const EduMusic = ({ isOpen, onClose }: EduMusicProps) => {
     }
   }, [isOpen, isLoaded]);
 
+  const [isMinimized, setIsMinimized] = useState(false);
+
+  const handleMinimize = () => {
+    setIsMinimized(true);
+    localStorage.setItem('pipMusicVisible', 'true');
+    onClose();
+  };
+
   const toggleFullscreen = () => {
     setIsFullscreen(!isFullscreen);
   };
@@ -78,6 +85,14 @@ const EduMusic = ({ isOpen, onClose }: EduMusicProps) => {
               </span>
             </DialogTitle>
             <div className="flex items-center gap-2">
+              <Button
+                variant="ghost"
+                size="sm"
+                onClick={handleMinimize}
+                className="h-8 w-8 p-0 hover:bg-blue-100 dark:hover:bg-blue-900 transition-all duration-200 hover:scale-105"
+              >
+                <Minimize className="h-4 w-4" />
+              </Button>
               <Button
                 variant="ghost"
                 size="sm"

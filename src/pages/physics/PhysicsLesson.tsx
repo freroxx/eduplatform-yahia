@@ -31,6 +31,36 @@ const PhysicsLesson = ({ type }: PhysicsLessonProps) => {
     }
   };
 
+  // Sample data for course slides
+  const courseSlides = [
+    {
+      title: "Introduction",
+      content: `Contenu du cours de physique-chimie - Leçon ${id}\n\nCeci est une leçon d'introduction aux concepts de physique-chimie.`,
+      type: "intro" as const
+    },
+    {
+      title: "Développement",
+      content: `Développement des concepts principaux de la leçon ${id}.`,
+      type: "content" as const
+    },
+    {
+      title: "Conclusion",
+      content: `Résumé et conclusion de la leçon ${id}.`,
+      type: "conclusion" as const
+    }
+  ];
+
+  // Sample video data
+  const sampleVideos = [
+    {
+      id: "1",
+      title: `Physique-Chimie - Leçon ${id} - Partie 1`,
+      url: "https://www.youtube.com/watch?v=dQw4w9WgXcQ",
+      duration: "12:45",
+      description: "Introduction aux concepts de physique-chimie"
+    }
+  ];
+
   return (
     <div className="min-h-screen bg-gradient-to-br from-green-50 via-emerald-50 to-teal-50 dark:from-gray-900 dark:via-green-900 dark:to-emerald-900">
       <div className="container mx-auto px-4 py-8">
@@ -66,17 +96,15 @@ const PhysicsLesson = ({ type }: PhysicsLessonProps) => {
         >
           {type === "course" && (
             <EnhancedCourseSlide
-              title={`Cours de Physique-Chimie - Leçon ${id}`}
-              content={`Contenu du cours de la leçon ${id}`}
-              subject="physics"
+              lessonTitle={`Cours de Physique-Chimie - Leçon ${id}`}
+              slides={courseSlides}
             />
           )}
           
           {type === "videos" && (
             <EnhancedVideoViewer
+              videos={sampleVideos}
               title={`Vidéos - Leçon ${id}`}
-              videoUrl=""
-              subject="physics"
             />
           )}
           

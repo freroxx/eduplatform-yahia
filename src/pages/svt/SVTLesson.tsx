@@ -31,6 +31,36 @@ const SVTLesson = ({ type }: SVTLessonProps) => {
     }
   };
 
+  // Sample data for course slides
+  const courseSlides = [
+    {
+      title: "Introduction",
+      content: `Contenu du cours de SVT - Leçon ${id}\n\nCeci est une leçon d'introduction aux concepts de SVT.`,
+      type: "intro" as const
+    },
+    {
+      title: "Développement",
+      content: `Développement des concepts principaux de la leçon ${id}.`,
+      type: "content" as const
+    },
+    {
+      title: "Conclusion",
+      content: `Résumé et conclusion de la leçon ${id}.`,
+      type: "conclusion" as const
+    }
+  ];
+
+  // Sample video data
+  const sampleVideos = [
+    {
+      id: "1",
+      title: `SVT - Leçon ${id} - Partie 1`,
+      url: "https://www.youtube.com/watch?v=dQw4w9WgXcQ",
+      duration: "15:20",
+      description: "Introduction aux concepts de SVT"
+    }
+  ];
+
   return (
     <div className="min-h-screen bg-gradient-to-br from-emerald-50 via-green-50 to-lime-50 dark:from-gray-900 dark:via-emerald-900 dark:to-green-900">
       <div className="container mx-auto px-4 py-8">
@@ -66,17 +96,15 @@ const SVTLesson = ({ type }: SVTLessonProps) => {
         >
           {type === "course" && (
             <EnhancedCourseSlide
-              title={`Cours de SVT - Leçon ${id}`}
-              content={`Contenu du cours de la leçon ${id}`}
-              subject="svt"
+              lessonTitle={`Cours de SVT - Leçon ${id}`}
+              slides={courseSlides}
             />
           )}
           
           {type === "videos" && (
             <EnhancedVideoViewer
+              videos={sampleVideos}
               title={`Vidéos - Leçon ${id}`}
-              videoUrl=""
-              subject="svt"
             />
           )}
           

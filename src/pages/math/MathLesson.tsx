@@ -31,6 +31,36 @@ const MathLesson = ({ type }: MathLessonProps) => {
     }
   };
 
+  // Sample data for course slides
+  const courseSlides = [
+    {
+      title: "Introduction",
+      content: `Contenu du cours de mathématiques - Leçon ${id}\n\nCeci est une leçon d'introduction aux concepts mathématiques.`,
+      type: "intro" as const
+    },
+    {
+      title: "Développement",
+      content: `Développement des concepts principaux de la leçon ${id}.`,
+      type: "content" as const
+    },
+    {
+      title: "Conclusion",
+      content: `Résumé et conclusion de la leçon ${id}.`,
+      type: "conclusion" as const
+    }
+  ];
+
+  // Sample video data
+  const sampleVideos = [
+    {
+      id: "1",
+      title: `Mathématiques - Leçon ${id} - Partie 1`,
+      url: "https://www.youtube.com/watch?v=dQw4w9WgXcQ",
+      duration: "10:30",
+      description: "Introduction aux concepts de base"
+    }
+  ];
+
   return (
     <div className="min-h-screen bg-gradient-to-br from-blue-50 via-indigo-50 to-purple-50 dark:from-gray-900 dark:via-blue-900 dark:to-indigo-900">
       <div className="container mx-auto px-4 py-8">
@@ -66,17 +96,15 @@ const MathLesson = ({ type }: MathLessonProps) => {
         >
           {type === "course" && (
             <EnhancedCourseSlide
-              title={`Cours de Mathématiques - Leçon ${id}`}
-              content={`Contenu du cours de la leçon ${id}`}
-              subject="math"
+              lessonTitle={`Cours de Mathématiques - Leçon ${id}`}
+              slides={courseSlides}
             />
           )}
           
           {type === "videos" && (
             <EnhancedVideoViewer
+              videos={sampleVideos}
               title={`Vidéos - Leçon ${id}`}
-              videoUrl=""
-              subject="math"
             />
           )}
           

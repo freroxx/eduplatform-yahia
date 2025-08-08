@@ -1,3 +1,4 @@
+
 import { Suspense, lazy } from "react";
 import { Toaster } from "@/components/ui/toaster";
 import { Toaster as Sonner } from "@/components/ui/sonner";
@@ -8,6 +9,8 @@ import { ThemeProvider, useTheme } from "@/components/ThemeProvider";
 import AnimatedBackground from "@/components/AnimatedBackground";
 import CustomScrollbar from "@/components/CustomScrollbar";
 import LoadingSpinner from "@/components/LoadingSpinner";
+import PictureInPictureMusic from "@/components/PictureInPictureMusic";
+import { usePictureInPictureMusic } from "@/hooks/usePictureInPictureMusic";
 
 const queryClient = new QueryClient();
 
@@ -29,6 +32,7 @@ const PhilosophyLesson = lazy(() => import("./pages/philosophy/PhilosophyLesson"
 
 const AppContent = () => {
   const { theme } = useTheme();
+  const { isPipVisible, togglePip } = usePictureInPictureMusic();
   
   return (
     <div className="min-h-screen relative">
@@ -71,6 +75,9 @@ const AppContent = () => {
           </Routes>
         </Suspense>
       </BrowserRouter>
+
+      {/* Picture-in-Picture Music Component */}
+      <PictureInPictureMusic isVisible={isPipVisible} onToggle={togglePip} />
     </div>
   );
 };

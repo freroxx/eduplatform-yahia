@@ -1,8 +1,10 @@
+
 import { useState, useEffect } from "react";
 import { Button } from "@/components/ui/button";
 import { Dialog, DialogContent, DialogHeader, DialogTitle } from "@/components/ui/dialog";
 import { Music, Maximize, Minimize, X } from "lucide-react";
 import { motion } from "framer-motion";
+import { usePictureInPictureMusic } from "@/hooks/usePictureInPictureMusic";
 
 interface EduMusicProps {
   isOpen: boolean;
@@ -12,6 +14,7 @@ interface EduMusicProps {
 const EduMusic = ({ isOpen, onClose }: EduMusicProps) => {
   const [isLoaded, setIsLoaded] = useState(false);
   const [isFullscreen, setIsFullscreen] = useState(false);
+  const { showPip } = usePictureInPictureMusic();
 
   useEffect(() => {
     // Load Elfsight script once globally
@@ -42,11 +45,8 @@ const EduMusic = ({ isOpen, onClose }: EduMusicProps) => {
     }
   }, [isOpen, isLoaded]);
 
-  const [isMinimized, setIsMinimized] = useState(false);
-
   const handleMinimize = () => {
-    setIsMinimized(true);
-    localStorage.setItem('pipMusicVisible', 'true');
+    showPip();
     onClose();
   };
 

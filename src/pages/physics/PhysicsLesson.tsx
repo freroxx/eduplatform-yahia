@@ -1,0 +1,99 @@
+
+import { useParams } from "react-router-dom";
+import { motion } from "framer-motion";
+import { ArrowLeft, BookOpen, Play, PenTool } from "lucide-react";
+import { Button } from "@/components/ui/button";
+import { useNavigate } from "react-router-dom";
+import EnhancedCourseSlide from "@/components/EnhancedCourseSlide";
+import EnhancedVideoViewer from "@/components/EnhancedVideoViewer";
+
+interface PhysicsLessonProps {
+  type: "course" | "exercises" | "videos";
+}
+
+const PhysicsLesson = ({ type }: PhysicsLessonProps) => {
+  const { id } = useParams();
+  const navigate = useNavigate();
+
+  const getIcon = () => {
+    switch (type) {
+      case "course": return <BookOpen className="w-5 h-5" />;
+      case "exercises": return <PenTool className="w-5 h-5" />;
+      case "videos": return <Play className="w-5 h-5" />;
+    }
+  };
+
+  const getTitle = () => {
+    switch (type) {
+      case "course": return "Cours";
+      case "exercises": return "Exercices";
+      case "videos": return "Vidéos";
+    }
+  };
+
+  return (
+    <div className="min-h-screen bg-gradient-to-br from-green-50 via-emerald-50 to-teal-50 dark:from-gray-900 dark:via-green-900 dark:to-emerald-900">
+      <div className="container mx-auto px-4 py-8">
+        <motion.div
+          initial={{ opacity: 0, y: 20 }}
+          animate={{ opacity: 1, y: 0 }}
+          className="mb-8"
+        >
+          <Button
+            onClick={() => navigate("/physics")}
+            variant="ghost"
+            className="mb-4 hover:bg-white/10 backdrop-blur-sm"
+          >
+            <ArrowLeft className="w-4 h-4 mr-2" />
+            Retour aux leçons
+          </Button>
+          
+          <div className="flex items-center gap-3 mb-2">
+            {getIcon()}
+            <h1 className="text-3xl font-bold text-gray-800 dark:text-white">
+              Physique-Chimie - Leçon {id}
+            </h1>
+          </div>
+          <p className="text-gray-600 dark:text-gray-300">
+            {getTitle()} - Leçon {id}
+          </p>
+        </motion.div>
+
+        <motion.div
+          initial={{ opacity: 0, y: 20 }}
+          animate={{ opacity: 1, y: 0 }}
+          transition={{ delay: 0.1 }}
+        >
+          {type === "course" && (
+            <EnhancedCourseSlide
+              title={`Cours de Physique-Chimie - Leçon ${id}`}
+              content={`Contenu du cours de la leçon ${id}`}
+              subject="physics"
+            />
+          )}
+          
+          {type === "videos" && (
+            <EnhancedVideoViewer
+              title={`Vidéos - Leçon ${id}`}
+              videoUrl=""
+              subject="physics"
+            />
+          )}
+          
+          {type === "exercises" && (
+            <div className="bg-white/80 dark:bg-gray-800/80 backdrop-blur-sm rounded-lg p-6">
+              <h2 className="text-xl font-semibold mb-4 text-gray-800 dark:text-white">
+                Exercices - Leçon {id}
+              </h2>
+              <p className="text-gray-600 dark:text-gray-300">
+                Les exercices pour cette leçon seront bientôt disponibles.
+              </p>
+            </div>
+          )}
+        </motion.div>
+      </div>
+    </div>
+  );
+};
+
+export default PhysicsLesson;

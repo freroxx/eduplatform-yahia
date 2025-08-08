@@ -1,5 +1,5 @@
 
-import CourseSlide from "@/components/CourseSlide";
+import EnhancedCourseSlide from "@/components/EnhancedCourseSlide";
 import EnhancedLoadingBar from "@/components/EnhancedLoadingBar";
 import { useParams } from "react-router-dom";
 import { useState, useEffect } from "react";
@@ -56,17 +56,29 @@ const MathCourse = () => {
     );
   }
 
+  if (!currentCourse) {
+    return (
+      <div className="min-h-screen bg-gradient-to-br from-background via-secondary/30 to-accent/20 flex items-center justify-center">
+        <div className="text-center p-8">
+          <h2 className="text-2xl font-bold mb-2">Cours non trouvé</h2>
+          <p className="text-muted-foreground">Ce cours n'existe pas ou n'est pas encore disponible.</p>
+        </div>
+      </div>
+    );
+  }
+
   // Transform the slides to match the expected interface
-  const transformedSlides: Slide[] = currentCourse?.slides.map(slide => ({
+  const transformedSlides: Slide[] = currentCourse?.slides.map((slide, index) => ({
+    id: index + 1,
     ...slide,
     type: slide.type as "intro" | "definition" | "example" | "summary" | "exercise" | "content" | "introduction" | "conclusion"
   })) || [];
 
   return (
-    <CourseSlide 
+    <EnhancedCourseSlide 
       lessonTitle={currentCourse?.title || "Cours de Mathématiques"}
       slides={transformedSlides}
-      images={currentCourse?.images}
+      pdfUrl={currentCourse?.images}
     />
   );
 };

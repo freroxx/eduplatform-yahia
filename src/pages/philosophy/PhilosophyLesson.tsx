@@ -33,7 +33,6 @@ const PhilosophyLesson = ({ type }: PhilosophyLessonProps) => {
             lessonTitle={currentLesson.title}
             slides={[
               {
-                id: '1',
                 title: currentLesson.title,
                 content: currentLesson.content,
                 type: 'content'

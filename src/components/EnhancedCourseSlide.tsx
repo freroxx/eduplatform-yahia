@@ -1,4 +1,3 @@
-
 import React, { useState } from "react";
 import { motion, AnimatePresence } from "framer-motion";
 import { ChevronLeft, ChevronRight, BookOpen, CheckCircle, FileText, Download } from "lucide-react";
@@ -18,9 +17,10 @@ interface EnhancedCourseSlideProps {
   lessonTitle: string;
   slides: Slide[];
   pdfUrl?: string | string[];
+  onLessonComplete?: () => void;
 }
 
-const EnhancedCourseSlide = ({ lessonTitle, slides, pdfUrl }: EnhancedCourseSlideProps) => {
+const EnhancedCourseSlide = ({ lessonTitle, slides, pdfUrl, onLessonComplete }: EnhancedCourseSlideProps) => {
   const [currentSlide, setCurrentSlide] = useState(0);
   const [showPDF, setShowPDF] = useState(false);
 
@@ -43,6 +43,9 @@ const EnhancedCourseSlide = ({ lessonTitle, slides, pdfUrl }: EnhancedCourseSlid
   const nextSlide = () => {
     if (currentSlide < slides.length - 1) {
       setCurrentSlide(currentSlide + 1);
+    } else if (onLessonComplete && currentSlide === slides.length - 1) {
+      // Call lesson complete when reaching the last slide
+      onLessonComplete();
     }
   };
 
@@ -244,7 +247,7 @@ const EnhancedCourseSlide = ({ lessonTitle, slides, pdfUrl }: EnhancedCourseSlid
                       disabled={currentSlide === slides.length - 1}
                       className="flex items-center gap-2 hover:scale-105 transition-transform shadow-md"
                     >
-                      Suivant
+                      {currentSlide === slides.length - 1 ? "Terminer" : "Suivant"}
                       <ChevronRight className="h-4 w-4" />
                     </Button>
                   </div>

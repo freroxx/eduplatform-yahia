@@ -1,3 +1,4 @@
+
 import { useState } from "react";
 import { motion } from "framer-motion";
 import { Card, CardContent, CardDescription, CardHeader, CardTitle } from "@/components/ui/card";
@@ -7,32 +8,9 @@ import { Tabs, TabsContent, TabsList, TabsTrigger } from "@/components/ui/tabs";
 import { BookOpen, FileText, Video, ArrowLeft, Calendar, Clock, Target, Calculator } from "lucide-react";
 import { Link } from "react-router-dom";
 import GlobalHeader from "@/components/GlobalHeader";
-import { mathLessonsData } from "@/data/mathCourseData";
+import { mathLessonsStructure } from "@/data/mathCourseData";
 
 const MathLessons = () => {
-  // Transform the lessons data into semester arrays
-  const semester1Lessons = Object.entries(mathLessonsData)
-    .filter(([_, lesson]) => lesson.semester === 1)
-    .map(([id, lesson], index) => ({
-      id: parseInt(id),
-      title: `Module ${index + 1}: ${lesson.title}`,
-      description: lesson.slides[0]?.content.split('\n')[0].replace('# ', '') || lesson.title,
-      duration: "75-90 min",
-      difficulty: index < 3 ? "Facile" : index < 6 ? "Moyen" : "Difficile",
-      hasVideos: (lesson as any).videos && Array.isArray((lesson as any).videos) && (lesson as any).videos.length > 0
-    }));
-
-  const semester2Lessons = Object.entries(mathLessonsData)
-    .filter(([_, lesson]) => lesson.semester === 2)
-    .map(([id, lesson], index) => ({
-      id: parseInt(id),
-      title: `Module ${index + 10}: ${lesson.title}`,
-      description: lesson.slides[0]?.content.split('\n')[0].replace('# ', '') || lesson.title,
-      duration: "75-90 min", 
-      difficulty: index < 2 ? "Moyen" : "Difficile",
-      hasVideos: (lesson as any).videos && Array.isArray((lesson as any).videos) && (lesson as any).videos.length > 0
-    }));
-
   const getDifficultyColor = (difficulty: string) => {
     switch (difficulty) {
       case "Facile": return "bg-green-100 text-green-800 border-green-200";
@@ -55,24 +33,22 @@ const MathLessons = () => {
             <div className="flex-1">
               <div className="flex items-center space-x-3 mb-3">
                 <span className="bg-blue-600 rounded-full w-10 h-10 flex items-center justify-center text-sm font-bold text-white">
-                  {lesson.id > 9 ? lesson.id - 9 : lesson.id}
+                  {lesson.id}
                 </span>
-                <Badge className={`${getDifficultyColor(lesson.difficulty)} font-medium border`}>
+                <Badge className="bg-blue-100 text-blue-800 border-blue-200 font-medium border">
                   <Target className="h-3 w-3 mr-1" />
-                  {lesson.difficulty}
+                  Cours + Exercices
                 </Badge>
                 <Badge variant="outline" className="border-muted-foreground/30 text-muted-foreground">
                   <Clock className="h-3 w-3 mr-1" />
-                  {lesson.duration}
+                  60-90 min
                 </Badge>
-                {lesson.hasVideos && (
-                  <Badge variant="outline" className="text-blue-600 border-blue-300 dark:border-blue-400">
-                    <Video className="h-3 w-3 mr-1" />
-                    Vidéos
-                  </Badge>
-                )}
+                <Badge variant="outline" className="text-blue-600 border-blue-300 dark:border-blue-400">
+                  <Video className="h-3 w-3 mr-1" />
+                  Vidéos
+                </Badge>
               </div>
-              <CardTitle className="text-xl font-bold transition-colors mb-2 text-card-foreground group-hover:text-primary">
+              <CardTitle className="text-lg font-bold transition-colors mb-2 text-card-foreground group-hover:text-primary">
                 {lesson.title}
               </CardTitle>
               <CardDescription className="leading-relaxed">
@@ -95,14 +71,12 @@ const MathLessons = () => {
                 Exercices
               </Button>
             </Link>
-            {lesson.hasVideos && (
-              <Link to={`/math/lesson/${lesson.id}/videos`}>
-                <Button variant="outline" size="sm" className="transition-all duration-200 border-blue-600 text-blue-600 hover:bg-blue-50 hover:border-blue-700 dark:border-blue-400 dark:text-blue-400 dark:hover:bg-blue-900/20">
-                  <Video className="h-4 w-4 mr-2" />
-                  Vidéos YouTube
-                </Button>
-              </Link>
-            )}
+            <Link to={`/math/lesson/${lesson.id}/videos`}>
+              <Button variant="outline" size="sm" className="transition-all duration-200 border-blue-600 text-blue-600 hover:bg-blue-50 hover:border-blue-700 dark:border-blue-400 dark:text-blue-400 dark:hover:bg-blue-900/20">
+                <Video className="h-4 w-4 mr-2" />
+                Vidéos YouTube
+              </Button>
+            </Link>
           </div>
         </CardContent>
       </Card>
@@ -205,7 +179,7 @@ const MathLessons = () => {
                   Ensembles numériques, arithmétique, calcul vectoriel et géométrie
                 </p>
               </div>
-              {semester1Lessons.map((lesson, index) => renderLessonCard(lesson, index))}
+              {mathLessonsStructure.semester1.map((lesson, index) => renderLessonCard(lesson, index))}
             </TabsContent>
             
             <TabsContent value="semester2" className="space-y-6">
@@ -217,7 +191,7 @@ const MathLessons = () => {
                   Fonctions, transformations, produit scalaire et statistiques
                 </p>
               </div>
-              {semester2Lessons.map((lesson, index) => renderLessonCard(lesson, index))}
+              {mathLessonsStructure.semester2.map((lesson, index) => renderLessonCard(lesson, index))}
             </TabsContent>
           </Tabs>
         </div>

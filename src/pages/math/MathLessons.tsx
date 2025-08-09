@@ -11,15 +11,6 @@ import GlobalHeader from "@/components/GlobalHeader";
 import { mathLessonsStructure } from "@/data/mathCourseData";
 
 const MathLessons = () => {
-  const getDifficultyColor = (difficulty: string) => {
-    switch (difficulty) {
-      case "Facile": return "bg-green-100 text-green-800 border-green-200";
-      case "Moyen": return "bg-yellow-100 text-yellow-800 border-yellow-200";
-      case "Difficile": return "bg-red-100 text-red-800 border-red-200";
-      default: return "bg-gray-100 text-gray-800 border-gray-200";
-    }
-  };
-
   const renderLessonCard = (lesson: any, index: number) => (
     <motion.div
       key={lesson.id}
@@ -59,22 +50,16 @@ const MathLessons = () => {
         </CardHeader>
         <CardContent>
           <div className="flex flex-wrap gap-3">
-            <Link to={`/math/lesson/${lesson.id}/course`}>
+            <Link to={`/math/${lesson.id}`}>
               <Button variant="default" size="sm" className="shadow-md hover:shadow-lg transition-all duration-200 bg-blue-600 hover:bg-blue-700">
                 <BookOpen className="h-4 w-4 mr-2" />
                 Cours
               </Button>
             </Link>
-            <Link to={`/math/lesson/${lesson.id}/exercises`}>
+            <Link to={`/math/${lesson.id}/exercises`}>
               <Button variant="outline" size="sm" className="transition-all duration-200 border-purple-600 text-purple-600 hover:bg-purple-50 hover:border-purple-700 dark:border-purple-400 dark:text-purple-400 dark:hover:bg-purple-900/20">
                 <FileText className="h-4 w-4 mr-2" />
                 Exercices
-              </Button>
-            </Link>
-            <Link to={`/math/lesson/${lesson.id}/videos`}>
-              <Button variant="outline" size="sm" className="transition-all duration-200 border-blue-600 text-blue-600 hover:bg-blue-50 hover:border-blue-700 dark:border-blue-400 dark:text-blue-400 dark:hover:bg-blue-900/20">
-                <Video className="h-4 w-4 mr-2" />
-                Vidéos YouTube
               </Button>
             </Link>
           </div>

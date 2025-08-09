@@ -41,7 +41,6 @@ const MathCourse = () => {
     return () => {
       clearInterval(interval);
       clearTimeout(timeout);
-      // Track study time when component unmounts
       const studyDuration = Math.floor((Date.now() - startTime) / 1000 / 60);
       if (studyDuration > 0) {
         addStudyTime("Mathématiques", studyDuration);
@@ -49,10 +48,9 @@ const MathCourse = () => {
     };
   }, [startTime, addStudyTime]);
 
-  // Mark lesson as completed when user finishes reading
   const handleLessonComplete = () => {
     if (id) {
-      completeLesson("Mathématiques", id, 10); // Award 10 points for completing a lesson
+      completeLesson("Mathématiques", id, 10);
     }
   };
 
@@ -85,16 +83,46 @@ const MathCourse = () => {
   // Transform the slides to match the expected interface
   const transformedSlides: Slide[] = currentCourse?.slides?.map((slide, index) => ({
     id: index + 1,
-    ...slide,
+    title: slide.title,
+    content: slide.content,
     type: slide.type as "intro" | "definition" | "example" | "summary" | "exercise" | "content" | "introduction" | "conclusion"
   })) || [];
 
-  // If no slides but has cours content, create a simple slide
+  // If no slides but has cours content, create slides from cours content
   if (transformedSlides.length === 0 && currentCourse.cours) {
+    const courseSections = currentCourse.cours.split('\n\n');
+    courseSections.forEach((section, index) => {
+      if (section.trim()) {
+        let title = "Section " + (index + 1);
+        let type: "intro" | "definition" | "example" | "summary" | "exercise" | "content" | "introduction" | "conclusion" = "content";
+        
+        // Try to extract title from section
+        const lines = section.split('\n');
+        if (lines[0].startsWith('#')) {
+          title = lines[0].replace(/^#+\s*/, '');
+          if (title.toLowerCase().includes('introduction')) type = "intro";
+          else if (title.toLowerCase().includes('définition')) type = "definition";
+          else if (title.toLowerCase().includes('exemple')) type = "example";
+          else if (title.toLowerCase().includes('exercice')) type = "exercise";
+          else if (title.toLowerCase().includes('conclusion') || title.toLowerCase().includes('résumé')) type = "summary";
+        }
+        
+        transformedSlides.push({
+          id: transformedSlides.length + 1,
+          title: title,
+          content: section,
+          type: type
+        });
+      }
+    });
+  }
+
+  // Fallback if still no content
+  if (transformedSlides.length === 0) {
     transformedSlides.push({
       id: 1,
       title: currentCourse.title,
-      content: currentCourse.cours,
+      content: currentCourse.cours || "Contenu du cours en cours de préparation...",
       type: "content"
     });
   }

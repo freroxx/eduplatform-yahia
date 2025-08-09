@@ -20,7 +20,8 @@ const Settings = lazy(() => import("./pages/Settings"));
 const MathLessons = lazy(() => import("./pages/math/MathLessons"));
 const PhysicsLessons = lazy(() => import("./pages/physics/PhysicsLessons"));
 const SVTLessons = lazy(() => import("./pages/svt/SVTLessons"));
-const MathLesson = lazy(() => import("./pages/math/MathLesson"));
+const MathCourse = lazy(() => import("./pages/MathCourse"));
+const MathExercises = lazy(() => import("./pages/MathExercises"));
 const PhysicsLesson = lazy(() => import("./pages/physics/PhysicsLesson"));
 const SVTLesson = lazy(() => import("./pages/svt/SVTLesson"));
 const FrenchLessons = lazy(() => import("./pages/french/FrenchLessons"));
@@ -53,10 +54,9 @@ const AppContent = () => {
             <Route path="/histoire-geo" element={<HistoryGeoLessons />} />
             <Route path="/philosophy" element={<PhilosophyLessons />} />
             
-            {/* Math lesson routes */}
-            <Route path="/math/lesson/:id/course" element={<MathLesson type="course" />} />
-            <Route path="/math/lesson/:id/exercises" element={<MathLesson type="exercises" />} />
-            <Route path="/math/lesson/:id/videos" element={<MathLesson type="videos" />} />
+            {/* Math lesson routes - Fixed routing */}
+            <Route path="/math/:id" element={<MathCourse />} />
+            <Route path="/math/:id/exercises" element={<MathExercises />} />
             
             {/* Physics lesson routes */}
             <Route path="/physics/lesson/:id/course" element={<PhysicsLesson type="course" />} />

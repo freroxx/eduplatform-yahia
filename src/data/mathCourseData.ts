@@ -1,4 +1,4 @@
-// Math course data with lessons and exercises - Updated structure
+// Math course data with lessons and exercises - Complete structure
 
 export const mathLessonsData = {
   "1": {
@@ -386,302 +386,10 @@ Car : 360 ÷ 2 = 180 ÷ 2 = 90 ÷ 2 = 45 ÷ 3 = 15 ÷ 3 = 5 ÷ 5 = 1`,
         points: 10,
         question: "Calculer PGCD(84, 36) en utilisant l'algorithme d'Euclide.",
         solution: "Algorithme d'Euclide :\n84 = 36 × 2 + 12\n36 = 12 × 3 + 0\n\nLe reste est 0, donc PGCD(84, 36) = 12\n\nVérification :\n84 = 12 × 7\n36 = 12 × 3\nDonc 12 divise bien 84 et 36."
-      },
-      {
-        id: 3,
-        title: "Décomposition en facteurs premiers",
-        difficulty: "Moyen",
-        duration: "20 min",
-        points: 12,
-        question: "Décomposer en facteurs premiers :\na) 72\nb) 150\nc) 420",
-        solution: "a) 72 :\n72 ÷ 2 = 36\n36 ÷ 2 = 18\n18 ÷ 2 = 9\n9 ÷ 3 = 3\n3 ÷ 3 = 1\nDonc 72 = 2³ × 3²\n\nb) 150 :\n150 ÷ 2 = 75\n75 ÷ 3 = 25\n25 ÷ 5 = 5\n5 ÷ 5 = 1\nDonc 150 = 2 × 3 × 5²\n\nc) 420 :\n420 ÷ 2 = 210\n210 ÷ 2 = 105\n105 ÷ 3 = 35\n35 ÷ 5 = 7\n7 ÷ 7 = 1\nDonc 420 = 2² × 3 × 5 × 7"
       }
     ],
     videos: [
       { title: "Arithmétique dans N - Divisibilité", url: "https://www.youtube.com/watch?v=ghi789", duration: "22:15" }
-    ]
-  },
-  "3": {
-    title: "Calcul vectoriel dans le plan",
-    semester: 1,
-    slides: [
-      {
-        title: "Vecteurs et opérations",
-        content: `➡️ Calcul vectoriel dans le plan
-
-**Définition d'un vecteur :**
-Un vecteur est défini par :
-• Une direction
-• Un sens
-• Une norme (longueur)
-
-**Notation :** 
-• Vecteur AB⃗ : du point A vers le point B
-• Vecteur u⃗ : vecteur libre
-
-**Opérations sur les vecteurs :**
-
-**Addition :** u⃗ + v⃗
-• Règle du parallélogramme
-• Relation de Chasles : AB⃗ + BC⃗ = AC⃗
-
-**Multiplication par un scalaire :** k × u⃗
-• Si k > 0 : même sens que u⃗
-• Si k < 0 : sens opposé à u⃗
-• |k × u⃗| = |k| × |u⃗|
-
-**Vecteurs colinéaires :**
-Deux vecteurs sont colinéaires s'il existe un réel k tel que u⃗ = k × v⃗`,
-        type: "intro" as const
-      }
-    ],
-    videos: [
-      { title: "Calcul vectoriel - Introduction", url: "https://www.youtube.com/watch?v=jkl012", duration: "28:20" }
-    ]
-  },
-  "4": {
-    title: "La projection dans le plan",
-    semester: 1,
-    slides: [
-      {
-        title: "Projection orthogonale",
-        content: `📐 La projection dans le plan
-
-**Projection orthogonale :**
-La projection orthogonale d'un point M sur une droite (d) est le point H de (d) tel que MH ⊥ (d).
-
-**Propriétés :**
-• H est le point de (d) le plus proche de M
-• MH est la distance de M à la droite (d)
-
-**Projection d'un vecteur :**
-La projection du vecteur u⃗ sur la direction du vecteur v⃗ est :
-proj_v⃗(u⃗) = (u⃗ · v⃗ / |v⃗|²) × v⃗
-
-**Applications :**
-• Calcul de distances
-• Résolution de problèmes géométriques
-• Base du produit scalaire`,
-        type: "intro" as const
-      }
-    ],
-    videos: [
-      { title: "Projection orthogonale", url: "https://www.youtube.com/watch?v=mno345", duration: "20:30" }
-    ]
-  },
-  "5": {
-    title: "L'ordre dans ℝ",
-    semester: 1,
-    slides: [
-      {
-        title: "Relation d'ordre dans ℝ",
-        content: `📊 L'ordre dans les nombres réels
-
-L'ensemble ℝ est totalement ordonné par la relation ≤ (inférieur ou égal).
-
-**Propriétés de l'ordre :**
-• Réflexivité : a ≤ a
-• Antisymétrie : si a ≤ b et b ≤ a, alors a = b
-• Transitivité : si a ≤ b et b ≤ c, alors a ≤ c
-• Comparabilité : pour tous a, b ∈ ℝ, on a soit a ≤ b, soit b ≤ a
-
-**Compatibilité avec les opérations :**
-• Si a ≤ b, alors a + c ≤ b + c
-• Si a ≤ b et c ≥ 0, alors ac ≤ bc
-• Si a ≤ b et c ≤ 0, alors ac ≥ bc
-
-**Intervalles :**
-• [a, b] = {x ∈ ℝ | a ≤ x ≤ b}
-• ]a, b[ = {x ∈ ℝ | a < x < b}
-• [a, +∞[ = {x ∈ ℝ | x ≥ a}`,
-        type: "intro" as const
-      }
-    ],
-    videos: [
-      { title: "L'ordre dans R", url: "https://www.youtube.com/watch?v=pqr678", duration: "25:10" }
-    ]
-  },
-  "6": {
-    title: "La droite dans le plan",
-    semester: 1,
-    slides: [
-      {
-        title: "Équations de droites",
-        content: `📏 La droite dans le plan
-
-**Équation cartésienne :**
-Une droite (d) a pour équation : ax + by + c = 0
-où (a, b) ≠ (0, 0)
-
-**Vecteur normal :** n⃗(a, b) est perpendiculaire à la droite
-
-**Équation réduite :**
-Si b ≠ 0 : y = mx + p
-• m : coefficient directeur (pente)
-• p : ordonnée à l'origine
-
-**Équation paramétrique :**
-(d) : { x = x₀ + αt
-      { y = y₀ + βt
-où (α, β) est un vecteur directeur
-
-**Position relative de deux droites :**
-• Parallèles : même coefficient directeur
-• Sécantes : intersection en un point
-• Confondues : mêmes équations`,
-        type: "intro" as const
-      }
-    ],
-    videos: [
-      { title: "Équations de droites", url: "https://www.youtube.com/watch?v=stu901", duration: "30:45" }
-    ]
-  },
-  "7": {
-    title: "Les polynômes",
-    semester: 1,
-    slides: [
-      {
-        title: "Polynômes et opérations",
-        content: `📊 Les polynômes
-
-**Définition :**
-Un polynôme de degré n est une expression de la forme :
-P(x) = aₙxⁿ + aₙ₋₁xⁿ⁻¹ + ... + a₁x + a₀
-
-où aₙ, aₙ₋₁, ..., a₁, a₀ sont des nombres réels (coefficients) et aₙ ≠ 0.
-
-**Vocabulaire :**
-• aₙ : coefficient dominant
-• a₀ : terme constant
-• n : degré du polynôme
-
-**Opérations sur les polynômes :**
-
-**Addition :** On additionne les coefficients des termes de même degré
-
-**Multiplication :** On applique la distributivité
-
-**Identités remarquables :**
-• (a + b)² = a² + 2ab + b²
-• (a - b)² = a² - 2ab + b²
-• (a + b)(a - b) = a² - b²
-
-**Factorisation :** Écrire un polynôme comme produit de facteurs`,
-        type: "intro" as const
-      }
-    ],
-    videos: [
-      { title: "Les polynômes - Cours", url: "https://www.youtube.com/watch?v=vwx234", duration: "35:20" }
-    ]
-  },
-  "8": {
-    title: "Équations, inéquations et systèmes",
-    semester: 1,
-    slides: [
-      {
-        title: "Résolution d'équations et systèmes",
-        content: `🔍 Équations, inéquations et systèmes
-
-**Équation du premier degré :**
-ax + b = 0 (a ≠ 0) ⟹ x = -b/a
-
-**Équation du second degré :**
-ax² + bx + c = 0 (a ≠ 0)
-
-**Discriminant :** Δ = b² - 4ac
-• Si Δ > 0 : deux solutions distinctes
-• Si Δ = 0 : une solution double
-• Si Δ < 0 : aucune solution réelle
-
-**Inéquations :**
-Résolution par tableau de signes
-
-**Systèmes d'équations :**
-{ ax + by = c
-{ a'x + b'y = c'
-
-**Méthodes de résolution :**
-• Substitution
-• Combinaisons linéaires
-• Méthode graphique`,
-        type: "intro" as const
-      }
-    ],
-    videos: [
-      { title: "Équations et systèmes", url: "https://www.youtube.com/watch?v=yza567", duration: "40:15" }
-    ]
-  },
-  "9": {
-    title: "Trigonométrie 1 (Règles du calcul trigonométrique)",
-    semester: 1,
-    slides: [
-      {
-        title: "Fonctions trigonométriques",
-        content: `📐 Trigonométrie - Règles de calcul
-
-**Cercle trigonométrique :**
-Cercle de rayon 1 centré à l'origine
-• Angles en radians : π rad = 180°
-
-**Fonctions trigonométriques :**
-• sin(θ) : ordonnée du point sur le cercle
-• cos(θ) : abscisse du point sur le cercle
-• tan(θ) = sin(θ)/cos(θ)
-
-**Relations fondamentales :**
-• sin²(θ) + cos²(θ) = 1
-• tan(θ) = sin(θ)/cos(θ)
-• 1 + tan²(θ) = 1/cos²(θ)
-
-**Angles remarquables :**
-• 30° = π/6 : sin = 1/2, cos = √3/2
-• 45° = π/4 : sin = cos = √2/2
-• 60° = π/3 : sin = √3/2, cos = 1/2
-
-**Formules d'addition :**
-• sin(a + b) = sin(a)cos(b) + cos(a)sin(b)
-• cos(a + b) = cos(a)cos(b) - sin(a)sin(b)`,
-        type: "intro" as const
-      }
-    ],
-    videos: [
-      { title: "Trigonométrie - Règles de calcul", url: "https://www.youtube.com/watch?v=bcd890", duration: "45:30" }
-    ]
-  },
-  "10": {
-    title: "Trigonométrie 2 (Équations et inéquations trigonométriques)",
-    semester: 2,
-    slides: [
-      {
-        title: "Équations trigonométriques",
-        content: `📐 Équations et inéquations trigonométriques
-
-**Équations de base :**
-
-**sin(x) = a :**
-• Si |a| > 1 : pas de solution
-• Si |a| ≤ 1 : x = arcsin(a) + 2kπ ou x = π - arcsin(a) + 2kπ
-
-**cos(x) = a :**
-• Si |a| > 1 : pas de solution
-• Si |a| ≤ 1 : x = arccos(a) + 2kπ ou x = -arccos(a) + 2kπ
-
-**tan(x) = a :**
-• x = arctan(a) + kπ
-
-**Méthodes de résolution :**
-• Utiliser les angles remarquables
-• Factoriser les expressions
-• Utiliser les formules trigonométriques
-• Représentation sur le cercle trigonométrique
-
-**Inéquations trigonométriques :**
-Résolution graphique sur le cercle trigonométrique`,
-        type: "intro" as const
-      }
-    ],
-    videos: [
-      { title: "Équations trigonométriques", url: "https://www.youtube.com/watch?v=efg123", duration: "38:20" }
     ]
   },
   "11": {
@@ -738,6 +446,143 @@ f(x) = a/(x + b) + c est une hyperbole de centre I(-b, c)`,
         type: "definition" as const
       }
     ],
+    cours: `# Généralités sur les fonctions
+
+## I. Définition d'une fonction
+
+### Définition
+Une fonction f de A vers B est une relation qui associe à chaque élément x de A un unique élément y de B, noté f(x).
+
+**Notation :** f : A → B ou x ↦ f(x)
+
+### Vocabulaire
+- **Domaine de définition Df** : ensemble des valeurs de x pour lesquelles f(x) existe
+- **Image** : f(x) est l'image de x par f
+- **Antécédent** : x est un antécédent de y si f(x) = y
+- **Courbe représentative** : ensemble des points M(x, f(x)) dans un repère
+
+## II. Domaine de définition
+
+Pour déterminer le domaine de définition d'une fonction, on doit identifier les valeurs de x qui rendent l'expression impossible :
+
+### Cas particuliers
+1. **Fraction** : f(x) = g(x)/h(x) → h(x) ≠ 0
+2. **Racine carrée** : f(x) = √g(x) → g(x) ≥ 0
+3. **Logarithme** : f(x) = ln(g(x)) → g(x) > 0
+
+### Exemples
+- f(x) = 1/x → Df = ℝ* = ℝ \ {0}
+- g(x) = √(x-2) → Dg = [2, +∞[
+- h(x) = 1/√(x-1) → Dh = ]1, +∞[
+
+## III. Représentation graphique
+
+### Courbe représentative
+Dans un repère (O, I, J), la courbe représentative Cf de f est l'ensemble des points M(x, f(x)) où x ∈ Df.
+
+### Lecture graphique
+À partir du graphique, on peut déterminer :
+- Le domaine de définition
+- Les images et antécédents
+- Les variations de la fonction
+- Les extremums
+
+## IV. Sens de variations
+
+### Définitions
+Soit f une fonction définie sur un intervalle I et a, b ∈ I avec a < b.
+
+- **f croissante sur I** : f(a) ≤ f(b)
+- **f décroissante sur I** : f(a) ≥ f(b)  
+- **f strictement croissante sur I** : f(a) < f(b)
+- **f strictement décroissante sur I** : f(a) > f(b)
+- **f constante sur I** : f(a) = f(b)
+
+### Tableau de variations
+Un tableau de variations résume le comportement d'une fonction :
+- Intervalles où la fonction est définie
+- Sens de variation (↗, ↘, →)
+- Extremums locaux
+
+## V. Fonctions de référence
+
+### 1. Fonction affine
+f(x) = ax + b (a ≠ 0)
+- **Domaine** : ℝ
+- **Représentation** : droite
+- **Variations** : strictement monotone
+
+### 2. Fonction du second degré (parabole)
+f(x) = ax² + bx + c (a ≠ 0)
+- **Domaine** : ℝ
+- **Sommet** : S(-b/2a, -Δ/4a) où Δ = b² - 4ac
+- **Axe de symétrie** : x = -b/2a
+- **Variations** : 
+  - Si a > 0 : décroissante sur ]-∞, -b/2a], croissante sur [-b/2a, +∞[
+  - Si a < 0 : croissante sur ]-∞, -b/2a], décroissante sur [-b/2a, +∞[
+
+### 3. Fonction inverse (hyperbole)
+f(x) = a/x (a ≠ 0)
+- **Domaine** : ℝ*
+- **Asymptotes** : x = 0 et y = 0
+- **Centre de symétrie** : O(0, 0)
+- **Variations** :
+  - Si a > 0 : décroissante sur ]-∞, 0[ et sur ]0, +∞[
+  - Si a < 0 : croissante sur ]-∞, 0[ et sur ]0, +∞[
+
+## VI. Transformations de fonctions
+
+### Translation
+- f(x) + k : translation verticale de k unités
+- f(x + h) : translation horizontale de -h unités
+
+### Homothétie
+- af(x) : dilatation verticale de rapport a
+- f(ax) : dilatation horizontale de rapport 1/a
+
+### Symétries
+- -f(x) : symétrie par rapport à l'axe des abscisses
+- f(-x) : symétrie par rapport à l'axe des ordonnées
+
+## Exercices corrigés
+
+### Exercice 1 : Domaine de définition
+Déterminer le domaine de définition de f(x) = (x+1)/√(x-2)
+
+**Solution :**
+Pour que f(x) soit définie, il faut :
+- x - 2 > 0 (pour la racine carrée)
+- √(x-2) ≠ 0 (pour la fraction)
+
+La condition x - 2 > 0 donne x > 2.
+La condition √(x-2) ≠ 0 est automatiquement vérifiée si x > 2.
+
+Donc Df = ]2, +∞[
+
+### Exercice 2 : Étude de variations
+Étudier les variations de g(x) = x² - 4x + 3
+
+**Solution :**
+g(x) = x² - 4x + 3 est une fonction du second degré avec a = 1 > 0.
+
+Le sommet a pour abscisse : -b/2a = -(-4)/(2×1) = 2
+g(2) = 4 - 8 + 3 = -1
+
+Tableau de variations :
+x    | -∞    2    +∞
+g(x) |   ↘  -1  ↗
+     |           
+
+Minimum : g(2) = -1
+
+### Exercice 3 : Fonction inverse
+Soit h(x) = -2/x. Étudier cette fonction.
+
+**Solution :**
+- **Domaine** : Dh = ℝ* = ]-∞, 0[ ∪ ]0, +∞[
+- **Asymptotes** : x = 0 (verticale) et y = 0 (horizontale)
+- **Variations** : a = -2 < 0, donc h est croissante sur ]-∞, 0[ et sur ]0, +∞[
+- **Parité** : h(-x) = -2/(-x) = 2/x = -h(x), donc h est impaire`,
     images: [
       "/lovable-uploads/afdcd59c-b3be-447f-9a8f-71e621219f53.png",
       "/lovable-uploads/df00d01d-2440-4cf2-ba56-d8869ffa49bd.png",
@@ -767,105 +612,6 @@ f(x) = a/(x + b) + c est une hyperbole de centre I(-b, c)`,
         points: 10,
         question: "Déterminer le domaine de définition de g(x) = 1/(x+2) + √(x-1)",
         solution: "Pour que g(x) soit définie, il faut :\n• x + 2 ≠ 0 donc x ≠ -2\n• x - 1 ≥ 0 donc x ≥ 1\n\nComme x ≥ 1, la condition x ≠ -2 est automatiquement vérifiée.\nDonc Dg = [1, +∞["
-      }
-    ]
-  },
-  "12": {
-    title: "Transformations du plan",
-    semester: 2,
-    slides: [
-      {
-        title: "Transformations géométriques",
-        content: `🔄 Transformations du plan
-
-**Types de transformations :**
-
-**1° Symétrie axiale :**
-Définition : (Δ) est une droite du plan.
-La symétrie axiale d'axe (Δ) est la transformation qui transforme tout point M du plan au point unique M' tel que : (Δ) est la médiatrice du segment [MM']
-
-**2° Symétrie centrale :**
-Définition : Ω est un point du plan
-La symétrie centrale de centre Ω est la transformation qui transforme tout point M du plan au point unique M' tel que ΩM' = -ΩM
-
-**Propriétés conservées :**
-• Distances (isométries)
-• Angles
-• Alignement
-• Parallélisme
-
-**Translation :**
-Transformation qui associe à tout point M un point M' tel que MM' = u⃗ (vecteur de translation)
-
-**Rotation :**
-Transformation définie par un centre O, un angle θ et un sens`,
-        type: "intro" as const
-      }
-    ],
-    images: [
-      "/lovable-uploads/cb2eec38-dc43-4e87-bd90-09130932f92a.png"
-    ],
-    videos: [
-      { title: "Transformations du plan", url: "https://www.youtube.com/watch?v=klm789", duration: "28:40" }
-    ]
-  },
-  "13": {
-    title: "Le produit scalaire",
-    semester: 2,
-    slides: [
-      {
-        title: "Définition et propriétés",
-        content: `📐 Le produit scalaire
-
-**Définition :**
-Le produit scalaire de deux vecteurs u⃗ et v⃗ est le nombre réel noté u⃗ · v⃗ défini par :
-u⃗ · v⃗ = |u⃗| × |v⃗| × cos(θ)
-où θ est l'angle entre les deux vecteurs.
-
-**Propriétés :**
-• Commutativité : u⃗ · v⃗ = v⃗ · u⃗
-• Distributivité : u⃗ · (v⃗ + w⃗) = u⃗ · v⃗ + u⃗ · w⃗
-• Associativité mixte : k(u⃗ · v⃗) = (ku⃗) · v⃗ = u⃗ · (kv⃗)
-
-**Expressions analytiques :**
-Dans un repère orthonormé (O, i⃗, j⃗) :
-Si u⃗(x, y) et v⃗(x', y'), alors u⃗ · v⃗ = xx' + yy'
-
-**Applications :**
-• Calcul d'angles
-• Orthogonalité : u⃗ ⊥ v⃗ ⟺ u⃗ · v⃗ = 0
-• Projections orthogonales`,
-        type: "intro" as const
-      }
-    ],
-    videos: [
-      { title: "Le produit scalaire", url: "https://www.youtube.com/watch?v=nop012", duration: "42:25" }
-    ]
-  },
-  "14": {
-    title: "Géométrie dans l'espace",
-    semester: 2,
-    slides: [
-      {
-        title: "Repérage dans l'espace",
-        content: `🌐 Géométrie dans l'espace
-
-**Repère de l'espace :**
-Un repère de l'espace est défini par un point O (origine) et trois vecteurs non coplanaires i⃗, j⃗, k⃗.
-
-**Coordonnées d'un point :**
-Tout point M de l'espace peut être repéré par ses coordonnées (x, y, z) telles que :
-OM⃗ = xi⃗ + yj⃗ + zk⃗
-
-**Distance entre deux points :**
-Si A(xₐ, yₐ, zₐ) et B(xᵦ, yᵦ, zᵦ), alors :
-AB = √[(xᵦ - xₐ)² + (yᵦ - yₐ)² + (zᵦ - zₐ)²]
-
-**Plans et droites :**
-• Équation d'un plan : ax + by + cz + d = 0
-• Équations paramétriques d'une droite
-• Positions relatives : parallélisme, orthogonalité`,
-        type: "intro" as const
       }
     ]
   },

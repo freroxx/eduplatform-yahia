@@ -1,303 +1,244 @@
 
-import React, { useState, useEffect } from 'react';
+import React from 'react';
 import { Card, CardContent, CardHeader, CardTitle } from '@/components/ui/card';
 import { Progress } from '@/components/ui/progress';
 import { Badge } from '@/components/ui/badge';
-import { Button } from '@/components/ui/button';
-import { Clock, Target, Trophy, TrendingUp, BookOpen, Award, Flame, Calendar, RotateCcw } from 'lucide-react';
+import { Clock, Target, Trophy, TrendingUp, Flame, Calendar, Award, BookOpen } from 'lucide-react';
 import { motion } from 'framer-motion';
-import { useExerciseProgress } from '@/hooks/useExerciseProgress';
+import { useProgressTracker } from '@/hooks/useProgressTracker';
 
-interface Subject {
-  id: string;
-  name: string;
-  totalLessons: number;
-  totalExercises: number;
-  color: string;
-  icon: React.ReactNode;
+interface EnhancedProgressTrackerProps {
+  subject: string;
+  totalLessons?: number;
+  totalExercises?: number;
+  className?: string;
 }
 
-interface ProgressData {
-  completedLessons: number;
-  completedExercises: number;
-  totalStudyTime: number; // in minutes
-  streak: number;
-  lastStudyDate: string;
-  earnedPoints: number;
-}
+const EnhancedProgressTracker = ({ 
+  subject, 
+  totalLessons = 15, 
+  totalExercises = 45,
+  className = "" 
+}: EnhancedProgressTrackerProps) => {
+  const { getSubjectProgress, formatStudyTime } = useProgressTracker();
+  const subjectProgress = getSubjectProgress(subject);
 
-const subjects: Subject[] = [
-  { id: 'math', name: 'Mathématiques', totalLessons: 15, totalExercises: 25, color: 'blue', icon: <BookOpen className="h-4 w-4" /> },
-  { id: 'physics', name: 'Physique', totalLessons: 23, totalExercises: 30, color: 'emerald', icon: <Target className="h-4 w-4" /> },
-  { id: 'svt', name: 'SVT', totalLessons: 12, totalExercises: 20, color: 'green', icon: <BookOpen className="h-4 w-4" /> },
-  { id: 'french', name: 'Français', totalLessons: 18, totalExercises: 22, color: 'red', icon: <BookOpen className="h-4 w-4" /> },
-  { id: 'english', name: 'English', totalLessons: 16, totalExercises: 24, color: 'purple', icon: <BookOpen className="h-4 w-4" /> },
-  { id: 'arabic', name: 'العربية', totalLessons: 14, totalExercises: 18, color: 'amber', icon: <BookOpen className="h-4 w-4" /> },
-  { id: 'histoire-geo', name: 'Histoire-Géo', totalLessons: 26, totalExercises: 20, color: 'orange', icon: <BookOpen className="h-4 w-4" /> }
-];
+  const completedLessonsCount = subjectProgress.completedLessons.length;
+  const completedExercisesCount = subjectProgress.completedExercises.length;
+  const lessonProgress = Math.round((completedLessonsCount / totalLessons) * 100);
+  const exerciseProgress = Math.round((completedExercisesCount / totalExercises) * 100);
+  const overallProgress = Math.round(((completedLessonsCount + completedExercisesCount) / (totalLessons + totalExercises)) * 100);
 
-const EnhancedProgressTracker = () => {
-  const { totalPoints } = useExerciseProgress();
-  const [progressData, setProgressData] = useState<Record<string, ProgressData>>({});
-  const [selectedSubject, setSelectedSubject] = useState<string>('math');
-
-  // Load progress data from localStorage
-  useEffect(() => {
-    const savedProgress = localStorage.getItem('enhanced-progress-tracker');
-    if (savedProgress) {
-      try {
-        setProgressData(JSON.parse(savedProgress));
-      } catch (error) {
-        console.error('Error loading progress data:', error);
-      }
+  const getSubjectColor = (subjectName: string) => {
+    const normalizedSubject = subjectName.toLowerCase();
+    
+    if (normalizedSubject.includes('mathématiques') || normalizedSubject.includes('math')) {
+      return {
+        text: 'text-blue-600',
+        border: 'border-blue-200',
+        bg: 'bg-blue-50 dark:bg-blue-900/20',
+        gradient: 'from-blue-500 to-blue-600'
+      };
     }
-  }, []);
-
-  // Save progress data to localStorage
-  const saveProgress = (newData: Record<string, ProgressData>) => {
-    setProgressData(newData);
-    localStorage.setItem('enhanced-progress-tracker', JSON.stringify(newData));
-  };
-
-  // Update progress for a subject
-  const updateProgress = (subjectId: string, updates: Partial<ProgressData>) => {
-    const currentData = progressData[subjectId] || {
-      completedLessons: 0,
-      completedExercises: 0,
-      totalStudyTime: 0,
-      streak: 0,
-      lastStudyDate: '',
-      earnedPoints: 0
-    };
-
-    const newData = {
-      ...progressData,
-      [subjectId]: { ...currentData, ...updates }
-    };
-
-    saveProgress(newData);
-  };
-
-  // Calculate overall progress
-  const calculateOverallProgress = () => {
-    const totalSubjects = subjects.length;
-    let totalCompletedLessons = 0;
-    let totalLessons = 0;
-    let totalCompletedExercises = 0;
-    let totalExercises = 0;
-    let totalStudyTime = 0;
-
-    subjects.forEach(subject => {
-      const data = progressData[subject.id];
-      totalLessons += subject.totalLessons;
-      totalExercises += subject.totalExercises;
-      
-      if (data) {
-        totalCompletedLessons += data.completedLessons;
-        totalCompletedExercises += data.completedExercises;
-        totalStudyTime += data.totalStudyTime;
-      }
-    });
-
+    if (normalizedSubject.includes('français') || normalizedSubject.includes('french')) {
+      return {
+        text: 'text-red-600',
+        border: 'border-red-200',
+        bg: 'bg-red-50 dark:bg-red-900/20',
+        gradient: 'from-red-500 to-red-600'
+      };
+    }
+    if (normalizedSubject.includes('physique') || normalizedSubject.includes('physics')) {
+      return {
+        text: 'text-emerald-600',
+        border: 'border-emerald-200',
+        bg: 'bg-emerald-50 dark:bg-emerald-900/20',
+        gradient: 'from-emerald-500 to-emerald-600'
+      };
+    }
+    
     return {
-      lessonsProgress: totalLessons > 0 ? Math.round((totalCompletedLessons / totalLessons) * 100) : 0,
-      exercisesProgress: totalExercises > 0 ? Math.round((totalCompletedExercises / totalExercises) * 100) : 0,
-      totalStudyTime: Math.round(totalStudyTime / 60), // Convert to hours
-      totalCompletedLessons,
-      totalLessons,
-      totalCompletedExercises,
-      totalExercises
+      text: 'text-gray-600',
+      border: 'border-gray-200',
+      bg: 'bg-gray-50 dark:bg-gray-900/20',
+      gradient: 'from-gray-500 to-gray-600'
     };
   };
 
-  const overallProgress = calculateOverallProgress();
-  const selectedSubjectData = progressData[selectedSubject] || {
-    completedLessons: 0,
-    completedExercises: 0,
-    totalStudyTime: 0,
-    streak: 0,
-    lastStudyDate: '',
-    earnedPoints: 0
+  const colors = getSubjectColor(subject);
+
+  const getProgressColor = (progressValue: number) => {
+    if (progressValue >= 80) return 'from-green-500 to-green-600';
+    if (progressValue >= 60) return 'from-yellow-500 to-yellow-600';
+    if (progressValue >= 40) return 'from-orange-500 to-orange-600';
+    return 'from-red-500 to-red-600';
   };
 
-  const selectedSubjectInfo = subjects.find(s => s.id === selectedSubject);
+  const getMotivationMessage = (progressValue: number) => {
+    if (progressValue < 25) {
+      return { message: "🚀 Excellent début ! Continuez ainsi !", color: "blue" };
+    }
+    if (progressValue >= 25 && progressValue < 50) {
+      return { message: "⭐ Bon rythme ! Vous êtes sur la bonne voie !", color: "yellow" };
+    }
+    if (progressValue >= 50 && progressValue < 75) {
+      return { message: "🔥 Plus que la moitié ! Vous y êtes presque !", color: "orange" };
+    }
+    return { message: "🎉 Fantastique ! Vous maîtrisez le sujet !", color: "green" };
+  };
+
+  const motivation = getMotivationMessage(overallProgress);
 
   return (
-    <div className="space-y-6">
-      {/* Overall Progress Summary */}
-      <motion.div
-        initial={{ opacity: 0, y: 20 }}
-        animate={{ opacity: 1, y: 0 }}
-        className="grid grid-cols-2 md:grid-cols-4 gap-4"
-      >
-        <Card className="bg-gradient-to-br from-blue-50 to-blue-100 dark:from-blue-950/50 dark:to-blue-900/50 border-blue-200 dark:border-blue-800">
-          <CardContent className="p-4 text-center">
-            <Trophy className="h-8 w-8 mx-auto mb-2 text-blue-600 dark:text-blue-400" />
-            <div className="text-2xl font-bold text-blue-700 dark:text-blue-300">
-              {overallProgress.lessonsProgress}%
-            </div>
-            <p className="text-xs text-blue-600 dark:text-blue-400">Leçons terminées</p>
-          </CardContent>
-        </Card>
-
-        <Card className="bg-gradient-to-br from-green-50 to-green-100 dark:from-green-950/50 dark:to-green-900/50 border-green-200 dark:border-green-800">
-          <CardContent className="p-4 text-center">
-            <Target className="h-8 w-8 mx-auto mb-2 text-green-600 dark:text-green-400" />
-            <div className="text-2xl font-bold text-green-700 dark:text-green-300">
-              {overallProgress.exercisesProgress}%
-            </div>
-            <p className="text-xs text-green-600 dark:text-green-400">Exercices réalisés</p>
-          </CardContent>
-        </Card>
-
-        <Card className="bg-gradient-to-br from-purple-50 to-purple-100 dark:from-purple-950/50 dark:to-purple-900/50 border-purple-200 dark:border-purple-800">
-          <CardContent className="p-4 text-center">
-            <Clock className="h-8 w-8 mx-auto mb-2 text-purple-600 dark:text-purple-400" />
-            <div className="text-2xl font-bold text-purple-700 dark:text-purple-300">
-              {overallProgress.totalStudyTime}h
-            </div>
-            <p className="text-xs text-purple-600 dark:text-purple-400">Temps d'étude</p>
-          </CardContent>
-        </Card>
-
-        <Card className="bg-gradient-to-br from-orange-50 to-orange-100 dark:from-orange-950/50 dark:to-orange-900/50 border-orange-200 dark:border-orange-800">
-          <CardContent className="p-4 text-center">
-            <Award className="h-8 w-8 mx-auto mb-2 text-orange-600 dark:text-orange-400" />
-            <div className="text-2xl font-bold text-orange-700 dark:text-orange-300">
-              {totalPoints}
-            </div>
-            <p className="text-xs text-orange-600 dark:text-orange-400">Points gagnés</p>
-          </CardContent>
-        </Card>
-      </motion.div>
-
-      {/* Subject Selector */}
-      <Card>
-        <CardHeader>
-          <CardTitle className="flex items-center gap-2">
+    <motion.div
+      initial={{ opacity: 0, y: 20 }}
+      animate={{ opacity: 1, y: 0 }}
+      transition={{ duration: 0.5 }}
+      className={className}
+    >
+      <Card className={`glass-effect hover-lift border ${colors.border} ${colors.bg}`}>
+        <CardHeader className="pb-3">
+          <CardTitle className={`text-lg font-bold flex items-center gap-2 ${colors.text}`}>
             <TrendingUp className="h-5 w-5" />
-            Progression par matière
+            Progression - {subject}
           </CardTitle>
         </CardHeader>
-        <CardContent>
-          <div className="flex flex-wrap gap-2 mb-6">
-            {subjects.map((subject) => (
-              <Button
-                key={subject.id}
-                variant={selectedSubject === subject.id ? "default" : "outline"}
-                size="sm"
-                onClick={() => setSelectedSubject(subject.id)}
-                className="transition-all duration-200"
-              >
-                {subject.icon}
-                <span className="ml-2">{subject.name}</span>
-              </Button>
-            ))}
+        <CardContent className="space-y-6">
+          {/* Quick Stats */}
+          <div className="grid grid-cols-3 gap-3">
+            <motion.div
+              initial={{ scale: 0 }}
+              animate={{ scale: 1 }}
+              transition={{ delay: 0.2 }}
+              className="text-center p-3 bg-accent/50 rounded-lg"
+            >
+              <div className={`text-xl font-bold ${colors.text}`}>{overallProgress}%</div>
+              <p className="text-xs text-muted-foreground">Global</p>
+            </motion.div>
+            <motion.div
+              initial={{ scale: 0 }}
+              animate={{ scale: 1 }}
+              transition={{ delay: 0.3 }}
+              className="text-center p-3 bg-accent/50 rounded-lg"
+            >
+              <div className={`text-xl font-bold ${colors.text}`}>{subjectProgress.totalPoints}</div>
+              <p className="text-xs text-muted-foreground">Points</p>
+            </motion.div>
+            <motion.div
+              initial={{ scale: 0 }}
+              animate={{ scale: 1 }}
+              transition={{ delay: 0.4 }}
+              className="text-center p-3 bg-accent/50 rounded-lg"
+            >
+              <div className={`text-xl font-bold ${colors.text}`}>{subjectProgress.streak}</div>
+              <p className="text-xs text-muted-foreground">Jours</p>
+            </motion.div>
           </div>
 
-          {/* Selected Subject Details */}
-          {selectedSubjectInfo && (
+          {/* Lessons Progress */}
+          <motion.div
+            initial={{ opacity: 0 }}
+            animate={{ opacity: 1 }}
+            transition={{ delay: 0.4 }}
+            className="space-y-3"
+          >
+            <div className="flex items-center justify-between text-sm">
+              <span className="font-medium flex items-center gap-1">
+                <BookOpen className="h-4 w-4" />
+                Cours
+              </span>
+              <span className="text-muted-foreground">{completedLessonsCount}/{totalLessons}</span>
+            </div>
+            <div className="relative">
+              <Progress 
+                value={lessonProgress} 
+                className="h-3 bg-gray-200 dark:bg-gray-700 overflow-hidden"
+              />
+              <div 
+                className={`absolute top-0 left-0 h-full bg-gradient-to-r ${getProgressColor(lessonProgress)} rounded-full transition-all duration-1000 shadow-sm`}
+                style={{ width: `${lessonProgress}%` }}
+              />
+            </div>
+            <Badge variant="outline" className="text-xs">
+              {lessonProgress}% complété
+            </Badge>
+          </motion.div>
+
+          {/* Exercises Progress */}
+          <motion.div
+            initial={{ opacity: 0 }}
+            animate={{ opacity: 1 }}
+            transition={{ delay: 0.6 }}
+            className="space-y-3"
+          >
+            <div className="flex items-center justify-between text-sm">
+              <span className="font-medium flex items-center gap-1">
+                <Target className="h-4 w-4" />
+                Exercices
+              </span>
+              <span className="text-muted-foreground">{completedExercisesCount}/{totalExercises}</span>
+            </div>
+            <Progress 
+              value={exerciseProgress} 
+              className="h-3 bg-gray-200 dark:bg-gray-700"
+            />
+            <Badge variant="outline" className="text-xs">
+              {exerciseProgress}% des exercices
+            </Badge>
+          </motion.div>
+
+          {/* Additional Stats */}
+          <motion.div
+            initial={{ opacity: 0 }}
+            animate={{ opacity: 1 }}
+            transition={{ delay: 0.8 }}
+            className="grid grid-cols-2 gap-3"
+          >
+            <div className="flex items-center justify-between p-3 bg-accent/50 rounded-lg">
+              <div className="flex items-center gap-2">
+                <Clock className="h-4 w-4 text-muted-foreground" />
+                <span className="text-sm font-medium">Temps</span>
+              </div>
+              <Badge variant="secondary">{formatStudyTime(subjectProgress.studyTime)}</Badge>
+            </div>
+            
+            <div className="flex items-center justify-between p-3 bg-accent/50 rounded-lg">
+              <div className="flex items-center gap-2">
+                <Trophy className="h-4 w-4 text-yellow-500" />
+                <span className="text-sm font-medium">Points</span>
+              </div>
+              <Badge variant="secondary">{subjectProgress.totalPoints}</Badge>
+            </div>
+          </motion.div>
+
+          {/* Motivation Message */}
+          <motion.div
+            initial={{ opacity: 0, scale: 0.9 }}
+            animate={{ opacity: 1, scale: 1 }}
+            transition={{ delay: 1.0 }}
+            className="text-center p-3 bg-gradient-to-r from-blue-50 to-purple-50 dark:from-blue-900/20 dark:to-purple-900/20 rounded-lg border border-blue-200 dark:border-blue-800"
+          >
+            <p className="text-sm text-blue-700 dark:text-blue-300 font-medium">
+              {motivation.message}
+            </p>
+          </motion.div>
+
+          {/* Achievement Badge */}
+          {overallProgress === 100 && (
             <motion.div
-              key={selectedSubject}
-              initial={{ opacity: 0, x: 20 }}
-              animate={{ opacity: 1, x: 0 }}
-              className="space-y-4"
+              initial={{ scale: 0, rotate: -180 }}
+              animate={{ scale: 1, rotate: 0 }}
+              transition={{ delay: 1.2, type: "spring" }}
+              className="text-center p-4 bg-gradient-to-r from-yellow-400 to-orange-500 rounded-lg text-white"
             >
-              <div className="grid grid-cols-1 md:grid-cols-2 gap-4">
-                {/* Lessons Progress */}
-                <div className="space-y-3">
-                  <div className="flex justify-between items-center">
-                    <span className="font-medium flex items-center gap-2">
-                      <BookOpen className="h-4 w-4" />
-                      Leçons
-                    </span>
-                    <span className="text-sm text-muted-foreground">
-                      {selectedSubjectData.completedLessons}/{selectedSubjectInfo.totalLessons}
-                    </span>
-                  </div>
-                  <Progress 
-                    value={(selectedSubjectData.completedLessons / selectedSubjectInfo.totalLessons) * 100} 
-                    className="h-3"
-                  />
-                </div>
-
-                {/* Exercises Progress */}
-                <div className="space-y-3">
-                  <div className="flex justify-between items-center">
-                    <span className="font-medium flex items-center gap-2">
-                      <Target className="h-4 w-4" />
-                      Exercices
-                    </span>
-                    <span className="text-sm text-muted-foreground">
-                      {selectedSubjectData.completedExercises}/{selectedSubjectInfo.totalExercises}
-                    </span>
-                  </div>
-                  <Progress 
-                    value={(selectedSubjectData.completedExercises / selectedSubjectInfo.totalExercises) * 100} 
-                    className="h-3"
-                  />
-                </div>
-              </div>
-
-              {/* Additional Stats */}
-              <div className="flex flex-wrap gap-4 pt-4 border-t">
-                <Badge variant="outline" className="flex items-center gap-1">
-                  <Flame className="h-3 w-3" />
-                  {selectedSubjectData.streak} jours de suite
-                </Badge>
-                <Badge variant="outline" className="flex items-center gap-1">
-                  <Clock className="h-3 w-3" />
-                  {Math.round(selectedSubjectData.totalStudyTime / 60)}h d'étude
-                </Badge>
-                <Badge variant="outline" className="flex items-center gap-1">
-                  <Award className="h-3 w-3" />
-                  {selectedSubjectData.earnedPoints} points
-                </Badge>
-              </div>
-
-              {/* Quick Actions */}
-              <div className="flex gap-2 pt-4">
-                <Button
-                  size="sm"
-                  onClick={() => updateProgress(selectedSubject, {
-                    completedLessons: selectedSubjectData.completedLessons + 1,
-                    totalStudyTime: selectedSubjectData.totalStudyTime + 30,
-                    lastStudyDate: new Date().toISOString().split('T')[0]
-                  })}
-                >
-                  + Leçon terminée
-                </Button>
-                <Button
-                  size="sm"
-                  variant="outline"
-                  onClick={() => updateProgress(selectedSubject, {
-                    completedExercises: selectedSubjectData.completedExercises + 1,
-                    earnedPoints: selectedSubjectData.earnedPoints + 10,
-                    totalStudyTime: selectedSubjectData.totalStudyTime + 15
-                  })}
-                >
-                  + Exercice réalisé
-                </Button>
-                <Button
-                  size="sm"
-                  variant="ghost"
-                  onClick={() => updateProgress(selectedSubject, {
-                    completedLessons: 0,
-                    completedExercises: 0,
-                    totalStudyTime: 0,
-                    streak: 0,
-                    earnedPoints: 0
-                  })}
-                >
-                  <RotateCcw className="h-4 w-4 mr-1" />
-                  Reset
-                </Button>
-              </div>
+              <Award className="h-6 w-6 mx-auto mb-2" />
+              <p className="font-bold">Matière Maîtrisée !</p>
+              <p className="text-xs opacity-90">Félicitations pour vos efforts !</p>
             </motion.div>
           )}
         </CardContent>
       </Card>
-    </div>
+    </motion.div>
   );
 };
 

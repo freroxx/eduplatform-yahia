@@ -647,14 +647,14 @@ Utilisée en géométrie pour déterminer les distances minimales et en physique
 Soit un point **P(1, 2)** et une droite d'équation **y = 3x + 1**. Calculer la projection de **P** sur **D**.
 
 **Solution :**
-1. Déterminer l'équation de la droite perpendiculaire à **D** passant par **P**.
-2. Résoudre le système pour trouver **P'**.
+1. Déterminer l'équation de la droite perpendiculaire à D passant par P.
+2. Résoudre le système pour trouver P'.
 
 ### Exercice 2 : Distance à une droite
 Calculer la distance entre le point **P(4, 5)** et la droite **y = 2x - 3**.
 
 **Solution :**
-Utiliser la formule de distance pour trouver la distance entre **P** et **D**.`,
+Utiliser la formule de distance pour trouver la distance entre P et D.`,
     exercices: [
       {
         id: 1,
@@ -678,9 +678,26 @@ Utiliser la formule de distance pour trouver la distance entre **P** et **D**.`,
   }
 };
 
+// Create semester structure from lessons data
+const createSemesterStructure = () => {
+  const semester1: any[] = [];
+  const semester2: any[] = [];
+  
+  Object.entries(mathLessonsData).forEach(([id, lesson]) => {
+    const lessonWithId = { id, ...lesson };
+    if (lesson.semester === 1) {
+      semester1.push(lessonWithId);
+    } else {
+      semester2.push(lessonWithId);
+    }
+  });
+  
+  return { semester1, semester2 };
+};
+
 // Export aliases for backward compatibility
 export const mathExercisesData = mathLessonsData;
-export const mathLessonsStructure = mathLessonsData;
+export const mathLessonsStructure = createSemesterStructure();
 
 // Export default
 export default mathLessonsData;

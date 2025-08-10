@@ -1,4 +1,3 @@
-
 import React from 'react';
 import { Card, CardContent, CardHeader, CardTitle } from '@/components/ui/card';
 import { Progress } from '@/components/ui/progress';
@@ -30,6 +29,15 @@ const EnhancedProgressTracker = ({
   const overallProgress = Math.round(((completedLessonsCount + completedExercisesCount) / (totalLessons + totalExercises)) * 100);
 
   const getSubjectColor = (subjectName: string) => {
+    if (!subjectName || typeof subjectName !== 'string') {
+      return {
+        text: 'text-gray-600',
+        border: 'border-gray-200',
+        bg: 'bg-gray-50 dark:bg-gray-900/20',
+        gradient: 'from-gray-500 to-gray-600'
+      };
+    }
+    
     const normalizedSubject = subjectName.toLowerCase();
     
     if (normalizedSubject.includes('mathématiques') || normalizedSubject.includes('math')) {
@@ -54,6 +62,14 @@ const EnhancedProgressTracker = ({
         border: 'border-emerald-200',
         bg: 'bg-emerald-50 dark:bg-emerald-900/20',
         gradient: 'from-emerald-500 to-emerald-600'
+      };
+    }
+    if (normalizedSubject.includes('général')) {
+      return {
+        text: 'text-purple-600',
+        border: 'border-purple-200',
+        bg: 'bg-purple-50 dark:bg-purple-900/20',
+        gradient: 'from-purple-500 to-purple-600'
       };
     }
     

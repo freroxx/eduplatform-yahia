@@ -1,6 +1,6 @@
 
 import { useState, useEffect } from "react";
-import { motion, AnimatePresence } from "framer-motion";
+import { motion, AnimatePresence, Variants } from "framer-motion";
 import { Card, CardContent, CardDescription, CardHeader, CardTitle } from "@/components/ui/card";
 import { Button } from "@/components/ui/button";
 import { Badge } from "@/components/ui/badge";
@@ -32,7 +32,7 @@ const Index = () => {
       bgColor: "bg-blue-50 dark:bg-blue-950/20",
       borderColor: "border-blue-200 dark:border-blue-800",
       lessons: 15,
-      path: "/lessons/math",
+      path: "/math",
       badge: "Complet",
       badgeColor: "bg-blue-100 text-blue-800 border-blue-300"
     },
@@ -45,7 +45,7 @@ const Index = () => {
       bgColor: "bg-purple-50 dark:bg-purple-950/20",
       borderColor: "border-purple-200 dark:border-purple-800",
       lessons: 23,
-      path: "/lessons/physics",
+      path: "/physics",
       badge: "Complet",
       badgeColor: "bg-purple-100 text-purple-800 border-purple-300"
     },
@@ -58,7 +58,7 @@ const Index = () => {
       bgColor: "bg-green-50 dark:bg-green-950/20",
       borderColor: "border-green-200 dark:border-green-800",
       lessons: 12,
-      path: "/lessons/french",
+      path: "/french",
       badge: "Disponible",
       badgeColor: "bg-green-100 text-green-800 border-green-300"
     },
@@ -71,7 +71,7 @@ const Index = () => {
       bgColor: "bg-orange-50 dark:bg-orange-950/20",
       borderColor: "border-orange-200 dark:border-orange-800",
       lessons: 10,
-      path: "/lessons/english",
+      path: "/english",
       badge: "Disponible",
       badgeColor: "bg-orange-100 text-orange-800 border-orange-300"
     },
@@ -84,7 +84,7 @@ const Index = () => {
       bgColor: "bg-teal-50 dark:bg-teal-950/20",
       borderColor: "border-teal-200 dark:border-teal-800",
       lessons: 8,
-      path: "/lessons/arabic",
+      path: "/arabic",
       badge: "Disponible",
       badgeColor: "bg-teal-100 text-teal-800 border-teal-300"
     },
@@ -97,13 +97,13 @@ const Index = () => {
       bgColor: "bg-emerald-50 dark:bg-emerald-950/20",
       borderColor: "border-emerald-200 dark:border-emerald-800",
       lessons: 14,
-      path: "/lessons/svt",
+      path: "/svt",
       badge: "Bientôt",
       badgeColor: "bg-gray-100 text-gray-800 border-gray-300"
     }
   ];
 
-  const containerVariants = {
+  const containerVariants: Variants = {
     hidden: { opacity: 0 },
     visible: {
       opacity: 1,
@@ -114,7 +114,7 @@ const Index = () => {
     }
   };
 
-  const cardVariants = {
+  const cardVariants: Variants = {
     hidden: { 
       opacity: 0, 
       y: 30,
@@ -125,7 +125,7 @@ const Index = () => {
       y: 0,
       scale: 1,
       transition: {
-        type: "spring",
+        type: "spring" as const,
         stiffness: 100,
         damping: 15,
         duration: 0.6
@@ -159,7 +159,7 @@ const Index = () => {
           className="mb-12"
         >
           <StatsOverview />
-          <EnhancedProgressTracker />
+          <EnhancedProgressTracker subject="Général" />
         </motion.div>
 
         <motion.div

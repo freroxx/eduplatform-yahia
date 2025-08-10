@@ -275,7 +275,7 @@ On dit que **b divise a** (noté **b|a**) s'il existe un entier naturel **k** te
         content: `# ⭐ Les nombres premiers
 
 ## **Définition :**
-Un **nombre premier** est un entier naturel **supérieur à 1** qui n'admet exactement que **deux diviseurs positifs** : **1** et **lui-même**.
+Un **nombre premier** est un entier naturel **supérieur à 1** qui n'admet exactement **deux diviseurs positifs** : **1** et **lui-même**.
 
 ## **Les premiers nombres premiers :**
 **2, 3, 5, 7, 11, 13, 17, 19, 23, 29, 31, 37, 41, 43, 47...**
@@ -677,3 +677,10 @@ Utiliser la formule de distance pour trouver la distance entre **P** et **D**.`,
     ]
   }
 };
+
+// Export aliases for backward compatibility
+export const mathExercisesData = mathLessonsData;
+export const mathLessonsStructure = mathLessonsData;
+
+// Export default
+export default mathLessonsData;
